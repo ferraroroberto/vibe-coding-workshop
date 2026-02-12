@@ -3,3 +3,7 @@
 
 # temporary files
 tmp
+
+# data directories
+**/data/
+data/
