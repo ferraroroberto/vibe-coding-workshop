@@ -81,7 +81,7 @@
         }
 
         .slide-content .content {
-            background: rgba(255, 255, 255, 0.95);
+            background: rgba(0, 0, 0, 0.6);
             padding: clamp(1.5rem, 4vw, 3rem);
             border-radius: 12px;
             max-width: 90%;
@@ -89,19 +89,21 @@
             overflow-y: auto;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
             backdrop-filter: blur(10px);
+            position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
         .slide-content h2 {
             font-size: clamp(1.5rem, 3vw, 2.5rem);
-            color: #1a237e;
+            color: white;
             margin-bottom: 1.5rem;
-            border-bottom: 3px solid #3f51b5;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.3);
             padding-bottom: 0.5rem;
         }
 
         .slide-content h3 {
             font-size: clamp(1.2rem, 2.5vw, 1.8rem);
-            color: #283593;
+            color: #64b5f6;
             margin-top: 1.5rem;
             margin-bottom: 1rem;
         }
@@ -109,7 +111,7 @@
         .slide-content p {
             font-size: clamp(1rem, 1.8vw, 1.3rem);
             line-height: 1.8;
-            color: #212121;
+            color: rgba(255, 255, 255, 0.95);
             margin-bottom: 1rem;
         }
 
@@ -121,32 +123,155 @@
         .slide-content li {
             font-size: clamp(1rem, 1.8vw, 1.2rem);
             line-height: 1.8;
-            color: #212121;
+            color: rgba(255, 255, 255, 0.95);
             margin-bottom: 0.5rem;
         }
 
         .slide-content strong {
-            color: #1a237e;
+            color: #64b5f6;
             font-weight: 600;
         }
 
         .slide-content code {
-            background: #f5f5f5;
+            background: rgba(255, 255, 255, 0.15);
+            color: rgba(255, 255, 255, 0.95);
             padding: 0.2rem 0.4rem;
             border-radius: 4px;
             font-family: 'Courier New', monospace;
             font-size: 0.9em;
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
         .slide-content hr {
             border: none;
-            border-top: 2px solid #e0e0e0;
+            border-top: 2px solid rgba(255, 255, 255, 0.3);
             margin: 1.5rem 0;
         }
 
         .slide-content em {
             font-style: italic;
-            color: #424242;
+            color: rgba(255, 255, 255, 0.85);
+        }
+
+        /* Menu Slide - Image */
+        .slide-menu-image {
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+        /* Menu Slide - Content */
+        .slide-menu {
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .slide-menu .content {
+            background: rgba(0, 0, 0, 0.6);
+            padding: clamp(1.5rem, 3vw, 2.5rem);
+            border-radius: 12px;
+            max-width: 95%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 0.75rem;
+            margin-top: 1rem;
+        }
+
+        .menu-item {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: left;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+        }
+
+        .menu-item:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-3px);
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+
+        .menu-item-text {
+            font-size: clamp(0.85rem, 1.3vw, 1rem);
+            font-weight: 500;
+            line-height: 1.3;
+        }
+
+        .menu-item-text .menu-number {
+            color: #64b5f6;
+            text-transform: uppercase;
+            font-weight: 600;
+            margin-right: 0.5rem;
+        }
+
+        .menu-item-text .menu-title {
+            color: white;
+        }
+
+        .menu-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .menu-action-button {
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 0.75rem 1.5rem;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: clamp(0.9rem, 1.3vw, 1.1rem);
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .menu-action-button:hover {
+            background: rgba(255, 255, 255, 0.25);
+            border-color: rgba(255, 255, 255, 0.5);
+            transform: scale(1.05);
+        }
+
+        /* Exercise Action Buttons */
+        .exercise-actions {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            display: flex;
+            gap: 0.5rem;
+            flex-direction: column;
+            z-index: 10;
+        }
+
+        .exercise-action-button {
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            white-space: nowrap;
+        }
+
+        .exercise-action-button:hover {
+            background: rgba(0, 0, 0, 0.85);
+            border-color: rgba(255, 255, 255, 0.5);
+            transform: scale(1.05);
         }
 
         /* Navigation */
@@ -197,22 +322,26 @@
         }
 
         /* Scrollbar styling */
-        .slide-content .content::-webkit-scrollbar {
+        .slide-content .content::-webkit-scrollbar,
+        .slide-menu .content::-webkit-scrollbar {
             width: 8px;
         }
 
-        .slide-content .content::-webkit-scrollbar-track {
-            background: #f1f1f1;
+        .slide-content .content::-webkit-scrollbar-track,
+        .slide-menu .content::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
             border-radius: 10px;
         }
 
-        .slide-content .content::-webkit-scrollbar-thumb {
-            background: #888;
+        .slide-content .content::-webkit-scrollbar-thumb,
+        .slide-menu .content::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.3);
             border-radius: 10px;
         }
 
-        .slide-content .content::-webkit-scrollbar-thumb:hover {
-            background: #555;
+        .slide-content .content::-webkit-scrollbar-thumb:hover,
+        .slide-menu .content::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.5);
         }
 
         /* Responsive adjustments */
@@ -231,8 +360,37 @@
                 right: 10px;
             }
 
-            .slide-content .content {
+            .slide-content .content,
+            .slide-menu .content {
                 padding: 1.5rem;
+            }
+
+            .menu-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .exercise-actions {
+                top: 0.5rem;
+                right: 0.5rem;
+            }
+
+            .exercise-action-button {
+                padding: 0.4rem 0.8rem;
+                font-size: 0.75rem;
+            }
+
+            .menu-grid {
+                grid-template-columns: 1fr;
+                gap: 0.5rem;
+            }
+
+            .menu-item {
+                padding: 0.6rem 0.8rem;
+            }
+
+            .menu-action-button {
+                padding: 0.6rem 1.2rem;
+                font-size: 0.85rem;
             }
         }
     </style>
@@ -244,9 +402,43 @@
 
     <button class="nav-button prev" onclick="changeSlide(-1)">‹</button>
     <button class="nav-button next" onclick="changeSlide(1)">›</button>
-    <div class="slide-counter" id="counter">1 / 18</div>
+    <div class="slide-counter" id="counter">1 / 1</div>
 
     <script>
+        // Special slides (non-exercises)
+        const specialSlides = [
+            {
+                type: 'welcome',
+                image: 'assets/welcome.jpg',
+                title: 'Welcome'
+            },
+            {
+                type: 'team_agreement',
+                image: 'assets/team_agreement.jpg',
+                title: 'Team Agreement'
+            },
+            {
+                type: 'menu',
+                image: 'assets/menu.jpg',
+                title: 'Exercise Menu'
+            },
+            {
+                type: 'break_time',
+                image: 'assets/break_time.jpg',
+                title: 'Break Time'
+            },
+            {
+                type: 'survey',
+                image: 'assets/survey.jpg',
+                title: 'Survey'
+            },
+            {
+                type: 'congratulations',
+                image: 'assets/congratulations.jpg',
+                title: 'Congratulations'
+            }
+        ];
+
         // Exercise data - matches the sequence from exercises_selection.md
         const exercises = [
             {
@@ -434,8 +626,17 @@ Your mission is to process these simulated large datasets without crashing your 
         ];
 
         let currentSlide = 0;
+        let menuImageSlideIndex = 0;
+        let menuContentSlideIndex = 0;
+        let breakTimeSlideIndex = 0;
+        let surveySlideIndex = 0;
+        let exerciseStartIndex = 0;
+        let exerciseEndIndex = 0;
         const slideshow = document.getElementById('slideshow');
         const counter = document.getElementById('counter');
+
+        // Track slide indices for exercises
+        const exerciseSlideIndices = [];
 
         // Convert markdown-like content to HTML
         function markdownToHtml(text) {
@@ -518,7 +719,67 @@ Your mission is to process these simulated large datasets without crashing your 
 
         // Generate slides
         function generateSlides() {
+            let slideIndex = 0;
+
+            // 1. Welcome slide (no title, just image)
+            const welcomeSlide = document.createElement('div');
+            welcomeSlide.className = 'slide slide-title';
+            welcomeSlide.style.backgroundImage = `url('${specialSlides[0].image}')`;
+            slideshow.appendChild(welcomeSlide);
+            slideIndex++;
+
+            // 2. Team Agreement slide (no title, just image)
+            const teamSlide = document.createElement('div');
+            teamSlide.className = 'slide slide-title';
+            teamSlide.style.backgroundImage = `url('${specialSlides[1].image}')`;
+            slideshow.appendChild(teamSlide);
+            slideIndex++;
+
+            // 3. Menu slide - Image
+            menuImageSlideIndex = slideIndex;
+            const menuImageSlide = document.createElement('div');
+            menuImageSlide.className = 'slide slide-menu-image';
+            menuImageSlide.style.backgroundImage = `url('${specialSlides[2].image}')`;
+            slideshow.appendChild(menuImageSlide);
+            slideIndex++;
+
+            // 4. Menu slide - Content
+            menuContentSlideIndex = slideIndex;
+            const menuSlide = document.createElement('div');
+            menuSlide.className = 'slide slide-menu';
+            menuSlide.style.backgroundImage = `url('${specialSlides[2].image}')`;
+            
+            let menuItemsHTML = '<div class="menu-grid">';
             exercises.forEach((exercise, index) => {
+                menuItemsHTML += `
+                    <div class="menu-item" onclick="goToExercise(${index})">
+                        <div class="menu-item-text">
+                            <span class="menu-number">${exercise.number}</span>
+                            <span class="menu-title">- ${exercise.title}</span>
+                        </div>
+                    </div>
+                `;
+            });
+            menuItemsHTML += '</div>';
+            
+            menuSlide.innerHTML = `
+                <div class="content">
+                    ${menuItemsHTML}
+                    <div class="menu-actions">
+                        <button class="menu-action-button" onclick="goToBreakTime()">Break Time</button>
+                        <button class="menu-action-button" onclick="goToSurvey()">Finish Session</button>
+                    </div>
+                </div>
+            `;
+            slideshow.appendChild(menuSlide);
+            slideIndex++;
+
+            // 4. Generate exercise slides (title + content for each)
+            exerciseStartIndex = slideIndex;
+            exercises.forEach((exercise, index) => {
+                // Track the first slide index for this exercise
+                const exerciseFirstSlide = slideIndex;
+
                 // Slide 1: Title slide
                 const titleSlide = document.createElement('div');
                 titleSlide.className = 'slide slide-title';
@@ -530,24 +791,94 @@ Your mission is to process these simulated large datasets without crashing your 
                     </div>
                 `;
                 slideshow.appendChild(titleSlide);
+                exerciseSlideIndices.push(slideIndex);
+                slideIndex++;
 
                 // Slide 2: Content slide
                 const contentSlide = document.createElement('div');
                 contentSlide.className = 'slide slide-content';
                 contentSlide.style.backgroundImage = `url('${exercise.image}')`;
                 contentSlide.innerHTML = `
+                    <div class="exercise-actions">
+                        <button class="exercise-action-button" onclick="goToMenu()">← Menu</button>
+                        <button class="exercise-action-button" onclick="goToBreakTime()">Break Time</button>
+                        <button class="exercise-action-button" onclick="goToSurvey()">Finish Session</button>
+                    </div>
                     <div class="content">
                         ${markdownToHtml(exercise.content)}
                     </div>
                 `;
                 slideshow.appendChild(contentSlide);
+                exerciseSlideIndices.push(slideIndex);
+                slideIndex++;
             });
+            exerciseEndIndex = slideIndex - 1;
+
+            // 5. Break Time slide (no title, just image)
+            breakTimeSlideIndex = slideIndex;
+            const breakSlide = document.createElement('div');
+            breakSlide.className = 'slide slide-title';
+            breakSlide.style.backgroundImage = `url('${specialSlides[3].image}')`;
+            breakSlide.innerHTML = `
+                <button class="exercise-action-button" onclick="goToMenu()" style="position: absolute; top: 1rem; right: 1rem;">← Back to Menu</button>
+            `;
+            slideshow.appendChild(breakSlide);
+            slideIndex++;
+
+            // 6. Survey slide (no title, just image)
+            surveySlideIndex = slideIndex;
+            const surveySlide = document.createElement('div');
+            surveySlide.className = 'slide slide-title';
+            surveySlide.style.backgroundImage = `url('${specialSlides[4].image}')`;
+            slideshow.appendChild(surveySlide);
+            slideIndex++;
+
+            // 7. Congratulations slide (no title, just image)
+            const congratsSlide = document.createElement('div');
+            congratsSlide.className = 'slide slide-title';
+            congratsSlide.style.backgroundImage = `url('${specialSlides[5].image}')`;
+            slideshow.appendChild(congratsSlide);
+            slideIndex++;
 
             // Initialize first slide
             const slides = slideshow.querySelectorAll('.slide');
             if (slides.length > 0) {
                 slides[0].classList.add('active');
             }
+            updateCounter();
+        }
+
+        function goToExercise(exerciseIndex) {
+            const slides = slideshow.querySelectorAll('.slide');
+            const targetSlideIndex = exerciseStartIndex + (exerciseIndex * 2);
+            
+            slides[currentSlide].classList.remove('active');
+            currentSlide = targetSlideIndex;
+            slides[currentSlide].classList.add('active');
+            updateCounter();
+        }
+
+        function goToMenu() {
+            const slides = slideshow.querySelectorAll('.slide');
+            slides[currentSlide].classList.remove('active');
+            currentSlide = menuContentSlideIndex;
+            slides[currentSlide].classList.add('active');
+            updateCounter();
+        }
+
+        function goToBreakTime() {
+            const slides = slideshow.querySelectorAll('.slide');
+            slides[currentSlide].classList.remove('active');
+            currentSlide = breakTimeSlideIndex;
+            slides[currentSlide].classList.add('active');
+            updateCounter();
+        }
+
+        function goToSurvey() {
+            const slides = slideshow.querySelectorAll('.slide');
+            slides[currentSlide].classList.remove('active');
+            currentSlide = surveySlideIndex;
+            slides[currentSlide].classList.add('active');
             updateCounter();
         }
 
