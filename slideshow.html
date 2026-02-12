@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Workshop Exercises Slideshow</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            overflow: hidden;
+            background: #000;
+        }
+
+        .slideshow-container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        .slide {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 0.8s ease-in-out;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .slide.active {
+            opacity: 1;
+            z-index: 1;
+        }
+
+        /* Slide Type 1: Title Slide */
+        .slide-title {
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+        .slide-title .content {
+            text-align: center;
+            color: white;
+            padding: 2rem;
+            background: rgba(0, 0, 0, 0.6);
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+            max-width: 90%;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+        }
+
+        .slide-title h1 {
+            font-size: clamp(2rem, 5vw, 4rem);
+            font-weight: 700;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+            line-height: 1.2;
+        }
+
+        .slide-title .exercise-number {
+            font-size: clamp(1rem, 2vw, 1.5rem);
+            color: #64b5f6;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        /* Slide Type 2: Content Slide */
+        .slide-content {
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .slide-content .content {
+            background: rgba(255, 255, 255, 0.95);
+            padding: clamp(1.5rem, 4vw, 3rem);
+            border-radius: 12px;
+            max-width: 90%;
+            max-height: 85vh;
+            overflow-y: auto;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+        }
+
+        .slide-content h2 {
+            font-size: clamp(1.5rem, 3vw, 2.5rem);
+            color: #1a237e;
+            margin-bottom: 1.5rem;
+            border-bottom: 3px solid #3f51b5;
+            padding-bottom: 0.5rem;
+        }
+
+        .slide-content h3 {
+            font-size: clamp(1.2rem, 2.5vw, 1.8rem);
+            color: #283593;
+            margin-top: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .slide-content p {
+            font-size: clamp(1rem, 1.8vw, 1.3rem);
+            line-height: 1.8;
+            color: #212121;
+            margin-bottom: 1rem;
+        }
+
+        .slide-content ul, .slide-content ol {
+            margin-left: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .slide-content li {
+            font-size: clamp(1rem, 1.8vw, 1.2rem);
+            line-height: 1.8;
+            color: #212121;
+            margin-bottom: 0.5rem;
+        }
+
+        .slide-content strong {
+            color: #1a237e;
+            font-weight: 600;
+        }
+
+        .slide-content code {
+            background: #f5f5f5;
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+
+        .slide-content hr {
+            border: none;
+            border-top: 2px solid #e0e0e0;
+            margin: 1.5rem 0;
+        }
+
+        .slide-content em {
+            font-style: italic;
+            color: #424242;
+        }
+
+        /* Navigation */
+        .nav-button {
+            position: fixed;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            z-index: 100;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .nav-button:hover {
+            background: rgba(255, 255, 255, 1);
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .nav-button.prev {
+            left: 20px;
+        }
+
+        .nav-button.next {
+            right: 20px;
+        }
+
+        .slide-counter {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 25px;
+            font-size: 1rem;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+
+        /* Scrollbar styling */
+        .slide-content .content::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .slide-content .content::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        .slide-content .content::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 10px;
+        }
+
+        .slide-content .content::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .nav-button {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+            }
+
+            .nav-button.prev {
+                left: 10px;
+            }
+
+            .nav-button.next {
+                right: 10px;
+            }
+
+            .slide-content .content {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="slideshow-container" id="slideshow">
+        <!-- Slides will be dynamically generated here -->
+    </div>
+
+    <button class="nav-button prev" onclick="changeSlide(-1)">‹</button>
+    <button class="nav-button next" onclick="changeSlide(1)">›</button>
+    <div class="slide-counter" id="counter">1 / 18</div>
+
+    <script>
+        // Exercise data - matches the sequence from exercises_selection.md
+        const exercises = [
+            {
+                number: "Intro",
+                title: "Hello World - The First Flight",
+                image: "assets/intro_python.jpg",
+                content: `# Intro: Hello World - The First Flight
+
+## The Goal
+
+Verify that your "cockpit" (VS Code + Python) is fully operational. You will write your first lines of code to print a message to the screen, perform a business calculation, and automate a repetitive task using a loop.
+
+## Steps
+
+1. **The Environment:** Create a new file named \`hello.py\`.
+2. **The First Prompt:** Use GitHub Copilot to ask: "How do I print 'Hello World' in Python?". Run the code.
+3. **The Calculator:** Ask Copilot: "Create a variable for revenue = 1000 and cost = 400. Calculate profit and print it."
+4. **The Loop:** Ask Copilot: "Write a loop that prints numbers 1 to 5."`
+            },
+            {
+                number: "ETL 1",
+                title: "The Great Merger",
+                image: "assets/etl_merger.jpg",
+                content: `# Exercise: The Great Merger
+
+## The Goal
+In this exercise, you will automate a common reporting task: consolidating multiple Excel files into a single dataset. You will learn how to load data from Excel, combine it using Python, and export the cleanup result. 
+
+## The Scenario
+Your boss has emailed you three separate Excel files containing quarterly sales data (Q1, Q2, and Q3). She needs a single "Year-To-Date" report by lunchtime. 
+
+Copy-pasting manually is slow and prone to errors. Instead, you will use Python to:
+1. Load the three files.
+2. Stack them into one master table.
+3. Verify the data count.
+4. Export the result to a CSV file.
+
+## Expected Output
+A single file named \`combined_sales.csv\` containing all records from the three quarterly files.`
+            },
+            {
+                number: "ETL 2",
+                title: "The Detective",
+                image: "assets/etl_detective.jpg",
+                content: `# Exercise: ETL 2 - The Detective
+
+**Goal:** Clean a "dirty" dataset by identifying duplicates, handling negative numbers, and filtering out errors.
+
+---
+
+### The Scenario
+You are a Data analyst at *Global Widgets Inc.*
+You successfully merged the sales files in the previous project. However, the Finance team has rejected your report.
+"The numbers don't add up," they said. "We see the same Order ID appearing twice, and why do we have negative sales? Are we paying people to take our products?"
+
+Your job is to act as a detective: separate the good data from the bad.
+
+### Your Mission
+1.  **Load** the \`combined_sales.csv\` file.
+2.  **Find and Remove** duplicate \`Order_ID\`s (glitch in the system).
+3.  **Filter out** negative numbers in the \`Revenue\` column (erroneous refunds).
+4.  **Save** the clean dataset as \`clean_sales_data.csv\`.
+
+**(Optional) Tier 2 Challenge:**
+*   Identify "Suspiciously High" revenue transactions (outliers) that are statistically impossible (3 standard deviations from the mean).`
+            },
+            {
+                number: "ETL 3",
+                title: "The Messy Survey (The Human Factor)",
+                image: "assets/etl_survey.jpg",
+                content: `# Exercise: ETL 3 - The Messy Survey (The Human Factor)
+
+## The Goal
+A clear, concise explanation of the problem we are solving and what the expected outcome is.
+
+**Scenario:**
+While you are finalizing the sales data, HR pings you. They have an "Employee Satisfaction Survey" (~1000 rows) and want to know if happy sales reps sell more. But their data is a disaster:
+*   **Inconsistent Data:** Some people typed "Male", others "M", "m", or " F ".
+*   **Mixed Dates:** Join dates are in every format imaginable (YYYY-MM-DD, DD/MM/YYYY, etc.).
+*   **Unstructured Text:** The comments section is free-text, containing hidden gems like personal email addresses or keywords about complaints.
+
+**Your Mission:**
+Clean this dataset so it can eventually be accurately joined with your Sales data and used for analysis.
+
+**Expected Outcome:**
+A clean DataFrame (and CSV) with:
+1.  Standardized \`Gender\` column (Male/Female/Other).
+2.  Standardized \`Join_Date\` (Datetime objects).
+3.  A new flag column \`Compensation_Issue\` (True/False) based on keywords.
+4.  (Optional) A new column \`extracted_email\` pulled from the comments using Regex.`
+            },
+            {
+                number: "Viz 1",
+                title: "The Manager's Chart",
+                image: "assets/viz_managers_chart.jpg",
+                content: `# Exercise: The Manager's Chart
+
+## The Goal
+Create a professional-grade bar chart showing **Total Revenue per Product Category** for the board meeting. The chart must effectively communicate sales performance to management, featuring clear titles and proper currency formatting.
+
+The Manager is picky about presentation—raw, unformatted charts will not be accepted.
+
+## Expected Outcome
+A clean, professional bar chart displayed (or saved) that shows which business categories are driving the most revenue for the year.`
+            },
+            {
+                number: "Viz 2",
+                title: "The Report Generator",
+                image: "assets/viz_report_generator.jpg",
+                content: `# Student Scorecard: The Report Generator
+
+## Exercise Title
+**Viz 2: Multi-Sheet Excel Reporting**
+
+## The Goal
+The dashboard looks great, but management always wants the "raw numbers" in Excel. 
+Your task is to take the cleaned sales data and generate a single professional Excel file (\`final_report.xlsx\`) containing two separate tabs:
+1. **"Executive Summary"**: A high-level table showing Total Revenue by Category.
+2. **"Backing Data"**: The full, detailed dataset for auditing purposes.
+
+You will use Python's \`pandas\` library to act as a bridge between raw data and the final corporate report.`
+            },
+            {
+                number: "Auto 1",
+                title: "The Professional Polish",
+                image: "assets/auto_excel_polish.jpg",
+                content: `# Exercise: The Professional Polish ("The Bridge")
+
+## The Goal
+Your boss loved the data in \`final_report.xlsx\`, but she complained that it looks "too plain" and the columns are too narrow to read. She wants:
+1.  **Professional Headers:** Bold text with a nice blue background.
+2.  **Readable Columns:** All columns should auto-fit to the content size.
+3.  **High-Highlights:** Any Revenue over $10,000 should be highlighted in Green.
+
+**Your Mission:**
+Instead of manually clicking around in Excel every quarter, write a Python script that takes the raw data and applies this professional formatting automatically.
+
+## Expected Output
+A new Excel file named \`polished_report.xlsx\` that is formatted perfectly.`
+            },
+            {
+                number: "Auto 2",
+                title: "The File Organizer",
+                image: "assets/auto_file_organizer.jpg",
+                content: `# Exercise: The automated File Organizer
+
+## The Goal
+
+Your "Downloads" folder and project workspace have become a chaotic mess of files. 
+There are CSVs mixed with PDFs, Excel reports, and random text files. It's time to clean up.
+
+**Your Objective:** Write a Python script that automatically organizes these files into neat subfolders based on their type (e.g., all \`.csv\` files go into a \`Data\` folder, \`.pdf\` into \`Docs\`).
+
+### Expected Outcome
+
+When you run your script, the files in the \`data\` folder should be moved into these new subfolders:
+*   **Spreadsheets/** (for \`.xlsx\`, \`.csv\`)
+*   **Documents/** (for \`.pdf\`, \`.txt\`, \`.docx\`)
+*   **Images/** (for \`.png\`, \`.jpg\`)
+*   **Others/** (for anything else)
+
+Good luck!`
+            },
+            {
+                number: "Bonus",
+                title: "The Big Data Stress Test",
+                image: "assets/etl_bonus_big_data.jpg",
+                content: `# Exercise: The Big Data Stress Test
+
+## The Goal
+Fast forward two years. Your company has grown, and the "Sales Data" is no longer just 3 simple files—it's gigabytes of server logs.
+
+Your mission is to process these simulated large datasets without crashing your computer. You will move from memory-heavy tools (like Pandas) to an "Out-of-Core" processing engine that handles data larger than your RAM.
+
+## The Problem
+*   **System Crashes:** Traditional scripts try to load everything into RAM at once.
+*   **Slow Performance:** CSV files are slow to read and process.
+*   **Storage Costs:** Text-based logs take up too much space.
+
+## The Expected Outcome
+1.  Experience why the "old way" fails.
+2.  Use a new tool (**DuckDB**) to query data *without* loading it all first.
+3.  Convert bulky CSVs into the efficient **Parquet** format.`
+            }
+        ];
+
+        let currentSlide = 0;
+        const slideshow = document.getElementById('slideshow');
+        const counter = document.getElementById('counter');
+
+        // Convert markdown-like content to HTML
+        function markdownToHtml(text) {
+            const lines = text.split('\n');
+            let result = [];
+            let inList = false;
+            
+            for (let i = 0; i < lines.length; i++) {
+                let line = lines[i].trim();
+                
+                // Skip empty lines
+                if (!line) {
+                    if (inList) {
+                        result.push('</ul>');
+                        inList = false;
+                    }
+                    continue;
+                }
+                
+                // Process headers
+                if (line.startsWith('### ')) {
+                    if (inList) {
+                        result.push('</ul>');
+                        inList = false;
+                    }
+                    result.push('<h3>' + processInlineMarkdown(line.substring(4)) + '</h3>');
+                } else if (line.startsWith('## ')) {
+                    if (inList) {
+                        result.push('</ul>');
+                        inList = false;
+                    }
+                    result.push('<h3>' + processInlineMarkdown(line.substring(3)) + '</h3>');
+                } else if (line.startsWith('# ')) {
+                    if (inList) {
+                        result.push('</ul>');
+                        inList = false;
+                    }
+                    result.push('<h2>' + processInlineMarkdown(line.substring(2)) + '</h2>');
+                }
+                // Process list items
+                else if (/^[\d*\-]\.?\s+/.test(line)) {
+                    if (!inList) {
+                        result.push('<ul>');
+                        inList = true;
+                    }
+                    const listContent = line.replace(/^[\d*\-]\.?\s+/, '');
+                    result.push('<li>' + processInlineMarkdown(listContent) + '</li>');
+                }
+                // Process horizontal rules
+                else if (line === '---') {
+                    if (inList) {
+                        result.push('</ul>');
+                        inList = false;
+                    }
+                    result.push('<hr>');
+                }
+                // Process regular paragraphs
+                else {
+                    if (inList) {
+                        result.push('</ul>');
+                        inList = false;
+                    }
+                    result.push('<p>' + processInlineMarkdown(line) + '</p>');
+                }
+            }
+            
+            if (inList) {
+                result.push('</ul>');
+            }
+            
+            return result.join('\n');
+        }
+        
+        function processInlineMarkdown(text) {
+            return text
+                .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+                .replace(/\*(.+?)\*/g, '<em>$1</em>')
+                .replace(/`(.+?)`/g, '<code>$1</code>');
+        }
+
+        // Generate slides
+        function generateSlides() {
+            exercises.forEach((exercise, index) => {
+                // Slide 1: Title slide
+                const titleSlide = document.createElement('div');
+                titleSlide.className = 'slide slide-title';
+                titleSlide.style.backgroundImage = `url('${exercise.image}')`;
+                titleSlide.innerHTML = `
+                    <div class="content">
+                        <div class="exercise-number">${exercise.number}</div>
+                        <h1>${exercise.title}</h1>
+                    </div>
+                `;
+                slideshow.appendChild(titleSlide);
+
+                // Slide 2: Content slide
+                const contentSlide = document.createElement('div');
+                contentSlide.className = 'slide slide-content';
+                contentSlide.style.backgroundImage = `url('${exercise.image}')`;
+                contentSlide.innerHTML = `
+                    <div class="content">
+                        ${markdownToHtml(exercise.content)}
+                    </div>
+                `;
+                slideshow.appendChild(contentSlide);
+            });
+
+            // Initialize first slide
+            const slides = slideshow.querySelectorAll('.slide');
+            if (slides.length > 0) {
+                slides[0].classList.add('active');
+            }
+            updateCounter();
+        }
+
+        function changeSlide(direction) {
+            const slides = slideshow.querySelectorAll('.slide');
+            slides[currentSlide].classList.remove('active');
+            
+            currentSlide += direction;
+            
+            if (currentSlide < 0) {
+                currentSlide = slides.length - 1;
+            } else if (currentSlide >= slides.length) {
+                currentSlide = 0;
+            }
+            
+            slides[currentSlide].classList.add('active');
+            updateCounter();
+        }
+
+        function updateCounter() {
+            const slides = slideshow.querySelectorAll('.slide');
+            counter.textContent = `${currentSlide + 1} / ${slides.length}`;
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') {
+                changeSlide(-1);
+            } else if (e.key === 'ArrowRight') {
+                changeSlide(1);
+            }
+        });
+
+        // Touch/swipe support for mobile
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        slideshow.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        });
+
+        slideshow.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        });
+
+        function handleSwipe() {
+            if (touchEndX < touchStartX - 50) {
+                changeSlide(1); // Swipe left = next
+            }
+            if (touchEndX > touchStartX + 50) {
+                changeSlide(-1); // Swipe right = previous
+            }
+        }
+
+        // Initialize slideshow
+        generateSlides();
+    </script>
+</body>
+</html>
