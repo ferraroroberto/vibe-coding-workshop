@@ -1,14 +1,13 @@
 # Simple script to test basic imports and functionality of workshop libraries
+# Testing libraries from requirements.txt in root folder
+import faker
+import duckdb
+import matplotlib.pyplot as plt
 import openpyxl
 import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
+import pyarrow
 import seaborn as sns
-import docx
-import pptx
-import xlrd
-import xlwt
-import win32api
+import xlsxwriter
 import os
 
 
@@ -22,7 +21,31 @@ def check(msg, success):
 print("Testing imports...\n")
 
 
-# Data manipulation
+# Faker
+try:
+	fake = faker.Faker()
+	print("Faker imported successfully")
+	print("Sample name:", fake.name())
+	check("Faker test", True)
+except Exception as e:
+	check(f"Faker test failed: {e}", False)
+print()
+
+
+# DuckDB
+try:
+	conn = duckdb.connect()
+	result = conn.execute("SELECT 1 as test").fetchone()
+	print("DuckDB version:", duckdb.__version__)
+	print("DuckDB test query result:", result)
+	conn.close()
+	check("DuckDB test", True)
+except Exception as e:
+	check(f"DuckDB test failed: {e}", False)
+print()
+
+
+# Pandas
 try:
 	print("Pandas version:", pd.__version__)
 	df = pd.DataFrame({'A': [1, 2], 'B': [3, 4]})
@@ -30,16 +53,6 @@ try:
 	check("Pandas test", True)
 except Exception as e:
 	check(f"Pandas test failed: {e}", False)
-print()
-
-
-# Numpy
-try:
-	arr = np.array([1, 2, 3])
-	print("Numpy array:", arr)
-	check("Numpy test", True)
-except Exception as e:
-	check(f"Numpy test failed: {e}", False)
 print()
 
 
@@ -58,7 +71,7 @@ print()
 # Seaborn
 try:
 	sns.set()
-	print("Seaborn set style.")
+	print("Seaborn version:", sns.__version__)
 	check("Seaborn test", True)
 except Exception as e:
 	check(f"Seaborn test failed: {e}", False)
@@ -68,6 +81,7 @@ print()
 # Openpyxl
 try:
 	wb = openpyxl.Workbook()
+	print("Openpyxl version:", openpyxl.__version__)
 	print("Openpyxl workbook created.")
 	check("Openpyxl test", True)
 except Exception as e:
@@ -75,57 +89,37 @@ except Exception as e:
 print()
 
 
-# python-docx
+# PyArrow
 try:
-	print("python-docx available:", hasattr(docx, 'Document'))
-	check("python-docx test", True)
+	import pyarrow as pa
+	print("PyArrow version:", pa.__version__)
+	table = pa.table({'col1': [1, 2, 3], 'col2': ['a', 'b', 'c']})
+	print("PyArrow table created with", len(table), "rows")
+	check("PyArrow test", True)
 except Exception as e:
-	check(f"python-docx test failed: {e}", False)
+	check(f"PyArrow test failed: {e}", False)
 print()
 
-# python-pptx
 
-# python-pptx
+# XlsxWriter
 try:
-	print("python-pptx available:", hasattr(pptx, 'Presentation'))
-	check("python-pptx test", True)
+	print("XlsxWriter version:", xlsxwriter.__version__)
+	wb = xlsxwriter.Workbook('test_temp.xlsx')
+	ws = wb.add_worksheet()
+	ws.write('A1', 'Test')
+	wb.close()
+	os.remove('test_temp.xlsx')
+	print("XlsxWriter workbook created and cleaned up.")
+	check("XlsxWriter test", True)
 except Exception as e:
-	check(f"python-pptx test failed: {e}", False)
+	check(f"XlsxWriter test failed: {e}", False)
+	# Clean up temp file if it exists
+	if os.path.exists('test_temp.xlsx'):
+		os.remove('test_temp.xlsx')
 print()
 
-# xlrd
 
-# xlrd
-try:
-	print("xlrd version:", xlrd.__version__)
-	check("xlrd test", True)
-except Exception as e:
-	check(f"xlrd test failed: {e}", False)
-print()
-
-# xlwt
-
-# xlwt
-try:
-	print("xlwt version:", xlwt.__VERSION__)
-	check("xlwt test", True)
-except Exception as e:
-	check(f"xlwt test failed: {e}", False)
-print()
-
-# win32api
-
-# win32api
-try:
-	print("win32api available:", hasattr(win32api, 'GetUserName'))
-	check("win32api test", True)
-except Exception as e:
-	check(f"win32api test failed: {e}", False)
-print()
-
-# os
-
-# os
+# os (built-in, but included for completeness)
 try:
 	print("Current working directory:", os.getcwd())
 	check("os test", True)
