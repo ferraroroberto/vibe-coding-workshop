@@ -1,0 +1,13 @@
+# Requirements used in the setup data only
+
+faker # used in exercises/etl_survey
+
+# Requirements used in the exercises solution
+
+duckdb # used in exercises/etl_bonus_big_data
+matplotlib # used in exercises/viz_managers_chart
+openpyxl # used in exercises/auto_excel_polish, exercises/etl_merger, exercises/viz_report_generator
+pandas # used in exercises/auto_excel_polish, exercises/etl_bonus_big_data, exercises/etl_detective, exercises/etl_merger, exercises/etl_survey, exercises/viz_managers_chart, exercises/viz_report_generator
+pyarrow # used in exercises/etl_bonus_big_data
+seaborn # used in exercises/viz_managers_chart
+xlsxwriter # used in exercises/auto_excel_polish
