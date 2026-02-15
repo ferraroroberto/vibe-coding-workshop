@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Workshop Exercises Slideshow</title>
+    <title>Taller de Ejercicios - Presentación</title>
     <style>
         * {
             margin: 0;
@@ -425,7 +425,7 @@
             {
                 type: 'break_time',
                 image: 'assets/break_time.jpg',
-                title: 'Break Time'
+                title: 'Hora de Descanso'
             },
             {
                 type: 'survey',
@@ -439,209 +439,209 @@
             }
         ];
 
-                                        // Exercise data - matches the sequence from exercises_selection.md
+                                                // Exercise data - matches the sequence from exercises_selection.md
         const exercises = [
             {
                 number: "Intro",
-                title: "Intro: Hello World - The First Flight",
+                title: "Intro: Hola Mundo - El Primer Vuelo",
                 image: "assets/intro_python.jpg",
-                content: `# Intro: Hello World - The First Flight
+                content: `# Intro: Hola Mundo - El Primer Vuelo
 
-## The scenario
+## El escenario
 
-It's your first day. You have installed VS Code and Python, but it looks like a cockpit of a plane you don't know how to fly. You need to prove to your boss (and yourself) that your setup is working.
+Es tu primer día. Tienes instalados VS Code y Python, pero parece la cabina de un avión que no sabes pilotar. Necesitas demostrar a tu jefa (y a ti mismo) que tu configuración funciona.
 
-## Your mission
+## Tu misión
 
-Verify that your "cockpit" (VS Code + Python) is fully operational. You will write your first lines of code to print a message to the screen, perform a business calculation, and automate a repetitive task using a loop.
+Verifica que tu "cabina" (VS Code + Python) esté completamente operativa. Escribirás tus primeras líneas de código para imprimir un mensaje en pantalla, realizar un cálculo de negocio y automatizar una tarea repetitiva usando un bucle.
 
-1. **The Environment:** Create a new file named \`hello.py\`.
-2. **The First Prompt:** Use Copilot to ask: "How do I print 'Hello World' in Python?". Run the code.
-3. **The Calculator:** Ask Copilot: "Create a variable for revenue = 1000 and cost = 400. Calculate profit and print it."
-4. **The Loop:** Ask Copilot: "Write a loop that prints numbers 1 to 5."
+1. **El Entorno:** Crea un nuevo archivo llamado \`hello.py\`.
+2. **El Primer Prompt:** Usa Copilot para preguntar: "¿Cómo imprimo 'Hello World' en Python?". Ejecuta el código.
+3. **La Calculadora:** Pide a Copilot: "Crea una variable para ingresos = 1000 y costos = 400. Calcula el beneficio e imprímelo."
+4. **El Bucle:** Pide a Copilot: "Escribe un bucle que imprima los números del 1 al 5."
 
-## Expected result
+## Resultado esperado
 
-You have printed "Hello World", calculated profit, and printed numbers 1 to 5 — your setup is working.`
+Has imprimido "Hello World", calculado el beneficio e imprimido los números del 1 al 5 — tu configuración funciona.`
             },
             {
                 number: "ETL 1",
-                title: "Exercise: The Great Merger",
+                title: "Ejercicio: La Gran Fusión",
                 image: "assets/etl_merger.jpg",
-                content: `# Exercise: The Great Merger
+                content: `# Ejercicio: La Gran Fusión
 
-## The scenario
+## El escenario
 
-Your boss has emailed you three separate Excel files containing quarterly sales data (Q1, Q2, and Q3). She needs a single "Year-To-Date" report by lunchtime. Copy-pasting manually is slow and prone to errors.
+Tu jefa te ha enviado por correo tres archivos Excel separados con datos de ventas trimestrales (Q1, Q2 y Q3). Necesita un único reporte "Acumulado del Año" antes del almuerzo. Copiar y pegar manualmente es lento y propenso a errores.
 
-## Your mission
+## Tu misión
 
-Use Python to automate this common reporting task: load the three files, stack them into one master table, verify the data count, and export the result to a CSV file.
+Usa Python para automatizar esta tarea común de reportes: cargar los tres archivos, apilarlos en una tabla maestra, verificar el conteo de datos y exportar el resultado a un archivo CSV.
 
-1. Load the three files.
-2. Stack them into one master table.
-3. Verify the data count.
-4. Export the result to a CSV file.
+1. Cargar los tres archivos.
+2. Apilarlos en una tabla maestra.
+3. Verificar el conteo de datos.
+4. Exportar el resultado a un archivo CSV.
 
-## Expected result
+## Resultado esperado
 
-A single file named \`combined_sales.csv\` containing all records from the three quarterly files.`
+Un único archivo llamado \`combined_sales.csv\` que contenga todos los registros de los tres archivos trimestrales.`
             },
             {
                 number: "ETL 2",
-                title: "Exercise: ETL 2 - The Detective",
+                title: "Ejercicio: ETL 2 - El Detective",
                 image: "assets/etl_detective.jpg",
-                content: `# Exercise: ETL 2 - The Detective
+                content: `# Ejercicio: ETL 2 - El Detective
 
-## The scenario
+## El escenario
 
-You are a Data analyst at *Global Widgets Inc.* You successfully merged the sales files in the previous project. However, the Finance team has rejected your report. "The numbers don't add up," they said. "We see the same Order ID appearing twice, and why do we have negative sales? Are we paying people to take our products?" Your job is to act as a detective: separate the good data from the bad.
+Eres analista de datos en *Global Widgets Inc.* Combinaste exitosamente los archivos de ventas en el proyecto anterior. Sin embargo, el equipo de Finanzas ha rechazado tu reporte. "Los números no cuadran", dijeron. "Vemos el mismo Order ID aparecer dos veces, y ¿por qué tenemos ventas negativas? ¿Estamos pagando a la gente para que se lleve nuestros productos?" Tu trabajo es actuar como detective: separar los datos buenos de los malos.
 
-## Your mission
+## Tu misión
 
-1. **Load** the \`combined_sales.csv\` file.
-2. **Find and Remove** duplicate \`Order_ID\`s (glitch in the system).
-3. **Filter out** negative numbers in the \`Revenue\` column (erroneous refunds).
-4. **Save** the clean dataset as \`clean_sales_data.csv\`.
+1. **Cargar** el archivo \`combined_sales.csv\`.
+2. **Encontrar y eliminar** \`Order_ID\` duplicados (falla en el sistema).
+3. **Filtrar** los números negativos en la columna \`Revenue\` (reembolsos erróneos).
+4. **Guardar** el conjunto de datos limpio como \`clean_sales_data.csv\`.
 
-**(Optional) Tier 2 Challenge:** Identify "Suspiciously High" revenue transactions (outliers) that are statistically impossible (3 standard deviations from the mean).
+**(Opcional) Desafío Nivel 2:** Identificar transacciones de ingresos "Sospechosamente Altas" (valores atípicos) que son estadísticamente imposibles (3 desviaciones estándar de la media).
 
-## Expected result
+## Resultado esperado
 
-A clean file \`clean_sales_data.csv\` with no duplicate Order IDs and no negative revenue — ready for reporting.`
+Un archivo limpio \`clean_sales_data.csv\` sin Order IDs duplicados y sin ingresos negativos — listo para reportar.`
             },
             {
                 number: "ETL 3",
-                title: "Exercise: ETL 3 - The Messy Survey (The Human Factor)",
+                title: "Ejercicio: ETL 3 - La Encuesta Desordenada (El Factor Humano)",
                 image: "assets/etl_survey.jpg",
-                content: `# Exercise: ETL 3 - The Messy Survey (The Human Factor)
+                content: `# Ejercicio: ETL 3 - La Encuesta Desordenada (El Factor Humano)
 
-## The scenario
+## El escenario
 
-While you are finalizing the sales data, HR pings you. They have an "Employee Satisfaction Survey" (~1000 rows) and want to know if happy sales reps sell more. But their data is a disaster: **Inconsistent Data** (some typed "Male", others "M", "m", or " F "), **Mixed Dates** (join dates in every format imaginable), and **Unstructured Text** (comments with hidden gems like emails or complaint keywords).
+Mientras finalizas los datos de ventas, RRHH te contacta. Tienen una "Encuesta de Satisfacción de Empleados" (~1000 filas) y quieren saber si los vendedores felices venden más. Pero sus datos son un desastre: **Datos Inconsistentes** (algunos escribieron "Male", otros "M", "m" o " F "), **Fechas Mezcladas** (fechas de ingreso en todos los formatos imaginables) y **Texto No Estructurado** (comentarios con correos o palabras clave de quejas).
 
-## Your mission
+## Tu misión
 
-Clean this dataset so it can eventually be accurately joined with your Sales data and used for analysis.
+Limpiar este conjunto de datos para que eventualmente pueda unirse con tus datos de Ventas y usarse para análisis.
 
-1. Standardize the \`Gender\` column (Male/Female/Other).
-2. Standardize \`Join_Date\` (Datetime objects).
-3. Add a new flag column \`Compensation_Issue\` (True/False) based on keywords.
-4. (Optional) Add a new column \`extracted_email\` pulled from the comments using Regex.
+1. Estandarizar la columna \`Gender\` (Male/Female/Other).
+2. Estandarizar \`Join_Date\` (objetos Datetime).
+3. Añadir una nueva columna de bandera \`Compensation_Issue\` (True/False) basada en palabras clave.
+4. (Opcional) Añadir una nueva columna \`extracted_email\` extraída de los comentarios usando Regex.
 
-## Expected result
+## Resultado esperado
 
-A clean DataFrame (and CSV) with standardized Gender, Join_Date, and the new columns — ready to join with Sales data.`
+Un DataFrame (y CSV) limpio con Gender y Join_Date estandarizados y las nuevas columnas — listo para unir con datos de Ventas.`
             },
             {
                 number: "Viz 1",
-                title: "Exercise: The Manager's Chart",
+                title: "Ejercicio: El Gráfico del Gerente",
                 image: "assets/viz_managers_chart.jpg",
-                content: `# Exercise: The Manager's Chart
+                content: `# Ejercicio: El Gráfico del Gerente
 
-## The scenario
+## El escenario
 
-Your \`clean_sales_data.csv\` is ready. Now the Manager wants a visual for the board meeting. She specifically wants to see "Total Revenue by Product Category." She is picky about colors and titles — raw, unformatted charts will not be accepted.
+Tu \`clean_sales_data.csv\` está listo. Ahora la Gerente quiere una visual para la reunión de directorio. Específicamente quiere ver "Ingresos Totales por Categoría de Producto." Es exigente con colores y títulos — los gráficos crudos y sin formato no serán aceptados.
 
-## Your mission
+## Tu misión
 
-Create a professional-grade bar chart showing **Total Revenue per Product Category** for the board meeting. The chart must effectively communicate sales performance to management, with clear titles and proper currency formatting.
+Crear un gráfico de barras de nivel profesional que muestre **Ingresos Totales por Categoría de Producto** para la reunión de directorio. El gráfico debe comunicar efectivamente el rendimiento de ventas a la gerencia, con títulos claros y formato de moneda apropiado.
 
-## Expected result
+## Resultado esperado
 
-A clean, professional bar chart displayed (or saved) that shows which business categories are driving the most revenue for the year.`
+Un gráfico de barras limpio y profesional mostrado (o guardado) que indique qué categorías de negocio generan más ingresos durante el año.`
             },
             {
                 number: "Viz 2",
-                title: "Exercise: The Report Generator (Viz 2)",
+                title: "Ejercicio: El Generador de Reportes (Viz 2)",
                 image: "assets/viz_report_generator.jpg",
-                content: `# Exercise: The Report Generator (Viz 2)
+                content: `# Ejercicio: El Generador de Reportes (Viz 2)
 
-## The scenario
+## El escenario
 
-The chart is great, but the Manager also wants the raw numbers in Excel to play with. She asks for *one* Excel file containing an executive summary and the full backing data — the kind of deliverable that bridges your analysis and the corporate report.
+El gráfico está genial, pero la Gerente también quiere los números crudos en Excel para trabajar. Pide *un* archivo Excel que contenga un resumen ejecutivo y los datos de respaldo completos — el tipo de entregable que une tu análisis y el reporte corporativo.
 
-## Your mission
+## Tu misión
 
-Take the cleaned sales data and generate a single professional Excel file (\`final_report.xlsx\`) with two tabs:
+Tomar los datos de ventas limpios y generar un único archivo Excel profesional (\`final_report.xlsx\`) con dos pestañas:
 
-1. **"Executive Summary"**: A high-level table showing Total Revenue by Category.
-2. **"Backing Data"**: The full, detailed dataset for auditing purposes.
+1. **"Resumen Ejecutivo"**: Una tabla de alto nivel que muestre Ingresos Totales por Categoría.
+2. **"Datos de Respaldo"**: El conjunto de datos completo y detallado para fines de auditoría.
 
-Use Python's \`pandas\` library to act as the bridge between raw data and the final corporate report.
+Usar la biblioteca \`pandas\` de Python como puente entre los datos crudos y el reporte corporativo final.
 
-## Expected result
+## Resultado esperado
 
-One file \`final_report.xlsx\` with two sheets: Executive Summary and Backing Data — ready to share with management.`
+Un archivo \`final_report.xlsx\` con dos hojas: Resumen Ejecutivo y Datos de Respaldo — listo para compartir con la gerencia.`
             },
             {
                 number: "Auto 1",
-                title: "Exercise: The Professional Polish (\"The Bridge\")",
+                title: "Ejercicio: El Pulido Profesional (\"El Puente\")",
                 image: "assets/auto_excel_polish.jpg",
-                content: `# Exercise: The Professional Polish ("The Bridge")
+                content: `# Ejercicio: El Pulido Profesional ("El Puente")
 
-## The scenario
+## El escenario
 
-You sent \`final_report.xlsx\` to the boss. She says: *"Can you make the headers bold and blue? And the columns are too narrow, I can't read the product names."* You don't want to do this manually every quarter.
+Enviaste \`final_report.xlsx\` a tu jefa. Dice: *"¿Puedes poner los encabezados en negrita y azul? Y las columnas son muy estrechas, no puedo leer los nombres de los productos."* No quieres hacer esto manualmente cada trimestre.
 
-## Your mission
+## Tu misión
 
-Write a Python script that takes the raw data (or the existing Excel file) and applies professional formatting automatically:
+Escribir un script en Python que tome los datos crudos (o el archivo Excel existente) y aplique el formato profesional automáticamente:
 
-1. **Professional Headers:** Bold text with a nice blue background.
-2. **Readable Columns:** All columns should auto-fit to the content size.
-3. **Highlights:** Any Revenue over $10,000 should be highlighted in Green.
+1. **Encabezados Profesionales:** Texto en negrita con un fondo azul elegante.
+2. **Columnas Legibles:** Todas las columnas deben ajustarse automáticamente al tamaño del contenido.
+3. **Destacados:** Cualquier ingreso superior a $10,000 debe resaltarse en verde.
 
-## Expected result
+## Resultado esperado
 
-A new Excel file named \`polished_report.xlsx\` that is formatted perfectly — headers bold and blue, columns readable, high revenue highlighted in green.`
+Un nuevo archivo Excel llamado \`polished_report.xlsx\` perfectamente formateado — encabezados en negrita y azul, columnas legibles, ingresos altos resaltados en verde.`
             },
             {
                 number: "Auto 2",
-                title: "Exercise: The automated File Organizer",
+                title: "Ejercicio: El Organizador Automático de Archivos",
                 image: "assets/auto_file_organizer.jpg",
-                content: `# Exercise: The automated File Organizer
+                content: `# Ejercicio: El Organizador Automático de Archivos
 
-## The scenario
+## El escenario
 
-Your "Downloads" folder and project workspace have become a chaotic mess of files. There are CSVs mixed with PDFs, Excel reports, and random text files. It's time to clean up before you clock out.
+Tu carpeta "Descargas" y el espacio de trabajo del proyecto se han convertido en un caos de archivos. Hay CSVs mezclados con PDFs, reportes de Excel y archivos de texto aleatorios. Es hora de ordenar antes de terminar la jornada.
 
-## Your mission
+## Tu misión
 
-Write a Python script that automatically organizes these files into neat subfolders based on their type (e.g., all \`.csv\` files go into a \`Data\` folder, \`.pdf\` into \`Docs\`).
+Escribir un script en Python que organice automáticamente estos archivos en subcarpetas ordenadas según su tipo (ej.: todos los \`.csv\` van a una carpeta \`Data\`, los \`.pdf\` a \`Docs\`).
 
-When you run your script, the files in the \`data\` folder should be moved into:
+Cuando ejecutes tu script, los archivos en la carpeta \`data\` deben moverse a:
 
-* **Spreadsheets/** (for \`.xlsx\`, \`.csv\`)
-* **Documents/** (for \`.pdf\`, \`.txt\`, \`.docx\`)
-* **Images/** (for \`.png\`, \`.jpg\`)
-* **Others/** (for anything else)
+* **Spreadsheets/** (para \`.xlsx\`, \`.csv\`)
+* **Documents/** (para \`.pdf\`, \`.txt\`, \`.docx\`)
+* **Images/** (para \`.png\`, \`.jpg\`)
+* **Others/** (para todo lo demás)
 
-## Expected result
+## Resultado esperado
 
-Files in the workspace are sorted into the folders above — no more chaos.`
+Los archivos en el espacio de trabajo quedan ordenados en las carpetas anteriores — sin más caos.`
             },
             {
                 number: "Bonus",
-                title: "Exercise: The Big Data Stress Test",
+                title: "Ejercicio: La Prueba de Estrés de Big Data",
                 image: "assets/etl_bonus_big_data.jpg",
-                content: `# Exercise: The Big Data Stress Test
+                content: `# Ejercicio: La Prueba de Estrés de Big Data
 
-## The scenario
+## El escenario
 
-Fast forward two years. Your company has grown, and the "Sales Data" is no longer just 3 simple files — it's gigabytes of server logs. Traditional scripts try to load everything into RAM at once and crash. CSV files are slow; text-based logs take up too much space.
+Avancemos dos años. Tu empresa ha crecido y los "Datos de Ventas" ya no son solo 3 archivos simples — son gigabytes de logs del servidor. Los scripts tradicionales intentan cargar todo en RAM de una vez y se cuelgan. Los CSV son lentos; los logs en texto ocupan demasiado espacio.
 
-## Your mission
+## Tu misión
 
-Process these simulated large datasets without crashing your computer. Move from memory-heavy tools (like Pandas) to an "Out-of-Core" processing engine that handles data larger than your RAM.
+Procesar estos conjuntos de datos grandes simulados sin que tu computadora se cuelgue. Pasar de herramientas que consumen mucha memoria (como Pandas) a un motor de procesamiento "Out-of-Core" que maneja datos más grandes que tu RAM.
 
-1. Experience why the "old way" fails.
-2. Use a new tool (**DuckDB**) to query data *without* loading it all first.
-3. Convert bulky CSVs into the efficient **Parquet** format.
+1. Experimentar por qué el "método antiguo" falla.
+2. Usar una nueva herramienta (**DuckDB**) para consultar datos *sin* cargarlos todos primero.
+3. Convertir CSVs voluminosos al eficiente formato **Parquet**.
 
-## Expected result
+## Resultado esperado
 
-You have run queries on large data using DuckDB and exported (or converted) data to Parquet — without running out of memory.`
+Has ejecutado consultas sobre datos grandes con DuckDB y exportado (o convertido) datos a Parquet — sin quedarte sin memoria.`
             },
         ];
 
@@ -650,123 +650,123 @@ You have run queries on large data using DuckDB and exported (or converted) data
                 const bonusExercises = [
             {
                 number: "Bonus",
-                title: "Bonus: Auto PDF Report (The Executive Deliverable)",
+                title: "Bonus: Reporte PDF Automático (El Entregable Ejecutivo)",
                 image: "assets/bonus_auto_pdf_report.jpg",
-                content: `# Bonus: Auto PDF Report (The Executive Deliverable)
+                content: `# Bonus: Reporte PDF Automático (El Entregable Ejecutivo)
 
-## The scenario
-The CFO doesn't use Excel. She doesn't open HTML files. She wants a **PDF** — clean, branded, with charts and tables embedded — that she can print, annotate, and forward to the board. Every quarter, you've been manually screenshotting charts, pasting them into Word, and exporting to PDF. No more.
+## El escenario
+La CFO no usa Excel. No abre archivos HTML. Quiere un **PDF** — limpio, con marca, con gráficos y tablas incrustados — que pueda imprimir, anotar y enviar al directorio. Cada trimestre has estado capturando manualmente gráficos, pegándolos en Word y exportando a PDF. Ya no más.
 
-## Your mission
-Build a Python script that automatically generates a multi-page PDF report: a **cover page** with title and branding, a **KPI summary section**, **embedded bar and pie charts** (Revenue by Category), a **formatted data table** (top 10 transactions), and **page footers** with page numbers.
+## Tu misión
+Construir un script en Python que genere automáticamente un reporte PDF de múltiples páginas: una **portada** con título y marca, una **sección de resumen KPI**, **gráficos de barras y circular incrustados** (Ingresos por Categoría), una **tabla de datos formateada** (top 10 transacciones) y **pies de página** con números de página.
 
-## Expected result
-A polished \`quarterly_report.pdf\` that looks professionally designed — but was generated entirely by Python in seconds. Run it once, and it works every quarter with fresh data.`
+## Resultado esperado
+Un \`quarterly_report.pdf\` pulido que se ve diseñado profesionalmente — pero generado completamente por Python en segundos. Ejecútalo una vez y funcionará cada trimestre con datos frescos.`
             },
             {
                 number: "Bonus",
-                title: "Bonus: ETL API Pipeline (From Web to Warehouse)",
+                title: "Bonus: Pipeline ETL API (De la Web al Almacén)",
                 image: "assets/bonus_etl_api_pipeline.jpg",
-                content: `# Bonus: ETL API Pipeline (From Web to Warehouse)
+                content: `# Bonus: Pipeline ETL API (De la Web al Almacén)
 
-## The scenario
-Your company has adopted a new CRM system that exposes customer and order data via a REST API (JSON format). Management wants a single, flat Excel report combining customer profiles with their order history — but the API returns deeply nested JSON with inconsistent fields.
+## El escenario
+Tu empresa ha adoptado un nuevo sistema CRM que expone datos de clientes y pedidos vía una API REST (formato JSON). La gerencia quiere un único reporte Excel plano que combine perfiles de clientes con su historial de pedidos — pero la API devuelve JSON profundamente anidado con campos inconsistentes.
 
-## Your mission
-Build a Python ETL pipeline that: **reads** paginated JSON (simulating API responses), **flattens** nested structures into clean DataFrames, **joins** customer data with orders, **handles** missing values and type inconsistencies, and **exports** the consolidated dataset to CSV and Excel.
+## Tu misión
+Construir un pipeline ETL en Python que: **lea** JSON paginado (simulando respuestas de API), **aplane** estructuras anidadas en DataFrames limpios, **una** datos de clientes con pedidos, **maneje** valores faltantes e inconsistencias de tipo, y **exporte** el conjunto de datos consolidado a CSV y Excel.
 
-## Expected result
-A clean \`customer_orders_consolidated.csv\` with one row per order enriched with customer details, plus a \`pipeline_report.xlsx\` with "Orders Detail" and "Customer Summary" sheets.`
+## Resultado esperado
+Un \`customer_orders_consolidated.csv\` limpio con una fila por pedido enriquecida con detalles del cliente, más un \`pipeline_report.xlsx\` con hojas "Orders Detail" y "Customer Summary".`
             },
             {
                 number: "Bonus",
-                title: "Bonus: D3 Bar Chart (The Animated Bar Race)",
+                title: "Bonus: Gráfico de Barras D3 (La Carrera de Barras Animada)",
                 image: "assets/bonus_viz_d3_bar_chart.jpg",
-                content: `# Bonus: D3 Bar Chart (The Animated Bar Race)
+                content: `# Bonus: Gráfico de Barras D3 (La Carrera de Barras Animada)
 
-## The scenario
-The Marketing Director saw an animated "bar chart race" on social media showing brand rankings over time and said: *"I want one of those for our sales data."* Static charts can't show how product rankings shift month-by-month. You need a chart that **moves**.
+## El escenario
+El Director de Marketing vio una "carrera de barras" animada en redes sociales mostrando rankings de marcas en el tiempo y dijo: *"Quiero uno de esos para nuestros datos de ventas."* Los gráficos estáticos no pueden mostrar cómo cambian los rankings de productos mes a mes. Necesitas un gráfico que **se mueva**.
 
-## Your mission
-Using Python to prepare the data and generate an HTML file with embedded **D3.js**, build an interactive, animated bar chart that shows the **top 10 products by revenue** at each month, **animates** through time (bars grow, shrink, reorder), has **smooth transitions**, and includes a **play/pause** button with a month indicator.
+## Tu misión
+Usando Python para preparar los datos y generar un archivo HTML con **D3.js** incrustado, construye un gráfico de barras interactivo y animado que muestre los **top 10 productos por ingresos** en cada mes, **anime** a través del tiempo (las barras crecen, se encogen, se reordenan), tenga **transiciones suaves** e incluya un botón **play/pausa** con indicador de mes.
 
-## Expected result
-A self-contained \`bar_chart_race.html\` file that you open in a browser and hit "Play" to watch the rankings animate through 12 months of data — built with your company's actual data.`
+## Resultado esperado
+Un archivo autónomo \`bar_chart_race.html\` que abres en el navegador y presionas "Play" para ver los rankings animarse a través de 12 meses de datos — construido con los datos reales de tu empresa.`
             },
             {
                 number: "Bonus",
-                title: "Bonus: D3 Force Network (The Relationship Map)",
+                title: "Bonus: Red de Fuerzas D3 (El Mapa de Relaciones)",
                 image: "assets/bonus_viz_d3_force_network.jpg",
-                content: `# Bonus: D3 Force Network (The Relationship Map)
+                content: `# Bonus: Red de Fuerzas D3 (El Mapa de Relaciones)
 
-## The scenario
-The VP of Partnerships wants to understand how departments, products, and clients are connected. Who buys what? Which departments share the same top clients? Which products are frequently purchased together? Spreadsheets can't show relationships — you need a **network graph**.
+## El escenario
+El VP de Alianzas quiere entender cómo se conectan departamentos, productos y clientes. ¿Quién compra qué? ¿Qué departamentos comparten los mismos clientes principales? ¿Qué productos se compran frecuentemente juntos? Las hojas de cálculo no pueden mostrar relaciones — necesitas un **grafo de red**.
 
-## Your mission
-Using Python to prepare the data and **D3.js** in the browser, build an interactive force-directed network graph: **nodes** for departments, products, and clients; **edges** for purchase relationships; **node color** by entity type; **node size** by revenue; **drag** to explore clusters; **tooltips** on hover.
+## Tu misión
+Usando Python para preparar los datos y **D3.js** en el navegador, construye un grafo de red interactivo dirigido por fuerzas: **nodos** para departamentos, productos y clientes; **aristas** para relaciones de compra; **color del nodo** por tipo de entidad; **tamaño del nodo** por ingresos; **arrastrar** para explorar clusters; **tooltips** al pasar el cursor.
 
-## Expected result
-A self-contained \`relationship_network.html\` file that opens in a browser and shows a physics-based network that self-organizes into clusters. Drag nodes, hover for details, zoom in/out — and reveal hidden patterns like which clients are central to the business.`
+## Resultado esperado
+Un archivo autónomo \`relationship_network.html\` que se abre en el navegador y muestra una red basada en física que se auto-organiza en clusters. Arrastra nodos, pasa el cursor para detalles, haz zoom — y revela patrones ocultos como qué clientes son centrales para el negocio.`
             },
             {
                 number: "Bonus",
-                title: "Bonus: Viz Geo Heatmap (The Global View)",
+                title: "Bonus: Mapa de Calor Geo (La Vista Global)",
                 image: "assets/bonus_viz_geo_heatmap.jpg",
-                content: `# Bonus: Viz Geo Heatmap (The Global View)
+                content: `# Bonus: Mapa de Calor Geo (La Vista Global)
 
-## The scenario
-The VP of International Sales wants to see *where* the money is coming from — not in a table, but on an actual map. She wants to open a single file and instantly see hotspots of sales activity across the globe, with the ability to click on cities for details.
+## El escenario
+La VP de Ventas Internacionales quiere ver *de dónde* viene el dinero — no en una tabla, sino en un mapa real. Quiere abrir un único archivo y ver al instante los puntos calientes de actividad de ventas en todo el mundo, con la posibilidad de hacer clic en ciudades para ver detalles.
 
-## Your mission
-Build an interactive geographic visualization using **Folium** (or Leaflet/Plotly): a **heatmap layer** showing sales intensity by city, **circle markers** sized by revenue with popup details, a **layer control** to toggle views, and a **legend** or title overlay.
+## Tu misión
+Construir una visualización geográfica interactiva usando **Folium** (o Leaflet/Plotly): una **capa de mapa de calor** que muestre la intensidad de ventas por ciudad, **marcadores circulares** dimensionados por ingresos con detalles en popup, un **control de capas** para alternar vistas, y una **leyenda** o superposición de título.
 
-## Expected result
-A self-contained \`sales_heatmap.html\` file that opens in any browser showing an interactive world map with sales data overlaid. Clicking on a city reveals total revenue, number of orders, and top product — the kind of deliverable that gets projected in a board room.`
+## Resultado esperado
+Un archivo autónomo \`sales_heatmap.html\` que se abre en cualquier navegador mostrando un mapa mundial interactivo con datos de ventas superpuestos. Al hacer clic en una ciudad se revelan ingresos totales, número de pedidos y producto principal — el tipo de entregable que se proyecta en una sala de directorio.`
             },
             {
                 number: "Bonus",
-                title: "Bonus: Interactive Dashboard (The Wow Factor)",
+                title: "Bonus: Dashboard Interactivo (El Factor Wow)",
                 image: "assets/bonus_viz_interactive_dashboard.jpg",
-                content: `# Bonus: Interactive Dashboard (The Wow Factor)
+                content: `# Bonus: Dashboard Interactivo (El Factor Wow)
 
-## The scenario
-The CEO loved your static charts, but now she wants something she can *interact* with — filter by region, hover over data points, and share with the board via a simple link. Static PNGs won't cut it anymore.
+## El escenario
+A la CEO le encantaron tus gráficos estáticos, pero ahora quiere algo con lo que pueda *interactuar* — filtrar por región, pasar el cursor sobre puntos de datos y compartir con el directorio mediante un enlace simple. Los PNG estáticos ya no bastan.
 
-## Your mission
-Build a stunning, interactive HTML dashboard using **Plotly** (or Streamlit/Dash): a **KPI summary row** (Total Revenue, Orders, Avg Order Value), a **sunburst chart** (Revenue by Region → Category → Product), a **time-series line chart** filterable by region, and a **top 10 products bar chart** with hover tooltips.
+## Tu misión
+Construir un dashboard HTML interactivo y llamativo usando **Plotly** (o Streamlit/Dash): una **fila de resumen KPI** (Ingresos Totales, Pedidos, Valor Promedio de Pedido), un **gráfico sunburst** (Ingresos por Región → Categoría → Producto), un **gráfico de líneas de series temporales** filtrable por región, y un **gráfico de barras de top 10 productos** con tooltips al pasar el cursor.
 
-## Expected result
-A single self-contained \`dashboard.html\` file that opens in any browser — no server required. It should look polished, professional, and interactive. This is the kind of deliverable that makes people say *"You did this with Python?!"*`
+## Resultado esperado
+Un único archivo autónomo \`dashboard.html\` que se abre en cualquier navegador — sin servidor requerido. Debe verse pulido, profesional e interactivo. Es el tipo de entregable que hace que la gente diga *"¿Hiciste esto con Python?!"*`
             },
             {
                 number: "Bonus",
-                title: "Bonus: Seaborn Scatter (The Executive Scatter)",
+                title: "Bonus: Dispersión Seaborn (El Scatter Ejecutivo)",
                 image: "assets/bonus_viz_seaborn_scatter.jpg",
-                content: `# Bonus: Seaborn Scatter (The Executive Scatter)
+                content: `# Bonus: Dispersión Seaborn (El Scatter Ejecutivo)
 
-## The scenario
-The Head of Strategy wants to see the *relationship* between deal size and quantity sold — but broken down by product category and region simultaneously. A simple bar chart won't cut it; she needs a chart where every data point tells a story: position shows deal economics, color shows category, size shows volume.
+## El escenario
+La Jefa de Estrategia quiere ver la *relación* entre el tamaño del trato y la cantidad vendida — pero desglosada por categoría de producto y región simultáneamente. Un simple gráfico de barras no basta; necesita un gráfico donde cada punto de datos cuente una historia: la posición muestra la economía del trato, el color la categoría, el tamaño el volumen.
 
-## Your mission
-Build a publication-quality scatter plot using **Seaborn** that encodes four dimensions: **X-axis** (Unit Price), **Y-axis** (Revenue), **Color** (Product Category), **Size** (Quantity sold — bigger bubbles = bigger volume). Include clear title, axis labels with currency formatting, a legend, and a professional theme. Optional: regression trend lines per category.
+## Tu misión
+Construir un gráfico de dispersión de calidad publicable usando **Seaborn** que codifique cuatro dimensiones: **eje X** (Precio Unitario), **eje Y** (Ingresos), **Color** (Categoría de Producto), **Tamaño** (Cantidad vendida — burbujas más grandes = mayor volumen). Incluir título claro, etiquetas de ejes con formato de moneda, leyenda y un tema profesional. Opcional: líneas de tendencia de regresión por categoría.
 
-## Expected result
-A polished \`executive_scatter.png\` that looks like it belongs in a Harvard Business Review article — with clear encoding, legend, and no default gray.`
+## Resultado esperado
+Un \`executive_scatter.png\` pulido que parezca pertenecer a un artículo de Harvard Business Review — con codificación clara, leyenda y sin gris por defecto.`
             },
             {
                 number: "Bonus",
-                title: "Bonus: Seaborn Statistical (The Statistical Dashboard)",
+                title: "Bonus: Seaborn Estadístico (El Dashboard Estadístico)",
                 image: "assets/bonus_viz_seaborn_statistical.jpg",
-                content: `# Bonus: Seaborn Statistical (The Statistical Dashboard)
+                content: `# Bonus: Seaborn Estadístico (El Dashboard Estadístico)
 
-## The scenario
-The Data Science team is presenting at the quarterly all-hands meeting. They need a single image — a **multi-panel statistical dashboard** — that tells the full story of employee performance and satisfaction in one glance. Each panel should show a different statistical perspective using the best chart type for that data shape.
+## El escenario
+El equipo de Data Science presenta en la reunión trimestral de toda la empresa. Necesitan una única imagen — un **dashboard estadístico de múltiples paneles** — que cuente la historia completa del rendimiento y satisfacción de empleados de un vistazo. Cada panel debe mostrar una perspectiva estadística diferente usando el mejor tipo de gráfico para esa forma de datos.
 
-## Your mission
-Build a polished, multi-panel figure using **Seaborn**: a **correlation heatmap** (relationships between revenue, satisfaction, experience), a **violin plot** (satisfaction across departments), a **pair plot** (scatter matrix colored by department), and a **box + strip combo** (revenue by seniority with overlaid points).
+## Tu misión
+Construir una figura pulida de múltiples paneles usando **Seaborn**: un **mapa de calor de correlación** (relaciones entre ingresos, satisfacción, experiencia), un **gráfico de violín** (satisfacción por departamentos), un **pair plot** (matriz de dispersión coloreada por departamento) y un **combo box + strip** (ingresos por antigüedad con puntos superpuestos).
 
-## Expected result
-Publication-quality PNG images: \`correlation_heatmap.png\`, \`satisfaction_violins.png\`, \`metrics_pairplot.png\`, \`revenue_by_seniority.png\`. These are the kind of charts that make a data team look world-class.`
+## Resultado esperado
+Imágenes PNG de calidad publicable: \`correlation_heatmap.png\`, \`satisfaction_violins.png\`, \`metrics_pairplot.png\`, \`revenue_by_seniority.png\`. Estos son el tipo de gráficos que hacen que un equipo de datos se vea de clase mundial.`
             },
         ];
 
@@ -915,9 +915,9 @@ Publication-quality PNG images: \`correlation_heatmap.png\`, \`satisfaction_viol
                 <div class="content">
                     ${menuItemsHTML}
                     <div class="menu-actions">
-                        <button class="menu-action-button" onclick="goToBonusMenu()">Bonus Exercises</button>
-                        <button class="menu-action-button" onclick="goToBreakTime()">Break Time</button>
-                        <button class="menu-action-button" onclick="goToSurvey()">Finish Session</button>
+                        <button class="menu-action-button" onclick="goToBonusMenu()">Ejercicios Bonus</button>
+                        <button class="menu-action-button" onclick="goToBreakTime()">Hora de Descanso</button>
+                        <button class="menu-action-button" onclick="goToSurvey()">Finalizar Sesión</button>
                     </div>
                 </div>
             `;
@@ -945,9 +945,9 @@ Publication-quality PNG images: \`correlation_heatmap.png\`, \`satisfaction_viol
                 contentSlide.style.backgroundImage = `url('${exercise.image}')`;
                 contentSlide.innerHTML = `
                     <div class="exercise-actions">
-                        <button class="exercise-action-button" onclick="goToMenu()">← Menu</button>
-                        <button class="exercise-action-button" onclick="goToBreakTime()">Break Time</button>
-                        <button class="exercise-action-button" onclick="goToSurvey()">Finish Session</button>
+                        <button class="exercise-action-button" onclick="goToMenu()">← Menú</button>
+                        <button class="exercise-action-button" onclick="goToBreakTime()">Hora de Descanso</button>
+                        <button class="exercise-action-button" onclick="goToSurvey()">Finalizar Sesión</button>
                     </div>
                     <div class="content">
                         ${markdownToHtml(exercise.content)}
@@ -972,7 +972,7 @@ Publication-quality PNG images: \`correlation_heatmap.png\`, \`satisfaction_viol
             const bonusMenuSlide = document.createElement('div');
             bonusMenuSlide.className = 'slide slide-menu';
             bonusMenuSlide.style.backgroundImage = `url('assets/menu_bonus.jpg')`;
-            let bonusMenuItemsHTML = '<h2 style="color: white; margin-bottom: 1rem;">Bonus Exercises</h2><div class="menu-grid">';
+            let bonusMenuItemsHTML = '<h2 style="color: white; margin-bottom: 1rem;">Ejercicios Bonus</h2><div class="menu-grid">';
             bonusExercises.forEach((exercise, index) => {
                 bonusMenuItemsHTML += `
                     <div class="menu-item" onclick="goToBonusExercise(${index})">
@@ -988,9 +988,9 @@ Publication-quality PNG images: \`correlation_heatmap.png\`, \`satisfaction_viol
                 <div class="content">
                     ${bonusMenuItemsHTML}
                     <div class="menu-actions">
-                        <button class="menu-action-button" onclick="goToMenu()">← Back to Menu</button>
-                        <button class="menu-action-button" onclick="goToBreakTime()">Break Time</button>
-                        <button class="menu-action-button" onclick="goToSurvey()">Finish Session</button>
+                        <button class="menu-action-button" onclick="goToMenu()">← Volver al Menú</button>
+                        <button class="menu-action-button" onclick="goToBreakTime()">Hora de Descanso</button>
+                        <button class="menu-action-button" onclick="goToSurvey()">Finalizar Sesión</button>
                     </div>
                 </div>
             `;
@@ -1017,10 +1017,10 @@ Publication-quality PNG images: \`correlation_heatmap.png\`, \`satisfaction_viol
                 contentSlide.style.backgroundImage = `url('${exercise.image}')`;
                 contentSlide.innerHTML = `
                     <div class="exercise-actions">
-                        <button class="exercise-action-button" onclick="goToBonusMenu()">← Bonus Menu</button>
-                        <button class="exercise-action-button" onclick="goToMenu()">← Main Menu</button>
-                        <button class="exercise-action-button" onclick="goToBreakTime()">Break Time</button>
-                        <button class="exercise-action-button" onclick="goToSurvey()">Finish Session</button>
+                        <button class="exercise-action-button" onclick="goToBonusMenu()">← Menú Bonus</button>
+                        <button class="exercise-action-button" onclick="goToMenu()">← Menú Principal</button>
+                        <button class="exercise-action-button" onclick="goToBreakTime()">Hora de Descanso</button>
+                        <button class="exercise-action-button" onclick="goToSurvey()">Finalizar Sesión</button>
                     </div>
                     <div class="content">
                         ${markdownToHtml(exercise.content)}
@@ -1031,15 +1031,15 @@ Publication-quality PNG images: \`correlation_heatmap.png\`, \`satisfaction_viol
             });
             bonusExerciseEndIndex = slideIndex - 1;
 
-            // 8. Break Time slide (no title, just image)
+            // 8. Hora de Descanso slide (no title, just image)
             breakTimeSlideIndex = slideIndex;
             const breakSlide = document.createElement('div');
             breakSlide.className = 'slide slide-title';
             breakSlide.style.backgroundImage = `url('${specialSlides[3].image}')`;
             breakSlide.innerHTML = `
                 <div class="exercise-actions" style="position: absolute; top: 1rem; right: 1rem;">
-                    <button class="exercise-action-button" onclick="goToBonusMenu()">← Back to Bonus</button>
-                    <button class="exercise-action-button" onclick="goToMenu()">← Back to Menu</button>
+                    <button class="exercise-action-button" onclick="goToBonusMenu()">← Volver al Bonus</button>
+                    <button class="exercise-action-button" onclick="goToMenu()">← Volver al Menú</button>
                 </div>
             `;
             slideshow.appendChild(breakSlide);
