@@ -33,7 +33,7 @@ This workshop is designed as a continuous narrative. You play the role of a new 
 **Tier 1: The Standard Path (Time: 20 mins)**
 
 1. **The Environment:** Open VS Code. Create a file `hello.py`.
-2. **The First Prompt:** Use GitHub Copilot (or ChatGPT window) to ask: *"How do I print 'Hello World' in Python?"* Run it.
+2. **The First Prompt:** Use Copilot (or ChatGPT window) to ask: *"How do I print 'Hello World' in Python?"* Run it.
 3. **The Calculator:** Ask Copilot: *"Create a variable for revenue = 1000 and cost = 400. Calculate profit and print it."*
 4. **The Loop:** Ask Copilot: *"Write a loop that prints numbers 1 to 5."* Watch it generate the code. Run it.
 

@@ -23,6 +23,38 @@ You are an expert technical content creator and Python facilitator. Your goal is
 
 Format: markdown file named "exercise_starter.md"
 
+**Bilingual structure (required):** The file MUST contain two sections so the workshop can be presented in English or Spanish:
+1. **`## English`** — The English version (title, goal, steps, expected outcome).
+2. **`## Español`** — The Spanish translation of the same content.
+
+Use a horizontal rule (`---`) between sections. Example:
+
+```markdown
+## English
+
+# Intro: Hello World - The First Flight
+
+## The Goal
+Verify that your "cockpit" (VS Code + Python) is fully operational...
+
+## Steps
+1. **The Environment:** Create a new file named `hello.py`.
+...
+
+---
+
+## Español
+
+# Intro: Hola Mundo - El Primer Vuelo
+
+## El Objetivo
+Verifica que tu "cabina" (VS Code + Python) esté completamente operativa...
+
+## Pasos
+1. **El Entorno:** Crea un nuevo archivo llamado `hello.py`.
+...
+```
+
 ---
 
 ### 2. Document 2: Full Exercise Card (Instructor/Solution Version)
