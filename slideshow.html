@@ -632,97 +632,121 @@ Your mission is to process these simulated large datasets without crashing your 
                 number: "Bonus",
                 title: "Auto: PDF Report",
                 image: "assets/bonus_auto_pdf_report.jpg",
-                content: `# Bonus: Auto PDF Report
+                content: `# Bonus: Auto PDF Report (The Executive Deliverable)
 
-## The Goal
-Generate a professional PDF report from your data. Use Python (e.g. \`fpdf\` or \`reportlab\`) to create a branded report with tables and charts.
+## The Scenario
+The CFO doesn't use Excel. She doesn't open HTML files. She wants a **PDF** — clean, branded, with charts and tables embedded — that she can print, annotate, and forward to the board. Every quarter, you've been manually screenshotting charts, pasting them into Word, and exporting to PDF. No more.
+
+## Your Mission
+Build a Python script that automatically generates a multi-page PDF report: a **cover page** with title and branding, a **KPI summary section**, **embedded bar and pie charts** (Revenue by Category), a **formatted data table** (top 10 transactions), and **page footers** with page numbers.
 
 ## Expected Outcome
-A PDF file (e.g. \`quarterly_report.pdf\`) with a cover, summary tables, and embedded charts—all generated from code.`
+A polished \`quarterly_report.pdf\` that looks professionally designed — but was generated entirely by Python in seconds. Run it once, and it works every quarter with fresh data.`
             },
             {
                 number: "Bonus",
                 title: "ETL: API Pipeline",
                 image: "assets/bonus_etl_api_pipeline.jpg",
-                content: `# Bonus: ETL API Pipeline
+                content: `# Bonus: ETL API Pipeline (From Web to Warehouse)
 
-## The Goal
-Ingest data from a REST API instead of local files. Fetch JSON, flatten or normalize the response, and load it into a DataFrame or database.
+## The Scenario
+Your company has adopted a new CRM system that exposes customer and order data via a REST API (JSON format). Management wants a single, flat Excel report combining customer profiles with their order history — but the API returns deeply nested JSON with inconsistent fields.
+
+## Your Mission
+Build a Python ETL pipeline that: **reads** paginated JSON (simulating API responses), **flattens** nested structures into clean DataFrames, **joins** customer data with orders, **handles** missing values and type inconsistencies, and **exports** the consolidated dataset to CSV and Excel.
 
 ## Expected Outcome
-A script that calls an API, handles pagination or rate limits if needed, and produces a clean dataset (CSV or table) ready for analysis.`
+A clean \`customer_orders_consolidated.csv\` with one row per order enriched with customer details, plus a \`pipeline_report.xlsx\` with "Orders Detail" and "Customer Summary" sheets.`
             },
             {
                 number: "Bonus",
                 title: "Viz: D3 Bar Chart",
                 image: "assets/bonus_viz_d3_bar_chart.jpg",
-                content: `# Bonus: D3 Bar Chart
+                content: `# Bonus: D3 Bar Chart (The Animated Bar Race)
 
-## The Goal
-Build an interactive bar chart with **D3.js** in the browser. Bind data to SVG or HTML elements and add transitions or tooltips.
+## The Scenario
+The Marketing Director saw an animated "bar chart race" on social media showing brand rankings over time and said: *"I want one of those for our sales data."* Static charts can't show how product rankings shift month-by-month. You need a chart that **moves**.
+
+## Your Mission
+Using Python to prepare the data and generate an HTML file with embedded **D3.js**, build an interactive, animated bar chart that shows the **top 10 products by revenue** at each month, **animates** through time (bars grow, shrink, reorder), has **smooth transitions**, and includes a **play/pause** button with a month indicator.
 
 ## Expected Outcome
-A single HTML file (or small app) that renders a bar chart from a dataset and responds to user interaction.`
+A self-contained \`bar_chart_race.html\` file that you open in a browser and hit "Play" to watch the rankings animate through 12 months of data — built with your company's actual data.`
             },
             {
                 number: "Bonus",
                 title: "Viz: D3 Force Network",
                 image: "assets/bonus_viz_d3_force_network.jpg",
-                content: `# Bonus: D3 Force Network
+                content: `# Bonus: D3 Force Network (The Relationship Map)
 
-## The Goal
-Create a **force-directed network graph** with D3.js. Nodes and links represent relationships; the layout is computed by the force simulation.
+## The Scenario
+The VP of Partnerships wants to understand how departments, products, and clients are connected. Who buys what? Which departments share the same top clients? Which products are frequently purchased together? Spreadsheets can't show relationships — you need a **network graph**.
+
+## Your Mission
+Using Python to prepare the data and **D3.js** in the browser, build an interactive force-directed network graph: **nodes** for departments, products, and clients; **edges** for purchase relationships; **node color** by entity type; **node size** by revenue; **drag** to explore clusters; **tooltips** on hover.
 
 ## Expected Outcome
-An interactive graph you can drag and zoom, with nodes and edges driven by your data.`
+A self-contained \`relationship_network.html\` file that opens in a browser and shows a physics-based network that self-organizes into clusters. Drag nodes, hover for details, zoom in/out — and reveal hidden patterns like which clients are central to the business.`
             },
             {
                 number: "Bonus",
                 title: "Viz: Geo Heatmap",
                 image: "assets/bonus_viz_geo_heatmap.jpg",
-                content: `# Bonus: Viz Geo Heatmap
+                content: `# Bonus: Viz Geo Heatmap (The Global View)
 
-## The Goal
-Visualize data on a map as a **geographic heatmap**. Use a library (e.g. Leaflet, Folium, or Plotly) to plot regions or points with color intensity.
+## The Scenario
+The VP of International Sales wants to see *where* the money is coming from — not in a table, but on an actual map. She wants to open a single file and instantly see hotspots of sales activity across the globe, with the ability to click on cities for details.
+
+## Your Mission
+Build an interactive geographic visualization using **Folium** (or Leaflet/Plotly): a **heatmap layer** showing sales intensity by city, **circle markers** sized by revenue with popup details, a **layer control** to toggle views, and a **legend** or title overlay.
 
 ## Expected Outcome
-A map view where geographic areas or points are colored by a metric (e.g. sales by region).`
+A self-contained \`sales_heatmap.html\` file that opens in any browser showing an interactive world map with sales data overlaid. Clicking on a city reveals total revenue, number of orders, and top product — the kind of deliverable that gets projected in a board room.`
             },
             {
                 number: "Bonus",
                 title: "Viz: Interactive Dashboard",
                 image: "assets/bonus_viz_interactive_dashboard.jpg",
-                content: `# Bonus: Interactive Dashboard
+                content: `# Bonus: Interactive Dashboard (The Wow Factor)
 
-## The Goal
-Build a small **interactive dashboard** that combines several charts or tables and lets users filter or drill down (e.g. Streamlit, Dash, or HTML/JS).
+## The Scenario
+The CEO loved your static charts, but now she wants something she can *interact* with — filter by region, hover over data points, and share with the board via a simple link. Static PNGs won't cut it anymore.
+
+## Your Mission
+Build a stunning, interactive HTML dashboard using **Plotly** (or Streamlit/Dash): a **KPI summary row** (Total Revenue, Orders, Avg Order Value), a **sunburst chart** (Revenue by Region → Category → Product), a **time-series line chart** filterable by region, and a **top 10 products bar chart** with hover tooltips.
 
 ## Expected Outcome
-A single dashboard UI with linked views or filters that update the displayed data.`
+A single self-contained \`dashboard.html\` file that opens in any browser — no server required. It should look polished, professional, and interactive. This is the kind of deliverable that makes people say *"You did this with Python?!"*`
             },
             {
                 number: "Bonus",
                 title: "Viz: Seaborn Scatter",
                 image: "assets/bonus_viz_seaborn_scatter.jpg",
-                content: `# Bonus: Seaborn Scatter
+                content: `# Bonus: Seaborn Scatter (The Executive Scatter)
 
-## The Goal
-Create **scatter plots** and related statistical visuals with Seaborn. Show relationships between two (or more) variables with clear styling and optional regression or grouping.
+## The Scenario
+The Head of Strategy wants to see the *relationship* between deal size and quantity sold — but broken down by product category and region simultaneously. A simple bar chart won't cut it; she needs a chart where every data point tells a story: position shows deal economics, color shows category, size shows volume.
+
+## Your Mission
+Build a publication-quality scatter plot using **Seaborn** that encodes four dimensions: **X-axis** (Unit Price), **Y-axis** (Revenue), **Color** (Product Category), **Size** (Quantity sold — bigger bubbles = bigger volume). Include clear title, axis labels with currency formatting, a legend, and a professional theme. Optional: regression trend lines per category.
 
 ## Expected Outcome
-Publication-ready scatter plots (and optionally pair plots or regression lines) from a DataFrame.`
+A polished \`executive_scatter.png\` that looks like it belongs in a Harvard Business Review article — with clear encoding, legend, and no default gray.`
             },
             {
                 number: "Bonus",
                 title: "Viz: Seaborn Statistical",
                 image: "assets/bonus_viz_seaborn_statistical.jpg",
-                content: `# Bonus: Seaborn Statistical
+                content: `# Bonus: Seaborn Statistical (The Statistical Dashboard)
 
-## The Goal
-Use Seaborn for **statistical visualizations**: distributions (violins, box plots), correlations (heatmaps), and multi-metric views (pair plots, faceted plots).
+## The Scenario
+The Data Science team is presenting at the quarterly all-hands meeting. They need a single image — a **multi-panel statistical dashboard** — that tells the full story of employee performance and satisfaction in one glance. Each panel should show a different statistical perspective using the best chart type for that data shape.
+
+## Your Mission
+Build a polished, multi-panel figure using **Seaborn**: a **correlation heatmap** (relationships between revenue, satisfaction, experience), a **violin plot** (satisfaction across departments), a **pair plot** (scatter matrix colored by department), and a **box + strip combo** (revenue by seniority with overlaid points).
 
 ## Expected Outcome
-Charts that communicate distributions, correlations, and differences across groups (e.g. by seniority or department).`
+Publication-quality PNG images: \`correlation_heatmap.png\`, \`satisfaction_violins.png\`, \`metrics_pairplot.png\`, \`revenue_by_seniority.png\`. These are the kind of charts that make a data team look world-class.`
             }
         ];
 
