@@ -1,31 +1,43 @@
 ## English
 
-# Student Scorecard: The Report Generator
+# Exercise: The Report Generator (Viz 2)
 
-## Exercise Title
-**Viz 2: Multi-Sheet Excel Reporting**
+## The scenario
 
-## The Goal
-The dashboard looks great, but management always wants the "raw numbers" in Excel. 
-Your task is to take the cleaned sales data and generate a single professional Excel file (`final_report.xlsx`) containing two separate tabs:
+The chart is great, but the Manager also wants the raw numbers in Excel to play with. She asks for *one* Excel file containing an executive summary and the full backing data — the kind of deliverable that bridges your analysis and the corporate report.
+
+## Your mission
+
+Take the cleaned sales data and generate a single professional Excel file (`final_report.xlsx`) with two tabs:
+
 1. **"Executive Summary"**: A high-level table showing Total Revenue by Category.
 2. **"Backing Data"**: The full, detailed dataset for auditing purposes.
 
-You will use Python's `pandas` library to act as a bridge between raw data and the final corporate report.
+Use Python's `pandas` library to act as the bridge between raw data and the final corporate report.
+
+## Expected result
+
+One file `final_report.xlsx` with two sheets: Executive Summary and Backing Data — ready to share with management.
 
 ---
 
 ## Español
 
-# Ficha del Estudiante: El Generador de Reportes
+# Ejercicio: El Generador de Reportes (Viz 2)
 
-## Título del Ejercicio
-**Viz 2: Reportes Excel con Múltiples Hojas**
+## El escenario
 
-## El Objetivo
-El dashboard se ve genial, pero la gerencia siempre quiere los "números crudos" en Excel.
-Tu tarea es tomar los datos de ventas limpios y generar un único archivo Excel profesional (`final_report.xlsx`) con dos pestañas separadas:
+El gráfico está genial, pero la Gerente también quiere los números crudos en Excel para trabajar. Pide *un* archivo Excel que contenga un resumen ejecutivo y los datos de respaldo completos — el tipo de entregable que une tu análisis y el reporte corporativo.
+
+## Tu misión
+
+Tomar los datos de ventas limpios y generar un único archivo Excel profesional (`final_report.xlsx`) con dos pestañas:
+
 1. **"Resumen Ejecutivo"**: Una tabla de alto nivel que muestre Ingresos Totales por Categoría.
 2. **"Datos de Respaldo"**: El conjunto de datos completo y detallado para fines de auditoría.
 
-Usarás la biblioteca `pandas` de Python como puente entre los datos crudos y el reporte corporativo final.
+Usar la biblioteca `pandas` de Python como puente entre los datos crudos y el reporte corporativo final.
+
+## Resultado esperado
+
+Un archivo `final_report.xlsx` con dos hojas: Resumen Ejecutivo y Datos de Respaldo — listo para compartir con la gerencia.
