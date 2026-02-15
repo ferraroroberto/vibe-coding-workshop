@@ -7,10 +7,11 @@ faker # used in exercises/etl_survey
 duckdb # used in exercises/etl_bonus_big_data
 folium # used in exercises/viz_geo_heatmap
 fpdf2 # used in exercises/auto_pdf_report
-matplotlib # used in exercises/viz_managers_chart, exercises/auto_pdf_report
+matplotlib # used in exercises/viz_managers_chart, exercises/auto_pdf_report, exercises/viz_seaborn_scatter, exercises/viz_seaborn_statistical
+numpy # used in exercises/viz_seaborn_scatter, exercises/viz_seaborn_statistical
 openpyxl # used in exercises/auto_excel_polish, exercises/etl_merger, exercises/viz_report_generator, exercises/etl_api_pipeline
-pandas # used in exercises/auto_excel_polish, exercises/etl_bonus_big_data, exercises/etl_detective, exercises/etl_merger, exercises/etl_survey, exercises/viz_managers_chart, exercises/viz_report_generator, exercises/etl_api_pipeline, exercises/viz_interactive_dashboard, exercises/viz_geo_heatmap, exercises/auto_pdf_report
+pandas # used in most exercises
 plotly # used in exercises/viz_interactive_dashboard
 pyarrow # used in exercises/etl_bonus_big_data
-seaborn # used in exercises/viz_managers_chart
+seaborn # used in exercises/viz_managers_chart, exercises/viz_seaborn_scatter, exercises/viz_seaborn_statistical
 xlsxwriter # used in exercises/auto_excel_polish
