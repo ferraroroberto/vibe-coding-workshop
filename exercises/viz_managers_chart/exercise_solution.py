@@ -42,7 +42,7 @@ def main():
     )
 
     # 5. Formatting
-    plt.title('2024 Sales Performance by Category', fontsize=16, weight='bold')
+    plt.title('2026 Sales Performance by Category', fontsize=16, weight='bold')
     plt.xlabel('Product Category', fontsize=12)
     plt.ylabel('Total Revenue', fontsize=12)
     

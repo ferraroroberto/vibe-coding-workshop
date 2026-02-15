@@ -45,7 +45,7 @@ def create_dataset():
     print("Generating monthly product sales data...\n")
 
     records = []
-    months = pd.date_range(start="2024-01-01", periods=12, freq="MS")
+    months = pd.date_range(start="2026-01-01", periods=12, freq="MS")
 
     for product_name, (category, base_rev, growth, volatility) in PRODUCTS.items():
         current_rev = base_rev

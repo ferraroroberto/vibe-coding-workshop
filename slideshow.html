@@ -176,7 +176,7 @@
 
         .menu-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: 1fr;
             gap: 0.75rem;
             margin-top: 1rem;
         }
@@ -625,13 +625,118 @@ Your mission is to process these simulated large datasets without crashing your 
             }
         ];
 
+        // Bonus-only exercises (separate menu); main menu shows all of `exercises` including "The Big Data Stress Test"
+        const mainExercises = exercises;
+        const bonusExercises = [
+            {
+                number: "Bonus",
+                title: "Auto: PDF Report",
+                image: "assets/bonus_auto_pdf_report.jpg",
+                content: `# Bonus: Auto PDF Report
+
+## The Goal
+Generate a professional PDF report from your data. Use Python (e.g. \`fpdf\` or \`reportlab\`) to create a branded report with tables and charts.
+
+## Expected Outcome
+A PDF file (e.g. \`quarterly_report.pdf\`) with a cover, summary tables, and embedded charts—all generated from code.`
+            },
+            {
+                number: "Bonus",
+                title: "ETL: API Pipeline",
+                image: "assets/bonus_etl_api_pipeline.jpg",
+                content: `# Bonus: ETL API Pipeline
+
+## The Goal
+Ingest data from a REST API instead of local files. Fetch JSON, flatten or normalize the response, and load it into a DataFrame or database.
+
+## Expected Outcome
+A script that calls an API, handles pagination or rate limits if needed, and produces a clean dataset (CSV or table) ready for analysis.`
+            },
+            {
+                number: "Bonus",
+                title: "Viz: D3 Bar Chart",
+                image: "assets/bonus_viz_d3_bar_chart.jpg",
+                content: `# Bonus: D3 Bar Chart
+
+## The Goal
+Build an interactive bar chart with **D3.js** in the browser. Bind data to SVG or HTML elements and add transitions or tooltips.
+
+## Expected Outcome
+A single HTML file (or small app) that renders a bar chart from a dataset and responds to user interaction.`
+            },
+            {
+                number: "Bonus",
+                title: "Viz: D3 Force Network",
+                image: "assets/bonus_viz_d3_force_network.jpg",
+                content: `# Bonus: D3 Force Network
+
+## The Goal
+Create a **force-directed network graph** with D3.js. Nodes and links represent relationships; the layout is computed by the force simulation.
+
+## Expected Outcome
+An interactive graph you can drag and zoom, with nodes and edges driven by your data.`
+            },
+            {
+                number: "Bonus",
+                title: "Viz: Geo Heatmap",
+                image: "assets/bonus_viz_geo_heatmap.jpg",
+                content: `# Bonus: Viz Geo Heatmap
+
+## The Goal
+Visualize data on a map as a **geographic heatmap**. Use a library (e.g. Leaflet, Folium, or Plotly) to plot regions or points with color intensity.
+
+## Expected Outcome
+A map view where geographic areas or points are colored by a metric (e.g. sales by region).`
+            },
+            {
+                number: "Bonus",
+                title: "Viz: Interactive Dashboard",
+                image: "assets/bonus_viz_interactive_dashboard.jpg",
+                content: `# Bonus: Interactive Dashboard
+
+## The Goal
+Build a small **interactive dashboard** that combines several charts or tables and lets users filter or drill down (e.g. Streamlit, Dash, or HTML/JS).
+
+## Expected Outcome
+A single dashboard UI with linked views or filters that update the displayed data.`
+            },
+            {
+                number: "Bonus",
+                title: "Viz: Seaborn Scatter",
+                image: "assets/bonus_viz_seaborn_scatter.jpg",
+                content: `# Bonus: Seaborn Scatter
+
+## The Goal
+Create **scatter plots** and related statistical visuals with Seaborn. Show relationships between two (or more) variables with clear styling and optional regression or grouping.
+
+## Expected Outcome
+Publication-ready scatter plots (and optionally pair plots or regression lines) from a DataFrame.`
+            },
+            {
+                number: "Bonus",
+                title: "Viz: Seaborn Statistical",
+                image: "assets/bonus_viz_seaborn_statistical.jpg",
+                content: `# Bonus: Seaborn Statistical
+
+## The Goal
+Use Seaborn for **statistical visualizations**: distributions (violins, box plots), correlations (heatmaps), and multi-metric views (pair plots, faceted plots).
+
+## Expected Outcome
+Charts that communicate distributions, correlations, and differences across groups (e.g. by seniority or department).`
+            }
+        ];
+
         let currentSlide = 0;
         let menuImageSlideIndex = 0;
         let menuContentSlideIndex = 0;
+        let bonusMenuImageSlideIndex = 0;
+        let bonusMenuContentSlideIndex = 0;
         let breakTimeSlideIndex = 0;
         let surveySlideIndex = 0;
         let exerciseStartIndex = 0;
         let exerciseEndIndex = 0;
+        let bonusExerciseStartIndex = 0;
+        let bonusExerciseEndIndex = 0;
         const slideshow = document.getElementById('slideshow');
         const counter = document.getElementById('counter');
 
@@ -750,7 +855,7 @@ Your mission is to process these simulated large datasets without crashing your 
             menuSlide.style.backgroundImage = `url('${specialSlides[2].image}')`;
             
             let menuItemsHTML = '<div class="menu-grid">';
-            exercises.forEach((exercise, index) => {
+            mainExercises.forEach((exercise, index) => {
                 menuItemsHTML += `
                     <div class="menu-item" onclick="goToExercise(${index})">
                         <div class="menu-item-text">
@@ -766,6 +871,7 @@ Your mission is to process these simulated large datasets without crashing your 
                 <div class="content">
                     ${menuItemsHTML}
                     <div class="menu-actions">
+                        <button class="menu-action-button" onclick="goToBonusMenu()">Bonus Exercises</button>
                         <button class="menu-action-button" onclick="goToBreakTime()">Break Time</button>
                         <button class="menu-action-button" onclick="goToSurvey()">Finish Session</button>
                     </div>
@@ -774,13 +880,9 @@ Your mission is to process these simulated large datasets without crashing your 
             slideshow.appendChild(menuSlide);
             slideIndex++;
 
-            // 4. Generate exercise slides (title + content for each)
+            // 4. Generate main exercise slides (title + content for each)
             exerciseStartIndex = slideIndex;
-            exercises.forEach((exercise, index) => {
-                // Track the first slide index for this exercise
-                const exerciseFirstSlide = slideIndex;
-
-                // Slide 1: Title slide
+            mainExercises.forEach((exercise, index) => {
                 const titleSlide = document.createElement('div');
                 titleSlide.className = 'slide slide-title';
                 titleSlide.style.backgroundImage = `url('${exercise.image}')`;
@@ -794,7 +896,6 @@ Your mission is to process these simulated large datasets without crashing your 
                 exerciseSlideIndices.push(slideIndex);
                 slideIndex++;
 
-                // Slide 2: Content slide
                 const contentSlide = document.createElement('div');
                 contentSlide.className = 'slide slide-content';
                 contentSlide.style.backgroundImage = `url('${exercise.image}')`;
@@ -814,18 +915,93 @@ Your mission is to process these simulated large datasets without crashing your 
             });
             exerciseEndIndex = slideIndex - 1;
 
-            // 5. Break Time slide (no title, just image)
+            // 5. Bonus menu - Image
+            bonusMenuImageSlideIndex = slideIndex;
+            const bonusMenuImageSlide = document.createElement('div');
+            bonusMenuImageSlide.className = 'slide slide-menu-image';
+            bonusMenuImageSlide.style.backgroundImage = `url('assets/bonus_menu.png')`;
+            slideshow.appendChild(bonusMenuImageSlide);
+            slideIndex++;
+
+            // 6. Bonus menu - Content
+            bonusMenuContentSlideIndex = slideIndex;
+            const bonusMenuSlide = document.createElement('div');
+            bonusMenuSlide.className = 'slide slide-menu';
+            bonusMenuSlide.style.backgroundImage = `url('assets/bonus_menu.png')`;
+            let bonusMenuItemsHTML = '<h2 style="color: white; margin-bottom: 1rem;">Bonus Exercises</h2><div class="menu-grid">';
+            bonusExercises.forEach((exercise, index) => {
+                bonusMenuItemsHTML += `
+                    <div class="menu-item" onclick="goToBonusExercise(${index})">
+                        <div class="menu-item-text">
+                            <span class="menu-number">${exercise.number}</span>
+                            <span class="menu-title">- ${exercise.title}</span>
+                        </div>
+                    </div>
+                `;
+            });
+            bonusMenuItemsHTML += '</div>';
+            bonusMenuSlide.innerHTML = `
+                <div class="content">
+                    ${bonusMenuItemsHTML}
+                    <div class="menu-actions">
+                        <button class="menu-action-button" onclick="goToMenu()">← Back to Menu</button>
+                        <button class="menu-action-button" onclick="goToBreakTime()">Break Time</button>
+                        <button class="menu-action-button" onclick="goToSurvey()">Finish Session</button>
+                    </div>
+                </div>
+            `;
+            slideshow.appendChild(bonusMenuSlide);
+            slideIndex++;
+
+            // 7. Bonus exercise slides (title + content for each)
+            bonusExerciseStartIndex = slideIndex;
+            bonusExercises.forEach((exercise, index) => {
+                const titleSlide = document.createElement('div');
+                titleSlide.className = 'slide slide-title';
+                titleSlide.style.backgroundImage = `url('${exercise.image}')`;
+                titleSlide.innerHTML = `
+                    <div class="content">
+                        <div class="exercise-number">${exercise.number}</div>
+                        <h1>${exercise.title}</h1>
+                    </div>
+                `;
+                slideshow.appendChild(titleSlide);
+                slideIndex++;
+
+                const contentSlide = document.createElement('div');
+                contentSlide.className = 'slide slide-content';
+                contentSlide.style.backgroundImage = `url('${exercise.image}')`;
+                contentSlide.innerHTML = `
+                    <div class="exercise-actions">
+                        <button class="exercise-action-button" onclick="goToBonusMenu()">← Bonus Menu</button>
+                        <button class="exercise-action-button" onclick="goToMenu()">← Main Menu</button>
+                        <button class="exercise-action-button" onclick="goToBreakTime()">Break Time</button>
+                        <button class="exercise-action-button" onclick="goToSurvey()">Finish Session</button>
+                    </div>
+                    <div class="content">
+                        ${markdownToHtml(exercise.content)}
+                    </div>
+                `;
+                slideshow.appendChild(contentSlide);
+                slideIndex++;
+            });
+            bonusExerciseEndIndex = slideIndex - 1;
+
+            // 8. Break Time slide (no title, just image)
             breakTimeSlideIndex = slideIndex;
             const breakSlide = document.createElement('div');
             breakSlide.className = 'slide slide-title';
             breakSlide.style.backgroundImage = `url('${specialSlides[3].image}')`;
             breakSlide.innerHTML = `
-                <button class="exercise-action-button" onclick="goToMenu()" style="position: absolute; top: 1rem; right: 1rem;">← Back to Menu</button>
+                <div class="exercise-actions" style="position: absolute; top: 1rem; right: 1rem;">
+                    <button class="exercise-action-button" onclick="goToBonusMenu()">← Back to Bonus</button>
+                    <button class="exercise-action-button" onclick="goToMenu()">← Back to Menu</button>
+                </div>
             `;
             slideshow.appendChild(breakSlide);
             slideIndex++;
 
-            // 6. Survey slide (no title, just image)
+            // 9. Survey slide (no title, just image)
             surveySlideIndex = slideIndex;
             const surveySlide = document.createElement('div');
             surveySlide.className = 'slide slide-title';
@@ -833,7 +1009,7 @@ Your mission is to process these simulated large datasets without crashing your 
             slideshow.appendChild(surveySlide);
             slideIndex++;
 
-            // 7. Congratulations slide (no title, just image)
+            // 10. Congratulations slide (no title, just image)
             const congratsSlide = document.createElement('div');
             congratsSlide.className = 'slide slide-title';
             congratsSlide.style.backgroundImage = `url('${specialSlides[5].image}')`;
@@ -862,6 +1038,23 @@ Your mission is to process these simulated large datasets without crashing your 
             const slides = slideshow.querySelectorAll('.slide');
             slides[currentSlide].classList.remove('active');
             currentSlide = menuContentSlideIndex;
+            slides[currentSlide].classList.add('active');
+            updateCounter();
+        }
+
+        function goToBonusMenu() {
+            const slides = slideshow.querySelectorAll('.slide');
+            slides[currentSlide].classList.remove('active');
+            currentSlide = bonusMenuContentSlideIndex;
+            slides[currentSlide].classList.add('active');
+            updateCounter();
+        }
+
+        function goToBonusExercise(bonusIndex) {
+            const slides = slideshow.querySelectorAll('.slide');
+            const targetSlideIndex = bonusExerciseStartIndex + (bonusIndex * 2);
+            slides[currentSlide].classList.remove('active');
+            currentSlide = targetSlideIndex;
             slides[currentSlide].classList.add('active');
             updateCounter();
         }

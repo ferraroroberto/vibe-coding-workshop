@@ -68,3 +68,41 @@ All assets live in the repo under **`assets/`**.
 - **Ask for small edits** (e.g. expression, props, text on signs) in follow-up messages in the same chat.
 
 Using the link above, you can reopen the same Gemini conversation to see the exact prompts and regenerate or adapt images.
+
+---
+
+# Part 2: Bonus exercise images (8 images)
+
+The slideshow has a separate **Bonus Exercises** menu with 8 additional exercises. Each needs one Minion-style image. Use the same style as Part 1: same “day in the life” vibe, one image per exercise. This section is the prompt to give to **Google Gemini** (or Nano Banana Pro) to generate them.
+
+## Context to paste first
+
+We have a Python vibe-coding workshop with Minion-style illustrations. The main exercises already have images (e.g. Intro, ETL 1–3, Viz 1–2, Auto 1–2, and one Bonus “Big Data Stress Test”). We need **8 new images** for the **bonus-only** exercises listed below. Keep the same visual style: Minion characters, workshop/data-analyst narrative, friendly and clear. Each image will be used as a full-slide background (title + content slide) in an HTML slideshow.
+
+## Table: Bonus exercises and image specs
+
+Generate **one Minion-style illustration** for each row. Use the **exact asset filename** when saving so we can drop them into the repo’s `assets/` folder.
+
+| # | Section | Exercise | Scenario / narrative | Asset file (save as) |
+|---|:--------|:---------|:---------------------|:---------------------|
+| 1 | Bonus   | Auto: PDF Report        | Data analyst/Minion generating a professional PDF report (tables, charts, cover page) from code.                         | `bonus_auto_pdf_report.jpg` |
+| 2 | Bonus   | ETL: API Pipeline       | Minion calling an API (laptop, network, JSON/data flowing in), ingesting data into a pipeline.                         | `bonus_etl_api_pipeline.jpg` |
+| 3 | Bonus   | Viz: D3 Bar Chart       | Minion building an interactive bar chart in the browser with D3 (screen showing bars, code or dev tools).                | `bonus_viz_d3_bar_chart.jpg` |
+| 4 | Bonus   | Viz: D3 Force Network   | Minion with a force-directed network graph (nodes and links, maybe dragging a node), interactive viz feel.             | `bonus_viz_d3_force_network.jpg` |
+| 5 | Bonus   | Viz: Geo Heatmap        | Minion in front of a map with a heatmap overlay (regions or points colored by a metric).                                | `bonus_viz_geo_heatmap.jpg` |
+| 6 | Bonus   | Viz: Interactive Dashboard | Minion at a dashboard with several charts/panels; filters or linked views; “control center” vibe.                   | `bonus_viz_interactive_dashboard.jpg` |
+| 7 | Bonus   | Viz: Seaborn Scatter    | Minion making scatter plots / statistical visuals with Seaborn (Python, clean charts, maybe regression line).           | `bonus_viz_seaborn_scatter.jpg` |
+| 8 | Bonus   | Viz: Seaborn Statistical| Minion with statistical viz (violins, heatmaps, pair plots, distributions); “stats and correlations” vibe.             | `bonus_viz_seaborn_statistical.jpg` |
+
+## Instructions to give the model
+
+1. **Style**: Same as the existing workshop images: Minion-style characters, friendly, clear, “day in the life” of a data analyst. No text or labels in the image that need to be read (optional small labels are OK if they match the narrative).
+2. **Format**: One image per row in the table. Landscape or square works; they are used as full-slide backgrounds.
+3. **Naming**: When you export or save, use the **exact asset filename** from the last column (e.g. `bonus_auto_pdf_report.jpg`, `bonus_etl_api_pipeline.jpg`, …).
+4. **Placement**: We will put these files in the project’s `assets/` folder and the slideshow already references them (e.g. `assets/bonus_auto_pdf_report.jpg`). No code changes needed after substitution.
+
+## After generation
+
+1. Download each image with the exact filename from the table.
+2. Copy them into the repo’s `assets/` directory (replace the placeholder copies of `etl_merger.jpg` that are currently named `bonus_*.jpg`).
+3. Refresh the slideshow; the bonus exercise slides will show the new images automatically.

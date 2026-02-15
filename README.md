@@ -1,84 +1,77 @@
-# Python Workshop
+# Python Vibe-Coding Workshop
 
-A collection of Python exercises and tools designed for learning data manipulation, automation, and best practices in a corporate environment. This workshop focuses on practical skills using libraries like pandas, numpy, matplotlib, and office automation tools.
+A hands-on workshop for learning data manipulation, automation, and visualization with Python in a corporate setting. Includes a **slideshow** for presenting exercises, plus structured exercises (main + bonus) with starter files, solutions, and sample data.
 
 ## Features
 
-- **Library Testing**: Verify installation and basic functionality of required libraries
-- **Environment Setup**: Tools for configuring Python environments and pip settings
-- **Structured Exercises**: Hands-on learning modules with starter files, solutions, and data
-- **Data Reconciliation**: Example exercise demonstrating customer data merging and analysis
+- **Slideshow**: Single-file HTML presentation (`slideshow.html`) with exercise menu, bonus section, and navigation (open in a browser)
+- **Main exercises**: Intro, ETL (merge, clean, survey), Viz (charts, reports), Auto (Excel polish, file organizer), plus Bonus “Big Data Stress Test”
+- **Bonus exercises**: PDF report, API pipeline, D3 bar/force viz, geo heatmap, interactive dashboard, Seaborn scatter/statistical
+- **Library testing**: `test_libraries.py` to verify required libraries
+- **Environment tools**: `pip_ini_finder.py` for locating pip config; `requirements.txt` for dependencies
 
-## Installation
+## Quick Start
 
-1. Clone the repository:
+1. Clone and enter the repo:
    ```bash
    git clone <repository-url>
-   cd workshop
+   cd vibe-coding-workshop
    ```
 
-2. Install required packages:
+2. Install dependencies:
    ```bash
    pip install -r requirements.txt
    ```
 
-3. Test the installation:
+3. Run the slideshow: open `slideshow.html` in a browser (no server needed).
+
+4. (Optional) Test the environment:
    ```bash
    python test_libraries.py
    ```
 
 ## Project Structure
 
-- `pip_ini_finder.py`: Utility to locate pip configuration files in your environment
-- `test_libraries.py`: Script to verify that all required libraries are installed and working
-- `requirements.txt`: List of Python packages needed for the workshop
-- `exercises/`: Directory containing learning exercises
-  - `metaprompt.md`: Template for creating new exercises
-  - `data_join/`: Example exercise on customer data reconciliation
-    - `exercise_starter.md`: Problem description for students
-    - `exercise_solution.md`: Complete solution with explanations
-    - `exercise_solution.py`: Python code implementation
-    - `exercise_setup_data.py`: Script to generate sample data
-    - `data/`: Sample CSV files for the exercise
+| Path | Description |
+|------|-------------|
+| `slideshow.html` | Workshop slideshow: welcome, menu, main/bonus exercises, break, survey, congratulations |
+| `assets/` | Images for slideshow (one per exercise + welcome, menu, break, survey, etc.) |
+| `exercises/` | Exercise folders: starter/solution/setup/data per exercise |
+| `preparation/` | Docs for building and extending the slideshow and images |
+| `test_libraries.py` | Verifies installed libraries |
+| `pip_ini_finder.py` | Finds pip configuration files |
+| `requirements.txt` | Python dependencies |
+
+### Preparation docs
+
+- `preparation/slideshow_part01_exercises.md` – How the basic slideshow was built
+- `preparation/slideshow_part02_sequence.md` – Sequence, menu, and navigation
+- `preparation/slideshow_part03_bonus.md` – Bonus section (menu, 8 exercises, navigation)
+- `preparation/how_images_were_created.md` – How workshop images were made (Part 1: main set; Part 2: bonus images prompt for Gemini)
 
 ## Exercises
 
-Exercises follow a structured format:
-- **Starter**: Problem description and goals
-- **Solution**: Complete code with step-by-step explanations
-- **Data**: Sample datasets for hands-on practice
+Exercises use a consistent layout: problem description (starter), solution code, and optional setup/data scripts.
 
-### Current Exercises
-- **Customer Data Reconciliation**: Merge CRM and ERP customer datasets, identify duplicates, and analyze differences
+- **Main menu (slideshow)**: Intro → ETL 1–3 → Viz 1–2 → Auto 1–2 → Bonus (Big Data Stress Test)
+- **Bonus menu (slideshow)**: Auto PDF Report, ETL API Pipeline, D3 Bar/Force, Geo Heatmap, Interactive Dashboard, Seaborn Scatter/Statistical
+
+See the slideshow for titles and goals; details live in each exercise folder under `exercises/`.
 
 ## Usage
 
-1. Navigate to an exercise directory (e.g., `exercises/data_join/`)
-2. Read the `exercise_starter.md` to understand the problem
-3. Implement your solution or review `exercise_solution.py`
-4. Run the code to see the results
+1. **Presenting**: Open `slideshow.html` and use the menu (or arrow keys) to move between exercises, bonus section, break, and survey.
+2. **Doing exercises**: Go to the matching folder under `exercises/`, read the starter (or slideshow description), then code and run; compare with the solution if provided.
 
 ## Contributing
 
-To add new exercises:
-1. Follow the format described in `exercises/metaprompt.md`
-2. Create a new directory under `exercises/`
-3. Include starter, solution, setup, and data files
-4. Update this README with the new exercise description
+- **New exercise**: Follow `exercises/metaprompt.md`; add a folder under `exercises/` with starter, solution, setup, and data; add the exercise to the slideshow data in `slideshow.html` (and to `assets/` if you add an image).
+- **New bonus image**: Use the table and instructions in `preparation/how_images_were_created.md` Part 2, generate images (e.g. with Gemini), save as the listed `bonus_*.jpg` names in `assets/`.
 
 ## Requirements
 
 - Python 3.7+
-- Libraries listed in `requirements.txt`:
-  - pandas: Data manipulation
-  - numpy: Numerical computing
-  - matplotlib: Data visualization
-  - seaborn: Statistical visualization
-  - openpyxl: Excel file handling
-  - python-docx: Word document processing
-  - python-pptx: PowerPoint processing
-  - xlrd/xlwt: Legacy Excel support
-  - pywin32: Windows API access
+- See `requirements.txt` for packages (e.g. pandas, numpy, matplotlib, seaborn, openpyxl, python-docx, python-pptx, fpdf, and others used by specific exercises).
 
 ## License
 

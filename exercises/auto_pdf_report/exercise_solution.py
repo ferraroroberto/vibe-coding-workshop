@@ -45,7 +45,7 @@ class SalesReport(FPDF):
         self.set_font("Helvetica", "B", 9)
         self.set_text_color(*BRAND_BLUE)
         self.set_y(12)
-        self.cell(0, 6, "Quarterly Sales Report | Q4 2024", align="L")
+        self.cell(0, 6, "Quarterly Sales Report | Q4 2026", align="L")
         self.cell(0, 6, "CONFIDENTIAL", align="R")
         self.ln(10)
 
@@ -186,7 +186,7 @@ def main():
     # Subtitle
     pdf.set_font("Helvetica", "", 18)
     pdf.set_text_color(*BRAND_DARK)
-    pdf.cell(0, 12, "Q4 2024 Performance Summary", align="C", new_x="LMARGIN", new_y="NEXT")
+    pdf.cell(0, 12, "Q4 2026 Performance Summary", align="C", new_x="LMARGIN", new_y="NEXT")
 
     pdf.ln(10)
 

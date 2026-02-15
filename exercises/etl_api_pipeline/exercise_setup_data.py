@@ -96,7 +96,7 @@ def generate_customers():
 def generate_orders(customer_ids):
     """Generate a list of order dictionaries referencing customer IDs."""
     orders = []
-    start_date = datetime(2024, 1, 1)
+    start_date = datetime(2026, 1, 1)
 
     for i in range(1, NUM_ORDERS + 1):
         order_date = start_date + timedelta(days=random.randint(0, 364))
