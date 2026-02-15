@@ -28,7 +28,7 @@ def create_dummy_data():
     
     data = []
     
-    start_date = datetime(2024, 1, 1)
+    start_date = datetime(2026, 1, 1)
     
     for i in range(1, num_rows + 1):
         cat = random.choice(categories)

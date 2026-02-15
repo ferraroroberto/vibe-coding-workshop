@@ -24,7 +24,7 @@ def create_data():
     }
     
     rows = []
-    dates = pd.date_range(start='2024-01-01', end='2024-03-31', freq='D')
+    dates = pd.date_range(start='2026-01-01', end='2026-03-31', freq='D')
     
     # Generate 500 rows of sales data
     for _ in range(500):

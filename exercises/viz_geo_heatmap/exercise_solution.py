@@ -167,7 +167,7 @@ def main():
                 padding: 12px 30px; border-radius: 8px; font-family: 'Segoe UI', sans-serif;
                 font-size: 18px; font-weight: bold; box-shadow: 0 2px 10px rgba(0,0,0,0.5);
                 pointer-events: none;">
-        Global Sales Heatmap 2024
+        Global Sales Heatmap 2026
     </div>
     """
     m.get_root().html.add_child(folium.Element(title_html))

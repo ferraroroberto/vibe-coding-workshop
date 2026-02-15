@@ -202,7 +202,7 @@ def main():
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sales Dashboard 2024</title>
+    <title>Sales Dashboard 2026</title>
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <style>
         * {{ margin: 0; padding: 0; box-sizing: border-box; }}
@@ -254,7 +254,7 @@ def main():
 </head>
 <body>
     <div class="header">
-        <h1>Sales Performance Dashboard 2024</h1>
+        <h1>Sales Performance Dashboard 2026</h1>
         <p>Interactive Executive Report &mdash; Generated with Python &amp; Plotly</p>
     </div>
 
@@ -277,7 +277,7 @@ def main():
 
     <div class="footer">
         <p>Dashboard generated automatically using Python, Pandas &amp; Plotly.
-        &copy; 2024 ChangeMakers Workshop</p>
+        &copy; 2026 Workshop</p>
     </div>
 </body>
 </html>"""

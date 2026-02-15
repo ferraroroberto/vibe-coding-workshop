@@ -58,7 +58,7 @@ def create_dataset():
     print(f"Generating {NUM_ROWS} rows of sales data...\n")
 
     records = []
-    start_date = datetime(2024, 1, 1)
+    start_date = datetime(2026, 1, 1)
 
     for i in range(1, NUM_ROWS + 1):
         # Pick region

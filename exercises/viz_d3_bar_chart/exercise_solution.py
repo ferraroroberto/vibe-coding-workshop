@@ -99,7 +99,7 @@ def main():
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bar Chart Race — Product Revenue 2024</title>
+    <title>Bar Chart Race — Product Revenue 2026</title>
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <style>
         * {{ margin: 0; padding: 0; box-sizing: border-box; }}
@@ -198,7 +198,7 @@ def main():
 </head>
 <body>
     <h1>Product Revenue Bar Chart Race</h1>
-    <p class="subtitle">Cumulative Revenue Rankings — 2024</p>
+    <p class="subtitle">Cumulative Revenue Rankings — 2026</p>
 
     <div class="controls">
         <button id="playBtn">&#9654; Play</button>
@@ -215,7 +215,7 @@ def main():
 
     <div id="chart"></div>
     <div class="legend" id="legend"></div>
-    <p class="footer">Generated with Python &amp; D3.js — ChangeMakers Workshop</p>
+    <p class="footer">Generated with Python &amp; D3.js</p>
 
     <script>
         // Data injected from Python

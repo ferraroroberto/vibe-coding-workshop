@@ -129,7 +129,7 @@ This workshop is designed as a continuous narrative. You play the role of a new 
 
 1. **Aggregation:** Ask Copilot: *"Group by Category and sum the Revenue."*
 2. **Basic Plot:** Ask Copilot: *"Create a bar chart of this data using Seaborn."*
-3. **Formatting:** Ask Copilot: *"Add a title '2024 Sales Performance', rotate the x-axis labels 45 degrees, and add dollar signs to the y-axis."*
+3. **Formatting:** Ask Copilot: *"Add a title '2026 Sales Performance', rotate the x-axis labels 45 degrees, and add dollar signs to the y-axis."*
 
 **Tier 2: The Fast Track (Extra 15 mins)**
 
@@ -208,7 +208,7 @@ This workshop is designed as a continuous narrative. You play the role of a new 
 
 **Tier 2: The Fast Track (Extra 15 mins)**
 
-* **Task A (Date Sorting):** Sort by *Date Created* (e.g., Folder `2024-Feb`) instead of file type.
+* **Task A (Date Sorting):** Sort by *Date Created* (e.g., Folder `2026-Feb`) instead of file type.
 * **Task B (Safety):** Add a "Dry Run" feature that prints what *would* happen without actually moving files.
 
 ---

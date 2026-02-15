@@ -10,7 +10,7 @@ from datetime import datetime, timedelta
 
 # --- DATA GENERATION CONFIG ---
 PRODUCTS = ["Widget A", "Widget B", "Gadget X", "Gadget Y", "SuperTool"]
-START_DATE = datetime(2024, 1, 1)
+START_DATE = datetime(2026, 1, 1)
 RECORDS_PER_FILE = 50
 
 def ensure_directory(path):

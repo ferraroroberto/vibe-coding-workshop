@@ -56,9 +56,9 @@ def create_dataset():
     print(f"Generating {NUM_ROWS} rows of quarterly sales data...\n")
 
     records = []
-    # Q4 2024 (Oct - Dec)
-    start_date = datetime(2024, 10, 1)
-    end_date = datetime(2024, 12, 31)
+    # Q4 2026 (Oct - Dec)
+    start_date = datetime(2026, 10, 1)
+    end_date = datetime(2026, 12, 31)
     total_days = (end_date - start_date).days
 
     for i in range(1, NUM_ROWS + 1):

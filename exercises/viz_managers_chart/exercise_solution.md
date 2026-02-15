@@ -33,6 +33,6 @@ Beginner | 25 Minutes
 > "I have a pandas DataFrame named `df` with columns 'Category' and 'Revenue'. Write a Python script using Seaborn to:
 > 1. Group the data by 'Category' and sum the total 'Revenue'.
 > 2. Create a bar chart of the results.
-> 3. Add a title '2024 Sales Performance'.
+> 3. Add a title '2026 Sales Performance'.
 > 4. Rotate the x-axis labels 45 degrees so they are readable.
 > 5. Format the y-axis with dollar signs and commas (e.g., $1,000)."
