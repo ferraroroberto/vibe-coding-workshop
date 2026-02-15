@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Workshop Exercises Slideshow</title>
+    <title>Taller de Ejercicios - Presentación</title>
     <style>
         * {
             margin: 0;
@@ -425,7 +425,7 @@
             {
                 type: 'break_time',
                 image: 'assets/break_time.jpg',
-                title: 'Break Time'
+                title: 'Hora de Descanso'
             },
             {
                 type: 'survey',
@@ -439,24 +439,24 @@
             }
         ];
 
-                        // Exercise data - matches the sequence from exercises_selection.md
+                                // Exercise data - matches the sequence from exercises_selection.md
         const exercises = [
             {
                 number: "Intro",
-                title: "Intro: Hello World - The First Flight",
+                title: "Intro: Hola Mundo - El Primer Vuelo",
                 image: "assets/intro_python.jpg",
-                content: `# Intro: Hello World - The First Flight
+                content: `# Intro: Hola Mundo - El Primer Vuelo
 
-## The Goal
+## El Objetivo
 
-Verify that your "cockpit" (VS Code + Python) is fully operational. You will write your first lines of code to print a message to the screen, perform a business calculation, and automate a repetitive task using a loop.
+Verifica que tu "cabina" (VS Code + Python) esté completamente operativa. Escribirás tus primeras líneas de código para imprimir un mensaje en pantalla, realizar un cálculo de negocio y automatizar una tarea repetitiva usando un bucle.
 
-## Steps
+## Pasos
 
-1. **The Environment:** Create a new file named \`hello.py\`.
-2. **The First Prompt:** Use GitHub Copilot to ask: "How do I print 'Hello World' in Python?". Run the code.
-3. **The Calculator:** Ask Copilot: "Create a variable for revenue = 1000 and cost = 400. Calculate profit and print it."
-4. **The Loop:** Ask Copilot: "Write a loop that prints numbers 1 to 5."`
+1. **El Entorno:** Crea un nuevo archivo llamado \`hello.py\`.
+2. **El Primer Prompt:** Usa GitHub Copilot para preguntar: "¿Cómo imprimo 'Hello World' en Python?". Ejecuta el código.
+3. **La Calculadora:** Pide a Copilot: "Crea una variable para ingresos = 1000 y costos = 400. Calcula el beneficio e imprímelo."
+4. **El Bucle:** Pide a Copilot: "Escribe un bucle que imprima los números del 1 al 5."`
             },
             {
                 number: "ETL 1",
@@ -895,9 +895,9 @@ Publication-quality PNG images: \`correlation_heatmap.png\`, \`satisfaction_viol
                 <div class="content">
                     ${menuItemsHTML}
                     <div class="menu-actions">
-                        <button class="menu-action-button" onclick="goToBonusMenu()">Bonus Exercises</button>
-                        <button class="menu-action-button" onclick="goToBreakTime()">Break Time</button>
-                        <button class="menu-action-button" onclick="goToSurvey()">Finish Session</button>
+                        <button class="menu-action-button" onclick="goToBonusMenu()">Ejercicios Bonus</button>
+                        <button class="menu-action-button" onclick="goToBreakTime()">Hora de Descanso</button>
+                        <button class="menu-action-button" onclick="goToSurvey()">Finalizar Sesión</button>
                     </div>
                 </div>
             `;
@@ -925,9 +925,9 @@ Publication-quality PNG images: \`correlation_heatmap.png\`, \`satisfaction_viol
                 contentSlide.style.backgroundImage = `url('${exercise.image}')`;
                 contentSlide.innerHTML = `
                     <div class="exercise-actions">
-                        <button class="exercise-action-button" onclick="goToMenu()">← Menu</button>
-                        <button class="exercise-action-button" onclick="goToBreakTime()">Break Time</button>
-                        <button class="exercise-action-button" onclick="goToSurvey()">Finish Session</button>
+                        <button class="exercise-action-button" onclick="goToMenu()">← Menú</button>
+                        <button class="exercise-action-button" onclick="goToBreakTime()">Hora de Descanso</button>
+                        <button class="exercise-action-button" onclick="goToSurvey()">Finalizar Sesión</button>
                     </div>
                     <div class="content">
                         ${markdownToHtml(exercise.content)}
@@ -952,7 +952,7 @@ Publication-quality PNG images: \`correlation_heatmap.png\`, \`satisfaction_viol
             const bonusMenuSlide = document.createElement('div');
             bonusMenuSlide.className = 'slide slide-menu';
             bonusMenuSlide.style.backgroundImage = `url('assets/menu_bonus.jpg')`;
-            let bonusMenuItemsHTML = '<h2 style="color: white; margin-bottom: 1rem;">Bonus Exercises</h2><div class="menu-grid">';
+            let bonusMenuItemsHTML = '<h2 style="color: white; margin-bottom: 1rem;">Ejercicios Bonus</h2><div class="menu-grid">';
             bonusExercises.forEach((exercise, index) => {
                 bonusMenuItemsHTML += `
                     <div class="menu-item" onclick="goToBonusExercise(${index})">
@@ -968,9 +968,9 @@ Publication-quality PNG images: \`correlation_heatmap.png\`, \`satisfaction_viol
                 <div class="content">
                     ${bonusMenuItemsHTML}
                     <div class="menu-actions">
-                        <button class="menu-action-button" onclick="goToMenu()">← Back to Menu</button>
-                        <button class="menu-action-button" onclick="goToBreakTime()">Break Time</button>
-                        <button class="menu-action-button" onclick="goToSurvey()">Finish Session</button>
+                        <button class="menu-action-button" onclick="goToMenu()">← Volver al Menú</button>
+                        <button class="menu-action-button" onclick="goToBreakTime()">Hora de Descanso</button>
+                        <button class="menu-action-button" onclick="goToSurvey()">Finalizar Sesión</button>
                     </div>
                 </div>
             `;
@@ -997,10 +997,10 @@ Publication-quality PNG images: \`correlation_heatmap.png\`, \`satisfaction_viol
                 contentSlide.style.backgroundImage = `url('${exercise.image}')`;
                 contentSlide.innerHTML = `
                     <div class="exercise-actions">
-                        <button class="exercise-action-button" onclick="goToBonusMenu()">← Bonus Menu</button>
-                        <button class="exercise-action-button" onclick="goToMenu()">← Main Menu</button>
-                        <button class="exercise-action-button" onclick="goToBreakTime()">Break Time</button>
-                        <button class="exercise-action-button" onclick="goToSurvey()">Finish Session</button>
+                        <button class="exercise-action-button" onclick="goToBonusMenu()">← Menú Bonus</button>
+                        <button class="exercise-action-button" onclick="goToMenu()">← Menú Principal</button>
+                        <button class="exercise-action-button" onclick="goToBreakTime()">Hora de Descanso</button>
+                        <button class="exercise-action-button" onclick="goToSurvey()">Finalizar Sesión</button>
                     </div>
                     <div class="content">
                         ${markdownToHtml(exercise.content)}
@@ -1011,15 +1011,15 @@ Publication-quality PNG images: \`correlation_heatmap.png\`, \`satisfaction_viol
             });
             bonusExerciseEndIndex = slideIndex - 1;
 
-            // 8. Break Time slide (no title, just image)
+            // 8. Hora de Descanso slide (no title, just image)
             breakTimeSlideIndex = slideIndex;
             const breakSlide = document.createElement('div');
             breakSlide.className = 'slide slide-title';
             breakSlide.style.backgroundImage = `url('${specialSlides[3].image}')`;
             breakSlide.innerHTML = `
                 <div class="exercise-actions" style="position: absolute; top: 1rem; right: 1rem;">
-                    <button class="exercise-action-button" onclick="goToBonusMenu()">← Back to Bonus</button>
-                    <button class="exercise-action-button" onclick="goToMenu()">← Back to Menu</button>
+                    <button class="exercise-action-button" onclick="goToBonusMenu()">← Volver al Bonus</button>
+                    <button class="exercise-action-button" onclick="goToMenu()">← Volver al Menú</button>
                 </div>
             `;
             slideshow.appendChild(breakSlide);

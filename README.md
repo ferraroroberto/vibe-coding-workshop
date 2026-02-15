@@ -4,7 +4,7 @@ A hands-on workshop for learning data manipulation, automation, and visualizatio
 
 ## Features
 
-- **Slideshow**: Single-file HTML presentation (`slideshow.html`) with exercise menu, bonus section, and navigation (open in a browser)
+- **Slideshow**: Single-file HTML presentation (`slideshow.html`, `slideshow_es.html` for Spanish) with exercise menu, bonus section, and navigation (open in a browser)
 - **Main exercises**: Intro, ETL (merge, clean, survey), Viz (charts, reports), Auto (Excel polish, file organizer), plus Bonus “Big Data Stress Test”
 - **Bonus exercises**: PDF report, API pipeline, D3 bar/force viz, geo heatmap, interactive dashboard, Seaborn scatter/statistical
 - **Library testing**: `test_libraries.py` to verify required libraries
@@ -23,7 +23,7 @@ A hands-on workshop for learning data manipulation, automation, and visualizatio
    pip install -r requirements.txt
    ```
 
-3. Run the slideshow: open `slideshow.html` in a browser (no server needed).
+3. Run the slideshow: open `slideshow.html` (English) or `slideshow_es.html` (Spanish) in a browser (no server needed).
 
 4. (Optional) Test the environment:
    ```bash
@@ -34,7 +34,8 @@ A hands-on workshop for learning data manipulation, automation, and visualizatio
 
 | Path | Description |
 |------|-------------|
-| `slideshow.html` | Workshop slideshow: welcome, menu, main/bonus exercises, break, survey, congratulations |
+| `slideshow.html` | Workshop slideshow (English): welcome, menu, main/bonus exercises, break, survey, congratulations |
+| `slideshow_es.html` | Spanish version of the slideshow |
 | `assets/` | Images for slideshow (one per exercise + welcome, menu, break, survey, etc.) |
 | `exercises/` | Exercise folders: starter/solution/setup/data per exercise |
 | `preparation/` | Docs for building and extending the slideshow and images |
@@ -47,6 +48,7 @@ A hands-on workshop for learning data manipulation, automation, and visualizatio
 - `preparation/slideshow_part01_exercises.md` – How the basic slideshow was built
 - `preparation/slideshow_part02_sequence.md` – Sequence, menu, and navigation
 - `preparation/slideshow_part03_bonus.md` – Bonus section (menu, 8 exercises, navigation)
+- `preparation/slideshow_config.json` – Main and bonus exercise order; used by `scripts/build_slideshow.py` to generate slideshows
 - `preparation/how_images_were_created.md` – How workshop images were made (Part 1: main set; Part 2: bonus images prompt for Gemini)
 
 ## Exercises
@@ -65,7 +67,7 @@ See the slideshow for titles and goals; details live in each exercise folder und
 
 ## Contributing
 
-- **New exercise**: Follow `exercises/metaprompt.md`; add a folder under `exercises/` with starter, solution, setup, and data; add the exercise to the slideshow data in `slideshow.html` (and to `assets/` if you add an image).
+- **New exercise**: Follow `preparation/metaprompt.md`; add a folder under `exercises/` with starter (bilingual: `## English` and `## Español` sections), solution, setup, and data; add the exercise to `preparation/slideshow_config.json` (main or bonus list) and run `python3 scripts/build_slideshow.py` to regenerate `slideshow.html` and `slideshow_es.html`; add an image to `assets/` if needed.
 - **New bonus image**: Use the table and instructions in `preparation/how_images_were_created.md` Part 2, generate images (e.g. with Gemini), save as the listed `bonus_*.jpg` names in `assets/`.
 
 ## Requirements
