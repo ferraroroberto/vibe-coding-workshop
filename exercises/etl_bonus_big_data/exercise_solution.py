@@ -92,7 +92,8 @@ parquet_query = f"""
     LIMIT 5
 """
 
-duckdb.sql(parquet_query).show() # .show() prints to console directly
+# Use .df() and print() for Windows console compatibility (avoids UnicodeEncodeError from .show())
+print(duckdb.sql(parquet_query).df())
 
 end_time = time.time()
 print(f"Parquet Query completed in {end_time - start_time:.4f} seconds.")
