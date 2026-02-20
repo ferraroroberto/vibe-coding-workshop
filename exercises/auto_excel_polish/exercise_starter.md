@@ -26,7 +26,7 @@ A new Excel file named `polished_report.xlsx` that is formatted perfectly — he
 
 ## El escenario
 
-Enviaste `final_report.xlsx` a tu jefa. Dice: *"¿Puedes poner los encabezados en negrita y azul? Y las columnas son muy estrechas, no puedo leer los nombres de los productos."* No quieres hacer esto manualmente cada trimestre.
+Enviaste `final_report.xlsx` a tu manager. Dice: *"¿Puedes poner los encabezados en negrita y azul? Y las columnas son muy estrechas, no puedo leer los nombres de los productos."* No quieres hacer esto manualmente cada trimestre.
 
 ## Tu misión
 

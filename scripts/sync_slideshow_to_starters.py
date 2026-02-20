@@ -12,8 +12,8 @@ from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 CONFIG_PATH = PROJECT_ROOT / "preparation" / "slideshow_config.json"
-SLIDESHOW_EN = PROJECT_ROOT / "slideshow.html"
-SLIDESHOW_ES = PROJECT_ROOT / "slideshow_es.html"
+SLIDESHOW_EN = PROJECT_ROOT / "slideshow" / "slideshow.html"
+SLIDESHOW_ES = PROJECT_ROOT / "slideshow" / "slideshow_es.html"
 EXERCISES_DIR = PROJECT_ROOT / "exercises"
 
 

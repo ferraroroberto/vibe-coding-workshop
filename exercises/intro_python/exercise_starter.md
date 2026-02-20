@@ -27,7 +27,7 @@ You have printed "Hello World", calculated profit, and printed numbers 1 to 5 鈥
 
 ## El escenario
 
-Es tu primer d铆a. Tienes instalados VS Code y Python, pero parece la cabina de un avi贸n que no sabes pilotar. Necesitas demostrar a tu jefa (y a ti mismo) que tu configuraci贸n funciona.
+Es tu primer d铆a. Tienes instalados VS Code y Python, pero parece la cabina de un avi贸n que no sabes pilotar. Necesitas demostrar a tu manager (y a ti) que tu configuraci贸n funciona.
 
 ## Tu misi贸n
 

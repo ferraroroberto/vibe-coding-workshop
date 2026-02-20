@@ -3,7 +3,11 @@
 
 # temporary files
 tmp
+**/__pycache__/
+*.pyc
 
 # data directories
 **/data/
-data/
+
+# live directory
+live/

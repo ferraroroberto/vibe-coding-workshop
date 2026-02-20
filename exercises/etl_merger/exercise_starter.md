@@ -27,7 +27,7 @@ A single file named `combined_sales.csv` containing all records from the three q
 
 ## El escenario
 
-Tu jefa te ha enviado por correo tres archivos Excel separados con datos de ventas trimestrales (Q1, Q2 y Q3). Necesita un único reporte "Acumulado del Año" antes del almuerzo. Copiar y pegar manualmente es lento y propenso a errores.
+Tu manager te ha enviado por correo tres archivos Excel separados con datos de ventas trimestrales (Q1, Q2 y Q3). Necesita un único reporte "Acumulado del Año" antes del almuerzo. Copiar y pegar manualmente es lento y propenso a errores.
 
 ## Tu misión
 

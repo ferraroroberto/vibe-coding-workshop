@@ -16,8 +16,8 @@ from pathlib import Path
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 CONFIG_PATH = PROJECT_ROOT / "preparation" / "slideshow_config.json"
 EXERCISES_DIR = PROJECT_ROOT / "exercises"
-SLIDESHOW_PATH = PROJECT_ROOT / "slideshow.html"
-SLIDESHOW_ES_PATH = PROJECT_ROOT / "slideshow_es.html"
+SLIDESHOW_PATH = PROJECT_ROOT / "slideshow" / "slideshow.html"
+SLIDESHOW_ES_PATH = PROJECT_ROOT / "slideshow" / "slideshow_es.html"
 
 
 def parse_exercise_starter(md_path: Path) -> tuple[str, str]:
