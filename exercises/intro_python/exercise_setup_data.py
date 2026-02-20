@@ -7,10 +7,7 @@ def setup_environment():
     we just verify the folder exists and maybe create a blank starter file.
     """
     
-    # 1. Create the data directory (standard practice, though not used here)
-    # os.makedirs('data', exist_ok=True)
-    
-    # 2. Create a blank 'hello.py' file if it doesn't exist
+    # Create a blank 'hello.py' file if it doesn't exist
     # This helps the student get started immediately.
     file_name = 'hello.py'
     

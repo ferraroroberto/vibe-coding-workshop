@@ -18,7 +18,7 @@ A polished `executive_scatter.png` that looks like it belongs in a Harvard Busin
 # Bonus: Dispersión Seaborn (El Scatter Ejecutivo)
 
 ## El escenario
-La Jefa de Estrategia quiere ver la *relación* entre el tamaño del trato y la cantidad vendida — pero desglosada por categoría de producto y región simultáneamente. Un simple gráfico de barras no basta; necesita un gráfico donde cada punto de datos cuente una historia: la posición muestra la economía del trato, el color la categoría, el tamaño el volumen.
+La manager de Estrategia quiere ver la *relación* entre el tamaño del trato y la cantidad vendida — pero desglosada por categoría de producto y región simultáneamente. Un simple gráfico de barras no basta; necesita un gráfico donde cada punto de datos cuente una historia: la posición muestra la economía del trato, el color la categoría, el tamaño el volumen.
 
 ## Tu misión
 Construir un gráfico de dispersión de calidad publicable usando **Seaborn** que codifique cuatro dimensiones: **eje X** (Precio Unitario), **eje Y** (Ingresos), **Color** (Categoría de Producto), **Tamaño** (Cantidad vendida — burbujas más grandes = mayor volumen). Incluir título claro, etiquetas de ejes con formato de moneda, leyenda y un tema profesional. Opcional: líneas de tendencia de regresión por categoría.

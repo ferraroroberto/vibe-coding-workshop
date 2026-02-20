@@ -4,9 +4,6 @@ import random
 from datetime import datetime, timedelta
 
 # --- CONFIGURATION ---
-# Default folder as requested. 
-# Students/Users can change this to "." to generate in the current folder.
-# BASE_DIR = 'data'  # Not used anymore, using script directory
 
 # --- DATA GENERATION CONFIG ---
 PRODUCTS = ["Widget A", "Widget B", "Gadget X", "Gadget Y", "SuperTool"]

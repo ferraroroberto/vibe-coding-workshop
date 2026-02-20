@@ -6,9 +6,9 @@ This guide explains how to create a dynamic, responsive HTML slideshow that disp
 
 ## What Was Created
 
-A single, self-contained HTML file (`slideshow.html`) that:
+A single, self-contained HTML file (`slideshow/slideshow.html`) that:
 - Displays exercises in sequence from `exercises_selection.md`
-- Uses images from the `assets/` directory (one per exercise)
+- Uses images from the `slideshow/assets/` directory (one per exercise)
 - Shows title slides with full background images
 - Shows content slides with semi-transparent backgrounds and clear text
 - Includes navigation controls (buttons, keyboard, touch/swipe)
@@ -29,7 +29,7 @@ Before creating the slideshow, ensure you have:
 
 Review `exercises_selection.md` to determine the order of exercises. The sequence should match:
 - The order in the document
-- The image filenames in `assets/`
+- The image filenames in `slideshow/assets/`
 - The folder names in `exercises/`
 
 **Example sequence:**

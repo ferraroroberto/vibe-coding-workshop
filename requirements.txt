@@ -15,3 +15,6 @@ plotly # used in exercises/viz_interactive_dashboard
 pyarrow # used in exercises/etl_bonus_big_data
 seaborn # used in exercises/viz_managers_chart, exercises/viz_seaborn_scatter, exercises/viz_seaborn_statistical
 xlsxwriter # used in exercises/auto_excel_polish
+
+# Requirements used in the slideshow export
+playwright

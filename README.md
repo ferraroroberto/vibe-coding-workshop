@@ -4,7 +4,7 @@ A hands-on workshop for learning data manipulation, automation, and visualizatio
 
 ## Features
 
-- **Slideshow**: Single-file HTML presentation (`slideshow.html`, `slideshow_es.html` for Spanish) with exercise menu, bonus section, and navigation (open in a browser)
+- **Slideshow**: Single-file HTML presentation (`slideshow/slideshow.html`, `slideshow/slideshow_es.html` for Spanish) with exercise menu, bonus section, and navigation (open in a browser)
 - **Main exercises**: Intro, ETL (merge, clean, survey), Viz (charts, reports), Auto (Excel polish, file organizer), plus Bonus “Big Data Stress Test”
 - **Bonus exercises**: PDF report, API pipeline, D3 bar/force viz, geo heatmap, interactive dashboard, Seaborn scatter/statistical
 - **Library testing**: `test_libraries.py` to verify required libraries
@@ -23,7 +23,7 @@ A hands-on workshop for learning data manipulation, automation, and visualizatio
    pip install -r requirements.txt
    ```
 
-3. Run the slideshow: open `slideshow.html` (English) or `slideshow_es.html` (Spanish) in a browser (no server needed).
+3. Run the slideshow: open `slideshow/slideshow.html` (English) or `slideshow/slideshow_es.html` (Spanish) in a browser (no server needed).
 
 4. (Optional) Test the environment:
    ```bash
@@ -34,9 +34,9 @@ A hands-on workshop for learning data manipulation, automation, and visualizatio
 
 | Path | Description |
 |------|-------------|
-| `slideshow.html` | Workshop slideshow (English): welcome, menu, main/bonus exercises, break, survey, congratulations |
-| `slideshow_es.html` | Spanish version of the slideshow |
-| `assets/` | Images for slideshow (one per exercise + welcome, menu, break, survey, etc.) |
+| `slideshow/slideshow.html` | Workshop slideshow (English): welcome, menu, main/bonus exercises, break, survey, congratulations |
+| `slideshow/slideshow_es.html` | Spanish version of the slideshow |
+| `slideshow/assets/` | Images for slideshow (one per exercise + welcome, menu, break, survey, etc.) |
 | `exercises/` | Exercise folders: starter/solution/setup/data per exercise |
 | `preparation/` | Docs for building and extending the slideshow and images |
 | `test_libraries.py` | Verifies installed libraries |
@@ -62,13 +62,13 @@ See the slideshow for titles and goals; details live in each exercise folder und
 
 ## Usage
 
-1. **Presenting**: Open `slideshow.html` and use the menu (or arrow keys) to move between exercises, bonus section, break, and survey.
+1. **Presenting**: Open `slideshow/slideshow.html` and use the menu (or arrow keys) to move between exercises, bonus section, break, and survey.
 2. **Doing exercises**: Go to the matching folder under `exercises/`, read the starter (or slideshow description), then code and run; compare with the solution if provided.
 
 ## Contributing
 
-- **New exercise**: Follow `preparation/metaprompt.md`; add a folder under `exercises/` with starter (bilingual: `## English` and `## Español` sections), solution, setup, and data; add the exercise to `preparation/slideshow_config.json` (main or bonus list) and run `python3 scripts/build_slideshow.py` to regenerate `slideshow.html` and `slideshow_es.html`; add an image to `assets/` if needed.
-- **New bonus image**: Use the table and instructions in `preparation/how_images_were_created.md` Part 2, generate images (e.g. with Gemini), save as the listed `bonus_*.jpg` names in `assets/`.
+- **New exercise**: Follow `preparation/metaprompt.md`; add a folder under `exercises/` with starter (bilingual: `## English` and `## Español` sections), solution, setup, and data; add the exercise to `preparation/slideshow_config.json` (main or bonus list) and run `python3 scripts/build_slideshow.py` to regenerate `slideshow/slideshow.html` and `slideshow/slideshow_es.html`; add an image to `slideshow/assets/` if needed.
+- **New bonus image**: Use the table and instructions in `preparation/how_images_were_created.md` Part 2, generate images (e.g. with Gemini), save as the listed `bonus_*.jpg` names in `slideshow/assets/`.
 
 ## Requirements
 

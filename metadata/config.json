@@ -1,0 +1,122 @@
+{
+    "source_path": "C:\\Users\\u0150867\\Grupo Caixabank\\27104 - 27014\\Proyectos\\P017 - generative AI\\consultas genAI\\127 - vibe coding guide\\files\\Te interesa aprender Python - form source phase 1.xlsx",
+    "source_path_spec": {
+        "sheet_name": "Sheet1",
+        "columns": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17],
+        "id": 0,
+        "name": 4,
+        "missing_field_value": "sin respuesta",
+        "missing_fields": [15, 16, 17],
+        "replicate": [
+            {"origin": 15, "destination": 18, "column_id": "company"},
+            {"origin": 16, "destination": 19, "column_id": "place"}
+        ],
+        "binary_check": [
+            {"column": 13, "destination": 25},
+            {"column": 14, "destination": 26}
+        ]
+    },
+    "phase_two_path": "C:\\Users\\u0150867\\Grupo Caixabank\\27104 - 27014\\Proyectos\\P017 - generative AI\\consultas genAI\\127 - vibe coding guide\\files\\Te interesa aprender Python - form source phase 2.xlsx",
+    "phase_two_spec": {
+        "sheet_name": "Sheet1",
+        "columns": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+        "id": 0,
+        "name": 4,
+        "missing_field_value": "sin respuesta",
+        "missing_fields": [7, 8, 9, 10, 11],
+        "replicate": [
+            {"origin": 7, "destination": 39, "column_id": "ide_python"},
+            {"origin": 8, "destination": 40, "column_id": "ide_sql"},
+            {"origin": 9, "destination": 41, "column_id": "txt_usecase_data"},
+            {"origin": 10, "destination": 42, "column_id": "txt_usecase_visual"},
+            {"origin": 11, "destination": 43, "column_id": "txt_usecase_automate"}
+        ],
+        "binary_check": [
+            {"column": 5, "destination": 38, "column_id": "ind_confirm"}
+        ]
+    },
+    "excel_path": "C:\\Users\\u0150867\\Grupo Caixabank\\27104 - 27014\\Proyectos\\P017 - generative AI\\consultas genAI\\127 - vibe coding guide\\python_community.xlsx",
+    "excel_interpreter_spec": {
+        "sheet_name": "Sheet1",
+        "columns": [
+            {"column": 0, "content": "Id", "column_id": "id"},
+            {"column": 1, "content": "timestamp_start", "column_id": "timestamp_start"},
+            {"column": 2, "content": "timestamp_end", "column_id": "timestamp_end"},
+            {"column": 3, "content": "email", "column_id": "email"},
+            {"column": 4, "content": "name", "column_id": "name"},
+            {"column": 5, "content": "use_cases", "column_id": "use_cases"},
+            {"column": 6, "content": "nvl_excel", "column_id": "nvl_excel"},
+            {"column": 7, "content": "nvl_python", "column_id": "nvl_python"},
+            {"column": 8, "content": "nvl_rstudio", "column_id": "nvl_rstudio"},
+            {"column": 9, "content": "nvl_sas", "column_id": "nvl_sas"},
+            {"column": 10, "content": "nvl_sql", "column_id": "nvl_sql"},
+            {"column": 11, "content": "nvl_vba", "column_id": "nvl_vba"},
+            {"column": 12, "content": "txt_success", "column_id": "txt_success"},
+            {"column": 17, "content": "role", "column_id": "role"},
+            {"column": 18, "content": "company", "column_id": "company"},
+            {"column": 19, "content": "place", "column_id": "place"},
+            {"column": 20, "content": "txt_review", "column_id": "txt_review"},
+            {"column": 21, "content": "ind_review", "column_id": "ind_review"},
+            {"column": 22, "content": "ind_select", "column_id": "ind_select"},
+            {"column": 23, "content": "ind_1to1", "column_id": "ind_1to1"},
+            {"column": 24, "content": "url_1to1", "column_id": "url_1to1"},
+            {"column": 25, "content": "ind_self", "column_id": "ind_self"},
+            {"column": 26, "content": "ind_share", "column_id": "ind_share"},
+            {"column": 27, "content": "pk_empl", "column_id": "pk_empl"},
+            {"column": 28, "content": "fk_centro", "column_id": "fk_centro"},
+            {"column": 29, "content": "des_centro_ges", "column_id": "des_centro_ges"},
+            {"column": 30, "content": "cod_dan", "column_id": "cod_dan"},
+            {"column": 31, "content": "des_dan", "column_id": "des_dan"},
+            {"column": 32, "content": "cod_dg", "column_id": "cod_dg"},
+            {"column": 33, "content": "des_dg", "column_id": "des_dg"},
+            {"column": 34, "content": "cod_dt", "column_id": "cod_dt"},
+            {"column": 35, "content": "des_dt", "column_id": "des_dt"},
+            {"column": 36, "content": "cod_red", "column_id": "cod_red"},
+            {"column": 37, "content": "des_red", "column_id": "des_red"},
+            {"column": 38, "content": "ind_confirm", "column_id": "ind_confirm"},
+            {"column": 39, "content": "ide_python", "column_id": "ide_python"},
+            {"column": 40, "content": "ide_sql", "column_id": "ide_sql"},
+            {"column": 41, "content": "txt_usecase_data", "column_id": "txt_usecase_data"},
+            {"column": 42, "content": "txt_usecase_visual", "column_id": "txt_usecase_visual"},
+            {"column": 43, "content": "txt_usecase_automate", "column_id": "txt_usecase_automate"},
+            {"column": 44, "content": "ind_facilitate", "column_id": "ind_facilitate"},
+            {"column": 45, "content": "ind_session", "column_id": "ind_session"},
+            {"column": 46, "content": "ind_waitlist", "column_id": "ind_waitlist"},
+            {"column": 47, "content": "ind_review_phasetwo", "column_id": "ind_review_phasetwo"}
+        ]
+    },
+    "source_path_employees": {
+        "path": "C:\\Users\\u0150867\\Grupo Caixabank\\27104 - 27014\\Proyectos\\P017 - generative AI\\consultas genAI\\127 - vibe coding guide\\files",
+        "file": "DC_TD_EMPLEADOS_PH.csv",
+        "keep": [
+            "FK_CENTRO",
+            "PK_EMPL",
+            "FK_USUARIO",
+            "DES_FUN_MAS_CASTELLANO",
+            "DES_TAREA_CASTELLANO",
+            "DES_POSICION_CASTELLANO",
+            "NOMBRE_EMPLEADO",
+            "APELLIDO1_EMPLEADO",
+            "APELLIDO2_EMPLEADO"
+        ]
+    },
+    "source_path_workcenters": {
+        "path": "C:\\Users\\u0150867\\Grupo Caixabank\\27104 - 27014\\Proyectos\\P017 - generative AI\\consultas genAI\\127 - vibe coding guide\\files",
+        "file": "CTM_TM_CENTROS_JER.csv",
+        "keep": [
+            "PK_CENTRO",
+            "DES_CENTRO_GES",
+            "COD_DAN",
+            "DES_DAN",
+            "COD_DG",
+            "DES_DG",
+            "COD_DT",
+            "DES_DT",
+            "COD_RED",
+            "DES_RED",
+            "COD_TOTAL_EMPRESA",
+            "DES_TOTAL_EMPRESA"
+        ]
+    }
+}
+
