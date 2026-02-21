@@ -1,0 +1,60 @@
+{
+  "main_exercises": [
+    {"folder": "intro_python", "number": "Intro", "image": "assets/intro_python.jpg"},
+    {"folder": "etl_merger", "number": "ETL 1", "image": "assets/etl_merger.jpg"},
+    {"folder": "etl_detective", "number": "ETL 2", "image": "assets/etl_detective.jpg"},
+    {"folder": "etl_survey", "number": "ETL 3", "image": "assets/etl_survey.jpg"},
+    {"folder": "viz_managers_chart", "number": "Viz 1", "image": "assets/viz_managers_chart.jpg"},
+    {"folder": "viz_report_generator", "number": "Viz 2", "image": "assets/viz_report_generator.jpg"},
+    {"folder": "auto_excel_polish", "number": "Auto 1", "image": "assets/auto_excel_polish.jpg"},
+    {"folder": "auto_file_organizer", "number": "Auto 2", "image": "assets/auto_file_organizer.jpg"},
+    {"folder": "etl_bonus_big_data", "number": "Bonus", "image": "assets/etl_bonus_big_data.jpg"}
+  ],
+  "bonus_exercises": [
+    {"folder": "auto_pdf_report", "number": "Bonus", "image": "assets/bonus_auto_pdf_report.jpg"},
+    {"folder": "etl_api_pipeline", "number": "Bonus", "image": "assets/bonus_etl_api_pipeline.jpg"},
+    {"folder": "viz_d3_bar_chart", "number": "Bonus", "image": "assets/bonus_viz_d3_bar_chart.jpg"},
+    {"folder": "viz_d3_force_network", "number": "Bonus", "image": "assets/bonus_viz_d3_force_network.jpg"},
+    {"folder": "viz_geo_heatmap", "number": "Bonus", "image": "assets/bonus_viz_geo_heatmap.jpg"},
+    {"folder": "viz_interactive_dashboard", "number": "Bonus", "image": "assets/bonus_viz_interactive_dashboard.jpg"},
+    {"folder": "viz_seaborn_scatter", "number": "Bonus", "image": "assets/bonus_viz_seaborn_scatter.jpg"},
+    {"folder": "viz_seaborn_statistical", "number": "Bonus", "image": "assets/bonus_viz_seaborn_statistical.jpg"}
+  ],
+  "ui_strings": {
+    "en": {
+      "welcome": "Welcome",
+      "team_agreement": "Team Agreement",
+      "exercise_menu": "Exercise Menu",
+      "break_time": "Break Time",
+      "survey": "Survey",
+      "congratulations": "Congratulations",
+      "bonus_exercises": "Bonus Exercises",
+      "back_to_menu": "← Back to Menu",
+      "back_to_bonus": "← Back to Bonus",
+      "menu": "← Menu",
+      "bonus_menu": "← Bonus Menu",
+      "main_menu": "← Main Menu",
+      "break_time_btn": "Break Time",
+      "finish_session": "Finish Session"
+    },
+    "es": {
+      "welcome": "Bienvenida",
+      "team_agreement": "Acuerdo de Equipo",
+      "exercise_menu": "Menú de Ejercicios",
+      "break_time": "Hora de Descanso",
+      "survey": "Encuesta",
+      "congratulations": "Felicitaciones",
+      "bonus_exercises": "Ejercicios Bonus",
+      "back_to_menu": "← Volver al Menú",
+      "back_to_bonus": "← Volver al Bonus",
+      "menu": "← Menú",
+      "bonus_menu": "← Menú Bonus",
+      "main_menu": "← Menú Principal",
+      "break_time_btn": "Hora de Descanso",
+      "finish_session": "Finalizar Sesión",
+      "instructions": "Instrucciones",
+      "takeaways": "Conclusiones",
+      "go_to_survey": "Ir a la Encuesta →"
+    }
+  }
+}

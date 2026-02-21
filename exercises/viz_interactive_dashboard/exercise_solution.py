@@ -8,9 +8,13 @@ import os
 script_dir = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR = os.path.join(script_dir, "data")
 INPUT_FILE = os.path.join(DATA_DIR, "sales_data_full.csv")
-OUTPUT_HTML = os.path.join(DATA_DIR, "dashboard.html")
+OUTPUT_HTML = os.path.join(DATA_DIR, "solutions", "dashboard.html")
 THEME = "plotly_dark"  # Try: "plotly_dark", "seaborn", "ggplot2", "presentation"
 
+
+
+# Ensure solutions directory exists
+os.makedirs(os.path.join(DATA_DIR, 'solutions'), exist_ok=True)
 
 def main():
     # -------------------------------------------------------

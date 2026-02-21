@@ -5,7 +5,11 @@ import os
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR = os.path.join(SCRIPT_DIR, "data")
 INPUT_FILE = os.path.join(DATA_DIR, "raw_sales_data.xlsx")
-OUTPUT_FILE = os.path.join(DATA_DIR, "polished_report.xlsx")
+OUTPUT_FILE = os.path.join(DATA_DIR, "solutions", "polished_report.xlsx")
+
+
+# Ensure solutions directory exists
+os.makedirs(os.path.join(DATA_DIR, 'solutions'), exist_ok=True)
 
 def main():
     print(f"Reading data from {INPUT_FILE}...")

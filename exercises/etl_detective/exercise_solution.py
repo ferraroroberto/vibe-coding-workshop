@@ -4,7 +4,11 @@ import os
 # --- CONFIGURATION ---
 BASE_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data')
 INPUT_FILE = "combined_sales.csv"
-OUTPUT_FILE = "clean_sales_data.csv"
+OUTPUT_FILE = "solutions/clean_sales_data.csv"
+
+
+# Ensure solutions directory exists
+os.makedirs(os.path.join(BASE_DIR, 'solutions'), exist_ok=True)
 
 def main():
     print("--- Starting ETL 2: The Data Detective ---")

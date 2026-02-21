@@ -9,9 +9,9 @@ import os
 script_dir = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR = os.path.join(script_dir, "data")
 INPUT_FILE = os.path.join(DATA_DIR, "product_transactions.csv")
-OUTPUT_SCATTER = os.path.join(DATA_DIR, "executive_scatter.png")
-OUTPUT_REGRESSION = os.path.join(DATA_DIR, "category_regression.png")
-OUTPUT_FACETED = os.path.join(DATA_DIR, "regional_scatter.png")
+OUTPUT_SCATTER = os.path.join(DATA_DIR, "solutions", "executive_scatter.png")
+OUTPUT_REGRESSION = os.path.join(DATA_DIR, "solutions", "category_regression.png")
+OUTPUT_FACETED = os.path.join(DATA_DIR, "solutions", "regional_scatter.png")
 
 
 def currency_format(x, pos):
@@ -20,6 +20,10 @@ def currency_format(x, pos):
         return f"${x:,.0f}"
     return f"${x:.0f}"
 
+
+
+# Ensure solutions directory exists
+os.makedirs(os.path.join(DATA_DIR, 'solutions'), exist_ok=True)
 
 def main():
     # -------------------------------------------------------

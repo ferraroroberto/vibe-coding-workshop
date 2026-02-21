@@ -24,4 +24,4 @@ La VP de Ventas Internacionales quiere ver *de dónde* viene el dinero — no en
 Construir una visualización geográfica interactiva usando **Folium** (o Leaflet/Plotly): una **capa de mapa de calor** que muestre la intensidad de ventas por ciudad, **marcadores circulares** dimensionados por ingresos con detalles en popup, un **control de capas** para alternar vistas, y una **leyenda** o superposición de título.
 
 ## Resultado esperado
-Un archivo autónomo `sales_heatmap.html` que se abre en cualquier navegador mostrando un mapa mundial interactivo con datos de ventas superpuestos. Al hacer clic en una ciudad se revelan ingresos totales, número de pedidos y producto principal — el tipo de entregable que se proyecta en una sala de directorio.
+Un archivo autónomo `sales_heatmap.html` que se abre en cualquier navegador mostrando un mapa mundial interactivo con datos de ventas superpuestos. Al hacer clic en una ciudad se revelan ingresos totales, número de pedidos y producto principal — el tipo de entregable que se proyecta en una sala de dirección.

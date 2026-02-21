@@ -6,9 +6,13 @@ import os
 script_dir = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR = os.path.join(script_dir, "data")
 INPUT_FILE = os.path.join(DATA_DIR, "monthly_product_sales.csv")
-OUTPUT_HTML = os.path.join(DATA_DIR, "bar_chart_race.html")
+OUTPUT_HTML = os.path.join(DATA_DIR, "solutions", "bar_chart_race.html")
 TOP_N = 10  # Show top N products per frame
 
+
+
+# Ensure solutions directory exists
+os.makedirs(os.path.join(DATA_DIR, 'solutions'), exist_ok=True)
 
 def main():
     # -------------------------------------------------------

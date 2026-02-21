@@ -6,12 +6,16 @@ import os
 script_dir = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR = os.path.join(script_dir, "data")
 INPUT_FILE = os.path.join(DATA_DIR, "client_transactions.csv")
-OUTPUT_HTML = os.path.join(DATA_DIR, "relationship_network.html")
+OUTPUT_HTML = os.path.join(DATA_DIR, "solutions", "relationship_network.html")
 
 # Limits for visual clarity
 MAX_CLIENTS = 15   # Top N clients by revenue
 MIN_EDGE_WEIGHT = 2  # Minimum transactions to show an edge
 
+
+
+# Ensure solutions directory exists
+os.makedirs(os.path.join(DATA_DIR, 'solutions'), exist_ok=True)
 
 def main():
     # -------------------------------------------------------

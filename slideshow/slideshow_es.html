@@ -47,6 +47,32 @@
             background-color: rgba(0, 0, 0, 0.4);
         }
 
+        .fullscreen-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 0.75rem 1.5rem;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: clamp(0.9rem, 1.3vw, 1.1rem);
+            font-weight: 600;
+            transition: all 0.3s ease;
+            z-index: 100;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .fullscreen-btn:hover {
+            background: rgba(255, 255, 255, 0.25);
+            border-color: rgba(255, 255, 255, 0.5);
+            transform: scale(1.05);
+        }
+
         .slide-title .content {
             text-align: center;
             color: white;
@@ -393,11 +419,51 @@
                 font-size: 0.85rem;
             }
         }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+
+        .modal-content {
+            position: relative;
+            margin: auto;
+            top: 50%;
+            transform: translateY(-50%);
+            text-align: center;
+        }
+
+        .close {
+            position: absolute;
+            top: 10px;
+            right: 25px;
+            color: white;
+            font-size: 35px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover {
+            color: #ccc;
+        }
     </style>
 </head>
 <body>
     <div class="slideshow-container" id="slideshow">
         <!-- Slides will be dynamically generated here -->
+    </div>
+
+    <div id="qr-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <img src="assets/qr.jpg" alt="QR Code" style="border: 5px solid white; border-radius: 5px; max-width: 90vw; max-height: 90vh;">
+        </div>
     </div>
 
     <button class="nav-button prev" onclick="changeSlide(-1)">‹</button>
@@ -436,10 +502,20 @@
                 type: 'congratulations',
                 image: 'assets/congratulations.jpg',
                 title: 'Congratulations'
+            },
+            {
+                type: 'instructions',
+                image: 'assets/instructions.jpg',
+                title: 'Instrucciones'
+            },
+            {
+                type: 'takeaways',
+                image: 'assets/takeaways.jpg',
+                title: 'Conclusiones'
             }
         ];
 
-                                                        // Exercise data - matches the sequence from exercises_selection.md
+                                                                                                                                                // Exercise data - matches the sequence from exercises_selection.md
         const exercises = [
             {
                 number: "Intro",
@@ -500,7 +576,7 @@ Eres analista de datos en *Global Widgets Inc.* Combinaste exitosamente los arch
 ## Tu misión
 
 1. **Cargar** el archivo \`combined_sales.csv\`.
-2. **Encontrar y eliminar** \`Order_ID\` duplicados (falla en el sistema).
+2. **Encontrar y eliminar** \`Order_ID\` duplicados (fallo en el sistema).
 3. **Filtrar** los números negativos en la columna \`Revenue\` (reembolsos erróneos).
 4. **Guardar** el conjunto de datos limpio como \`clean_sales_data.csv\`.
 
@@ -526,7 +602,7 @@ Limpiar este conjunto de datos para que eventualmente pueda unirse con tus datos
 
 1. Estandarizar la columna \`Gender\` (Male/Female/Other).
 2. Estandarizar \`Join_Date\` (objetos Datetime).
-3. Añadir una nueva columna de bandera \`Compensation_Issue\` (True/False) basada en palabras clave.
+3. Añadir una nueva columna de indicador \`Compensation_Issue\` (True/False) basada en palabras clave.
 4. (Opcional) Añadir una nueva columna \`extracted_email\` extraída de los comentarios usando Regex.
 
 ## Resultado esperado
@@ -535,17 +611,17 @@ Un DataFrame (y CSV) limpio con Gender y Join_Date estandarizados y las nuevas c
             },
             {
                 number: "Viz 1",
-                title: "Ejercicio: El Gráfico del Gerente",
+                title: "Ejercicio: El Gráfico del manager",
                 image: "assets/viz_managers_chart.jpg",
-                content: `# Ejercicio: El Gráfico del Gerente
+                content: `# Ejercicio: El Gráfico del manager
 
 ## El escenario
 
-Tu \`clean_sales_data.csv\` está listo. Ahora la Gerente quiere una visual para la reunión de directorio. Específicamente quiere ver "Ingresos Totales por Categoría de Producto." Es exigente con colores y títulos — los gráficos crudos y sin formato no serán aceptados.
+Tu \`clean_sales_data.csv\` está listo. Ahora la manager quiere una visual para la reunión de dirección. Específicamente quiere ver "Ingresos Totales por Categoría de Producto." Es exigente con colores y títulos — los gráficos crudos y sin formato no serán aceptados.
 
 ## Tu misión
 
-Crear un gráfico de barras de nivel profesional que muestre **Ingresos Totales por Categoría de Producto** para la reunión de directorio. El gráfico debe comunicar efectivamente el rendimiento de ventas a la gerencia, con títulos claros y formato de moneda apropiado.
+Crear un gráfico de barras de nivel profesional que muestre **Ingresos Totales por Categoría de Producto** para la reunión de dirección. El gráfico debe comunicar efectivamente el rendimiento de ventas a la gerencia, con títulos claros y formato de moneda apropiado.
 
 ## Resultado esperado
 
@@ -559,7 +635,7 @@ Un gráfico de barras limpio y profesional mostrado (o guardado) que indique qu�
 
 ## El escenario
 
-El gráfico está genial, pero la Gerente también quiere los números crudos en Excel para trabajar. Pide *un* archivo Excel que contenga un resumen ejecutivo y los datos de respaldo completos — el tipo de entregable que une tu análisis y el reporte corporativo.
+El gráfico está genial, pero la manager también quiere los números crudos en Excel para trabajar. Pide *un* archivo Excel que contenga un resumen ejecutivo y los datos de respaldo completos — el tipo de entregable que une tu análisis y el reporte corporativo.
 
 ## Tu misión
 
@@ -655,7 +731,7 @@ Has ejecutado consultas sobre datos grandes con DuckDB y exportado (o convertido
                 content: `# Bonus: Reporte PDF Automático (El Entregable Ejecutivo)
 
 ## El escenario
-La CFO no usa Excel. No abre archivos HTML. Quiere un **PDF** — limpio, con marca, con gráficos y tablas incrustados — que pueda imprimir, anotar y enviar al directorio. Cada trimestre has estado capturando manualmente gráficos, pegándolos en Word y exportando a PDF. Ya no más.
+La CFO no usa Excel. No abre archivos HTML. Quiere un **PDF** — limpio, con marca, con gráficos y tablas incrustados — que pueda imprimir, anotar y enviar a dirección. Cada trimestre has estado capturando manualmente gráficos, pegándolos en Word y exportando a PDF. Ya no más.
 
 ## Tu misión
 Construir un script en Python que genere automáticamente un reporte PDF de múltiples páginas: una **portada** con título y marca, una **sección de resumen KPI**, **gráficos de barras y circular incrustados** (Ingresos por Categoría), una **tabla de datos formateada** (top 10 transacciones) y **pies de página** con números de página.
@@ -721,7 +797,7 @@ La VP de Ventas Internacionales quiere ver *de dónde* viene el dinero — no en
 Construir una visualización geográfica interactiva usando **Folium** (o Leaflet/Plotly): una **capa de mapa de calor** que muestre la intensidad de ventas por ciudad, **marcadores circulares** dimensionados por ingresos con detalles en popup, un **control de capas** para alternar vistas, y una **leyenda** o superposición de título.
 
 ## Resultado esperado
-Un archivo autónomo \`sales_heatmap.html\` que se abre en cualquier navegador mostrando un mapa mundial interactivo con datos de ventas superpuestos. Al hacer clic en una ciudad se revelan ingresos totales, número de pedidos y producto principal — el tipo de entregable que se proyecta en una sala de directorio.`
+Un archivo autónomo \`sales_heatmap.html\` que se abre en cualquier navegador mostrando un mapa mundial interactivo con datos de ventas superpuestos. Al hacer clic en una ciudad se revelan ingresos totales, número de pedidos y producto principal — el tipo de entregable que se proyecta en una sala de dirección.`
             },
             {
                 number: "Bonus",
@@ -730,7 +806,7 @@ Un archivo autónomo \`sales_heatmap.html\` que se abre en cualquier navegador m
                 content: `# Bonus: Dashboard Interactivo (El Factor Wow)
 
 ## El escenario
-A la CEO le encantaron tus gráficos estáticos, pero ahora quiere algo con lo que pueda *interactuar* — filtrar por región, pasar el cursor sobre puntos de datos y compartir con el directorio mediante un enlace simple. Los PNG estáticos ya no bastan.
+A la CEO le encantaron tus gráficos estáticos, pero ahora quiere algo con lo que pueda *interactuar* — filtrar por región, pasar el cursor sobre puntos de datos y compartir con dirección mediante un enlace simple. Los PNG estáticos ya no bastan.
 
 ## Tu misión
 Construir un dashboard HTML interactivo y llamativo usando **Plotly** (o Streamlit/Dash): una **fila de resumen KPI** (Ingresos Totales, Pedidos, Valor Promedio de Pedido), un **gráfico sunburst** (Ingresos por Región → Categoría → Producto), un **gráfico de líneas de series temporales** filtrable por región, y un **gráfico de barras de top 10 productos** con tooltips al pasar el cursor.
@@ -881,10 +957,27 @@ Imágenes PNG de calidad publicable: \`correlation_heatmap.png\`, \`satisfaction
             const teamSlide = document.createElement('div');
             teamSlide.className = 'slide slide-title';
             teamSlide.style.backgroundImage = `url('${specialSlides[1].image}')`;
+            teamSlide.innerHTML = `
+                <a href="tmp/clip.mp4" target="_blank" class="fullscreen-btn">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
+                    </svg>
+                    clip
+                </a>
+            `;
             slideshow.appendChild(teamSlide);
             slideIndex++;
 
-            // 3. Menu slide - Image
+            // 3. Instrucciones slide (NEW)
+            instructionsSlideIndex = slideIndex;
+            const instructionsSlide = document.createElement('div');
+            instructionsSlide.className = 'slide slide-title';
+            // specialSlides[6] is 'instructions'
+            instructionsSlide.style.backgroundImage = `url('${specialSlides[6].image}')`;
+            slideshow.appendChild(instructionsSlide);
+            slideIndex++;
+
+            // 4. Menu slide - Image
             menuImageSlideIndex = slideIndex;
             const menuImageSlide = document.createElement('div');
             menuImageSlide.className = 'slide slide-menu-image';
@@ -892,7 +985,7 @@ Imágenes PNG de calidad publicable: \`correlation_heatmap.png\`, \`satisfaction
             slideshow.appendChild(menuImageSlide);
             slideIndex++;
 
-            // 4. Menu slide - Content
+            // 5. Menu slide - Content
             menuContentSlideIndex = slideIndex;
             const menuSlide = document.createElement('div');
             menuSlide.className = 'slide slide-menu';
@@ -924,7 +1017,7 @@ Imágenes PNG de calidad publicable: \`correlation_heatmap.png\`, \`satisfaction
             slideshow.appendChild(menuSlide);
             slideIndex++;
 
-            // 4. Generate main exercise slides (title + content for each)
+            // 6. Generate main exercise slides (title + content for each)
             exerciseStartIndex = slideIndex;
             mainExercises.forEach((exercise, index) => {
                 const titleSlide = document.createElement('div');
@@ -959,7 +1052,7 @@ Imágenes PNG de calidad publicable: \`correlation_heatmap.png\`, \`satisfaction
             });
             exerciseEndIndex = slideIndex - 1;
 
-            // 5. Bonus menu - Image
+            // 7. Bonus menu - Image
             bonusMenuImageSlideIndex = slideIndex;
             const bonusMenuImageSlide = document.createElement('div');
             bonusMenuImageSlide.className = 'slide slide-menu-image';
@@ -967,7 +1060,7 @@ Imágenes PNG de calidad publicable: \`correlation_heatmap.png\`, \`satisfaction
             slideshow.appendChild(bonusMenuImageSlide);
             slideIndex++;
 
-            // 6. Bonus menu - Content
+            // 8. Bonus menu - Content
             bonusMenuContentSlideIndex = slideIndex;
             const bonusMenuSlide = document.createElement('div');
             bonusMenuSlide.className = 'slide slide-menu';
@@ -997,7 +1090,7 @@ Imágenes PNG de calidad publicable: \`correlation_heatmap.png\`, \`satisfaction
             slideshow.appendChild(bonusMenuSlide);
             slideIndex++;
 
-            // 7. Bonus exercise slides (title + content for each)
+            // 9. Bonus exercise slides (title + content for each)
             bonusExerciseStartIndex = slideIndex;
             bonusExercises.forEach((exercise, index) => {
                 const titleSlide = document.createElement('div');
@@ -1031,7 +1124,7 @@ Imágenes PNG de calidad publicable: \`correlation_heatmap.png\`, \`satisfaction
             });
             bonusExerciseEndIndex = slideIndex - 1;
 
-            // 8. Hora de Descanso slide (no title, just image)
+            // 10. Hora de Descanso slide (no title, just image)
             breakTimeSlideIndex = slideIndex;
             const breakSlide = document.createElement('div');
             breakSlide.className = 'slide slide-title';
@@ -1045,15 +1138,45 @@ Imágenes PNG de calidad publicable: \`correlation_heatmap.png\`, \`satisfaction
             slideshow.appendChild(breakSlide);
             slideIndex++;
 
-            // 9. Survey slide (no title, just image)
+            // 11. Conclusiones slide (NEW) - before Survey
+            takeawaysSlideIndex = slideIndex;
+            const takeawaysSlide = document.createElement('div');
+            takeawaysSlide.className = 'slide slide-title';
+            // specialSlides[7] is 'takeaways'
+            takeawaysSlide.style.backgroundImage = `url('${specialSlides[7].image}')`;
+            // Add prominent button to go to Survey
+            takeawaysSlide.innerHTML = `
+                <a onclick="window.open('https://www.mentimeter.com/app/presentation/alckdi8cc5a56i5d3vt6q712x62py3qf/present?question=h1ir3nj3wgym', '_blank')" class="fullscreen-btn">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
+                    </svg>
+                    Menti
+                </a>
+                <div class="exercise-actions" style="position: absolute; bottom: 3rem; right: 3rem; transform: scale(1.5); display: flex; flex-direction: column; gap: 1rem;">
+                    <button class="exercise-action-button" onclick="window.open('https://www.mentimeter.com/app/presentation/alckdi8cc5a56i5d3vt6q712x62py3qf/present?question=h1ir3nj3wgym', '_blank')">Menti</button>
+                    <button class="exercise-action-button" style="background: rgba(100, 181, 246, 0.9); color: #000;" onclick="goToRealSurvey()">Ir a la Encuesta →</button>
+                </div>
+            `;
+            slideshow.appendChild(takeawaysSlide);
+            slideIndex++;
+
+            // 12. Survey slide (no title, just image)
             surveySlideIndex = slideIndex;
             const surveySlide = document.createElement('div');
             surveySlide.className = 'slide slide-title';
             surveySlide.style.backgroundImage = `url('${specialSlides[4].image}')`;
+            surveySlide.innerHTML = `
+                <a onclick="showQR()" class="fullscreen-btn">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
+                    </svg>
+                    QR
+                </a>
+            `;
             slideshow.appendChild(surveySlide);
             slideIndex++;
 
-            // 10. Congratulations slide (no title, just image)
+            // 13. Congratulations slide (no title, just image)
             const congratsSlide = document.createElement('div');
             congratsSlide.className = 'slide slide-title';
             congratsSlide.style.backgroundImage = `url('${specialSlides[5].image}')`;
@@ -1114,6 +1237,14 @@ Imágenes PNG de calidad publicable: \`correlation_heatmap.png\`, \`satisfaction
         function goToSurvey() {
             const slides = slideshow.querySelectorAll('.slide');
             slides[currentSlide].classList.remove('active');
+            currentSlide = takeawaysSlideIndex;
+            slides[currentSlide].classList.add('active');
+            updateCounter();
+        }
+
+        function goToRealSurvey() {
+            const slides = slideshow.querySelectorAll('.slide');
+            slides[currentSlide].classList.remove('active');
             currentSlide = surveySlideIndex;
             slides[currentSlide].classList.add('active');
             updateCounter();
@@ -1142,10 +1273,28 @@ Imágenes PNG de calidad publicable: \`correlation_heatmap.png\`, \`satisfaction
 
         // Keyboard navigation
         document.addEventListener('keydown', (e) => {
-            if (e.key === 'ArrowLeft') {
+            if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
                 changeSlide(-1);
-            } else if (e.key === 'ArrowRight') {
+            } else if (e.key === 'ArrowRight' || e.key === 'PageDown') {
                 changeSlide(1);
+            } else if (e.key === 'b' || e.key === 'B') {
+                // Context-specific action
+                if (currentSlide === 42) { // Slide 43: open Mentimeter
+                    window.open('https://www.mentimeter.com/app/presentation/alckdi8cc5a56i5d3vt6q712x62py3qf/present?question=h1ir3nj3wgym', '_blank');
+                } else if (currentSlide >= 5 && currentSlide <= 23) { // Exercise slides 6-24: back to menu
+                    goToMenu();
+                } else if (currentSlide >= 25 && currentSlide <= 40) { // Bonus slides 26-41: back to bonus menu
+                    goToBonusMenu();
+                } else if (currentSlide === 1) { // Slide 2: Team Agreement - open video
+                    window.open('tmp/clip.mp4', '_blank');
+                } else if (currentSlide === 43) { // Slide 44: toggle QR
+                    const qrModal = document.getElementById('qr-modal');
+                    if (qrModal.style.display === 'block') {
+                        qrModal.style.display = 'none';
+                    } else {
+                        showQR();
+                    }
+                }
             }
         });
 
@@ -1170,6 +1319,20 @@ Imágenes PNG de calidad publicable: \`correlation_heatmap.png\`, \`satisfaction
                 changeSlide(-1); // Swipe right = previous
             }
         }
+
+        function showQR() {
+            document.getElementById('qr-modal').style.display = 'block';
+        }
+
+        document.querySelector('.close').addEventListener('click', function() {
+            document.getElementById('qr-modal').style.display = 'none';
+        });
+
+        window.addEventListener('click', function(event) {
+            if (event.target == document.getElementById('qr-modal')) {
+                document.getElementById('qr-modal').style.display = 'none';
+            }
+        });
 
         // Initialize slideshow
         generateSlides();

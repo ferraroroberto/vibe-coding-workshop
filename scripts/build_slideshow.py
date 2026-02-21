@@ -2,7 +2,7 @@
 """
 Build slideshow.html and slideshow_es.html from exercise_starter.md files.
 
-Reads preparation/slideshow_config.json for main and bonus exercise order.
+Reads slideshow/slideshow_config.json for main and bonus exercise order.
 Parses each exercise_starter.md for ## English and ## Español sections.
 Outputs both English and Spanish slideshows.
 
@@ -14,7 +14,7 @@ import re
 from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
-CONFIG_PATH = PROJECT_ROOT / "preparation" / "slideshow_config.json"
+CONFIG_PATH = PROJECT_ROOT / "slideshow" / "slideshow_config.json"
 EXERCISES_DIR = PROJECT_ROOT / "exercises"
 SLIDESHOW_PATH = PROJECT_ROOT / "slideshow" / "slideshow.html"
 SLIDESHOW_ES_PATH = PROJECT_ROOT / "slideshow" / "slideshow_es.html"
@@ -145,6 +145,9 @@ def apply_ui_strings(html: str, ui: dict) -> str:
         ("← Main Menu", ui["main_menu"]),
         ("← Menu", ui["menu"]),
         ("← Back to Bonus", ui["back_to_bonus"]),
+        ("Instructions", ui.get("instructions", "Instructions")),
+        ("Takeaways", ui.get("takeaways", "Takeaways")),
+        ("Go to Survey →", ui.get("go_to_survey", "Go to Survey →")),
     ]
     for old, new in replacements:
         html = html.replace(old, new)

@@ -32,7 +32,7 @@ Eres analista de datos en *Global Widgets Inc.* Combinaste exitosamente los arch
 ## Tu misión
 
 1. **Cargar** el archivo `combined_sales.csv`.
-2. **Encontrar y eliminar** `Order_ID` duplicados (falla en el sistema).
+2. **Encontrar y eliminar** `Order_ID` duplicados (fallo en el sistema).
 3. **Filtrar** los números negativos en la columna `Revenue` (reembolsos erróneos).
 4. **Guardar** el conjunto de datos limpio como `clean_sales_data.csv`.
 

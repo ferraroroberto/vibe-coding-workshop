@@ -18,7 +18,7 @@ A single self-contained `dashboard.html` file that opens in any browser — no s
 # Bonus: Dashboard Interactivo (El Factor Wow)
 
 ## El escenario
-A la CEO le encantaron tus gráficos estáticos, pero ahora quiere algo con lo que pueda *interactuar* — filtrar por región, pasar el cursor sobre puntos de datos y compartir con el directorio mediante un enlace simple. Los PNG estáticos ya no bastan.
+A la CEO le encantaron tus gráficos estáticos, pero ahora quiere algo con lo que pueda *interactuar* — filtrar por región, pasar el cursor sobre puntos de datos y compartir con dirección mediante un enlace simple. Los PNG estáticos ya no bastan.
 
 ## Tu misión
 Construir un dashboard HTML interactivo y llamativo usando **Plotly** (o Streamlit/Dash): una **fila de resumen KPI** (Ingresos Totales, Pedidos, Valor Promedio de Pedido), un **gráfico sunburst** (Ingresos por Región → Categoría → Producto), un **gráfico de líneas de series temporales** filtrable por región, y un **gráfico de barras de top 10 productos** con tooltips al pasar el cursor.

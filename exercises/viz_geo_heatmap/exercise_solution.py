@@ -8,13 +8,17 @@ import os
 script_dir = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR = os.path.join(script_dir, "data")
 INPUT_FILE = os.path.join(DATA_DIR, "global_sales_geo.csv")
-OUTPUT_HTML = os.path.join(DATA_DIR, "sales_heatmap.html")
+OUTPUT_HTML = os.path.join(DATA_DIR, "solutions", "sales_heatmap.html")
 
 # Map settings
 MAP_CENTER = [20, 0]  # Roughly centered for a world view
 MAP_ZOOM = 2
 MAP_TILES = "CartoDB dark_matter"  # Dramatic dark theme
 
+
+
+# Ensure solutions directory exists
+os.makedirs(os.path.join(DATA_DIR, 'solutions'), exist_ok=True)
 
 def main():
     # -------------------------------------------------------

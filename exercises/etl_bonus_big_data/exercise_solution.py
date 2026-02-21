@@ -7,7 +7,10 @@ import time
 script_dir = os.path.dirname(__file__)
 DATA_DIR = os.path.join(script_dir, "data")
 LOGS_DIR = os.path.join(DATA_DIR, "server_logs")
-PARQUET_FILE = os.path.join(DATA_DIR, "logs_optimized.parquet")
+PARQUET_FILE = os.path.join(DATA_DIR, "solutions", "logs_optimized.parquet")
+
+# Ensure solutions directory exists
+os.makedirs(os.path.join(DATA_DIR, 'solutions'), exist_ok=True)
 
 # The Glob pattern to match ALL csv files in the logs directory
 CSV_PATTERN = os.path.join(LOGS_DIR, "*.csv")

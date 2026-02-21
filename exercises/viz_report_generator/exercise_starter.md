@@ -27,7 +27,7 @@ One file `final_report.xlsx` with two sheets: Executive Summary and Backing Data
 
 ## El escenario
 
-El gráfico está genial, pero la Gerente también quiere los números crudos en Excel para trabajar. Pide *un* archivo Excel que contenga un resumen ejecutivo y los datos de respaldo completos — el tipo de entregable que une tu análisis y el reporte corporativo.
+El gráfico está genial, pero la manager también quiere los números crudos en Excel para trabajar. Pide *un* archivo Excel que contenga un resumen ejecutivo y los datos de respaldo completos — el tipo de entregable que une tu análisis y el reporte corporativo.
 
 ## Tu misión
 
