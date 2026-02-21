@@ -8,7 +8,11 @@ import os
 SCRIPT_DIR = os.path.dirname(__file__)
 DATA_DIR = os.path.join(SCRIPT_DIR, "data")
 INPUT_FILE = os.path.join(DATA_DIR, "clean_sales_data.csv")
-OUTPUT_IMAGE = os.path.join(DATA_DIR, "revenue_by_category.png")
+OUTPUT_IMAGE = os.path.join(DATA_DIR, "solutions", "revenue_by_category.png")
+
+
+# Ensure solutions directory exists
+os.makedirs(os.path.join(DATA_DIR, 'solutions'), exist_ok=True)
 
 def main():
     # 1. Load the Data

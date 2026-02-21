@@ -4,7 +4,10 @@ import os
 # --- CONFIGURATION ---
 script_dir = os.path.dirname(__file__)
 INPUT_FILE = os.path.join(script_dir, "data", "hr_survey_raw.csv")
-OUTPUT_FILE = os.path.join(script_dir, "data", "hr_survey_clean.csv")
+OUTPUT_FILE = os.path.join(script_dir, "data", "solutions", "hr_survey_clean.csv")
+
+# Ensure solutions directory exists
+os.makedirs(os.path.join(script_dir, "data", "solutions"), exist_ok=True)
 
 def clean_survey_data():
     # 1. Load Data

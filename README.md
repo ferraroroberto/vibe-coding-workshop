@@ -48,7 +48,7 @@ A hands-on workshop for learning data manipulation, automation, and visualizatio
 - `preparation/slideshow_part01_exercises.md` – How the basic slideshow was built
 - `preparation/slideshow_part02_sequence.md` – Sequence, menu, and navigation
 - `preparation/slideshow_part03_bonus.md` – Bonus section (menu, 8 exercises, navigation)
-- `preparation/slideshow_config.json` – Main and bonus exercise order; used by `scripts/build_slideshow.py` to generate slideshows
+- `slideshow/slideshow_config.json` – Main and bonus exercise order; used by `scripts/build_slideshow.py` to generate slideshows
 - `preparation/how_images_were_created.md` – How workshop images were made (Part 1: main set; Part 2: bonus images prompt for Gemini)
 
 ## Exercises
@@ -67,7 +67,7 @@ See the slideshow for titles and goals; details live in each exercise folder und
 
 ## Contributing
 
-- **New exercise**: Follow `preparation/metaprompt.md`; add a folder under `exercises/` with starter (bilingual: `## English` and `## Español` sections), solution, setup, and data; add the exercise to `preparation/slideshow_config.json` (main or bonus list) and run `python3 scripts/build_slideshow.py` to regenerate `slideshow/slideshow.html` and `slideshow/slideshow_es.html`; add an image to `slideshow/assets/` if needed.
+- **New exercise**: Follow `preparation/metaprompt.md`; add a folder under `exercises/` with starter (bilingual: `## English` and `## Español` sections), solution, setup, and data; add the exercise to `slideshow/slideshow_config.json` (main or bonus list) and run `python3 scripts/build_slideshow.py` to regenerate `slideshow/slideshow.html` and `slideshow/slideshow_es.html`; add an image to `slideshow/assets/` if needed.
 - **New bonus image**: Use the table and instructions in `preparation/how_images_were_created.md` Part 2, generate images (e.g. with Gemini), save as the listed `bonus_*.jpg` names in `slideshow/assets/`.
 
 ## Requirements

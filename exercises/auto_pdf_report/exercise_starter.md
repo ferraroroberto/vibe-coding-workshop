@@ -18,7 +18,7 @@ A polished `quarterly_report.pdf` that looks professionally designed — but was
 # Bonus: Reporte PDF Automático (El Entregable Ejecutivo)
 
 ## El escenario
-La CFO no usa Excel. No abre archivos HTML. Quiere un **PDF** — limpio, con marca, con gráficos y tablas incrustados — que pueda imprimir, anotar y enviar al directorio. Cada trimestre has estado capturando manualmente gráficos, pegándolos en Word y exportando a PDF. Ya no más.
+La CFO no usa Excel. No abre archivos HTML. Quiere un **PDF** — limpio, con marca, con gráficos y tablas incrustados — que pueda imprimir, anotar y enviar a dirección. Cada trimestre has estado capturando manualmente gráficos, pegándolos en Word y exportando a PDF. Ya no más.
 
 ## Tu misión
 Construir un script en Python que genere automáticamente un reporte PDF de múltiples páginas: una **portada** con título y marca, una **sección de resumen KPI**, **gráficos de barras y circular incrustados** (Ingresos por Categoría), una **tabla de datos formateada** (top 10 transacciones) y **pies de página** con números de página.

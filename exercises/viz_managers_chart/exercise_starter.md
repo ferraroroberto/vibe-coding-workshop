@@ -18,15 +18,15 @@ A clean, professional bar chart displayed (or saved) that shows which business c
 
 ## Español
 
-# Ejercicio: El Gráfico del Gerente
+# Ejercicio: El Gráfico del manager
 
 ## El escenario
 
-Tu `clean_sales_data.csv` está listo. Ahora la Gerente quiere una visual para la reunión de directorio. Específicamente quiere ver "Ingresos Totales por Categoría de Producto." Es exigente con colores y títulos — los gráficos crudos y sin formato no serán aceptados.
+Tu `clean_sales_data.csv` está listo. Ahora la manager quiere una visual para la reunión de dirección. Específicamente quiere ver "Ingresos Totales por Categoría de Producto." Es exigente con colores y títulos — los gráficos crudos y sin formato no serán aceptados.
 
 ## Tu misión
 
-Crear un gráfico de barras de nivel profesional que muestre **Ingresos Totales por Categoría de Producto** para la reunión de directorio. El gráfico debe comunicar efectivamente el rendimiento de ventas a la gerencia, con títulos claros y formato de moneda apropiado.
+Crear un gráfico de barras de nivel profesional que muestre **Ingresos Totales por Categoría de Producto** para la reunión de dirección. El gráfico debe comunicar efectivamente el rendimiento de ventas a la gerencia, con títulos claros y formato de moneda apropiado.
 
 ## Resultado esperado
 

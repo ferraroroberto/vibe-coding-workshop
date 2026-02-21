@@ -3,9 +3,9 @@ import shutil
 import re
 
 base_dir = os.path.dirname(__file__)
-exercises_dir = os.path.join(base_dir, 'exercises')
-live_dir = os.path.join(base_dir, 'live')
-slideshow_file = os.path.join(base_dir, 'slideshow_es.html')
+exercises_dir = os.path.join(base_dir, '..', 'exercises')
+live_dir = os.path.join(base_dir, '..', 'live')
+slideshow_file = os.path.join(base_dir, '..', 'slideshow', 'slideshow_es.html')
 
 # Delete live folder if exists
 if os.path.exists(live_dir):
@@ -102,16 +102,19 @@ for i, exercise in enumerate(exercise_order):
     exercise_path = os.path.join(exercises_dir, exercise)
     if os.path.isdir(exercise_path):
         data_dir = os.path.join(exercise_path, 'data')
-        
+        starter_file = os.path.join(exercise_path, 'exercise_starter.md')
+
         # Check if manual mapping exists
         display_name = display_names.get(exercise, exercise)
-        
-        if os.path.exists(data_dir):
+
+        has_data = os.path.exists(data_dir)
+        has_starter = os.path.isfile(starter_file)
+
+        if has_data or has_starter:
             numbered_name = f"{i:02d}_{display_name}"
             live_exercise_dir = os.path.join(live_dir, numbered_name)
             os.makedirs(live_exercise_dir, exist_ok=True)
-            for file in os.listdir(data_dir):
-                src = os.path.join(data_dir, file)
-                dst = os.path.join(live_exercise_dir, file)
-                if os.path.isfile(src):
-                    shutil.copy2(src, dst)
+            if has_data:
+                shutil.copytree(data_dir, os.path.join(live_exercise_dir, 'data'))
+            if has_starter:
+                shutil.copy2(starter_file, os.path.join(live_exercise_dir, 'exercise_starter.md'))

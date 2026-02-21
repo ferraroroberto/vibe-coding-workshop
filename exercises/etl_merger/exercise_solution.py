@@ -7,7 +7,11 @@ BASE_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data')
 
 # Names of the files to process
 FILES = ["sales_q1.xlsx", "sales_q2.xlsx", "sales_q3.xlsx"]
-OUTPUT_FILE = "combined_sales.csv"
+OUTPUT_FILE = "solutions/combined_sales.csv"
+
+
+# Ensure solutions directory exists
+os.makedirs(os.path.join(BASE_DIR, 'solutions'), exist_ok=True)
 
 def main():
     print("--- Starting ETL Process: The Great Merger ---")

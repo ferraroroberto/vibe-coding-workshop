@@ -52,7 +52,7 @@ def organize_files():
                 break
         
         # 5. Create the destination path
-        target_folder_path = os.path.join(DATA_DIR, target_folder_name)
+        target_folder_path = os.path.join(DATA_DIR, "solutions", target_folder_name)
         
         # Create folder if it doesn't exist
         os.makedirs(target_folder_path, exist_ok=True)

@@ -9,14 +9,18 @@ script_dir = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR = os.path.join(script_dir, "data")
 INPUT_FILE = os.path.join(DATA_DIR, "employee_performance.csv")
 
-OUTPUT_HEATMAP = os.path.join(DATA_DIR, "correlation_heatmap.png")
-OUTPUT_VIOLIN = os.path.join(DATA_DIR, "satisfaction_violins.png")
-OUTPUT_PAIRPLOT = os.path.join(DATA_DIR, "metrics_pairplot.png")
-OUTPUT_BOXSTRIP = os.path.join(DATA_DIR, "revenue_by_seniority.png")
+OUTPUT_HEATMAP = os.path.join(DATA_DIR, "solutions", "correlation_heatmap.png")
+OUTPUT_VIOLIN = os.path.join(DATA_DIR, "solutions", "satisfaction_violins.png")
+OUTPUT_PAIRPLOT = os.path.join(DATA_DIR, "solutions", "metrics_pairplot.png")
+OUTPUT_BOXSTRIP = os.path.join(DATA_DIR, "solutions", "revenue_by_seniority.png")
 
 # Seniority order for plotting
 SENIORITY_ORDER = ["Junior", "Mid-Level", "Senior", "Lead", "Director"]
 
+
+
+# Ensure solutions directory exists
+os.makedirs(os.path.join(DATA_DIR, 'solutions'), exist_ok=True)
 
 def main():
     # -------------------------------------------------------

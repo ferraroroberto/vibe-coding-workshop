@@ -6,8 +6,8 @@ import os
 # --- CONFIGURATION ---
 script_dir = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR = os.path.join(script_dir, "data")
-OUTPUT_CSV = os.path.join(DATA_DIR, "customer_orders_consolidated.csv")
-OUTPUT_EXCEL = os.path.join(DATA_DIR, "pipeline_report.xlsx")
+OUTPUT_CSV = os.path.join(DATA_DIR, "solutions", "customer_orders_consolidated.csv")
+OUTPUT_EXCEL = os.path.join(DATA_DIR, "solutions", "pipeline_report.xlsx")
 
 
 def load_json_pages(pattern):
@@ -30,6 +30,10 @@ def load_json_pages(pattern):
 
     return all_records
 
+
+
+# Ensure solutions directory exists
+os.makedirs(os.path.join(DATA_DIR, 'solutions'), exist_ok=True)
 
 def main():
     print("=" * 50)

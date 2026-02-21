@@ -35,7 +35,7 @@ Limpiar este conjunto de datos para que eventualmente pueda unirse con tus datos
 
 1. Estandarizar la columna `Gender` (Male/Female/Other).
 2. Estandarizar `Join_Date` (objetos Datetime).
-3. Añadir una nueva columna de bandera `Compensation_Issue` (True/False) basada en palabras clave.
+3. Añadir una nueva columna de indicador `Compensation_Issue` (True/False) basada en palabras clave.
 4. (Opcional) Añadir una nueva columna `extracted_email` extraída de los comentarios usando Regex.
 
 ## Resultado esperado

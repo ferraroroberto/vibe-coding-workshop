@@ -47,6 +47,32 @@
             background-color: rgba(0, 0, 0, 0.4);
         }
 
+        .fullscreen-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 0.75rem 1.5rem;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: clamp(0.9rem, 1.3vw, 1.1rem);
+            font-weight: 600;
+            transition: all 0.3s ease;
+            z-index: 100;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .fullscreen-btn:hover {
+            background: rgba(255, 255, 255, 0.25);
+            border-color: rgba(255, 255, 255, 0.5);
+            transform: scale(1.05);
+        }
+
         .slide-title .content {
             text-align: center;
             color: white;
@@ -393,11 +419,51 @@
                 font-size: 0.85rem;
             }
         }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+
+        .modal-content {
+            position: relative;
+            margin: auto;
+            top: 50%;
+            transform: translateY(-50%);
+            text-align: center;
+        }
+
+        .close {
+            position: absolute;
+            top: 10px;
+            right: 25px;
+            color: white;
+            font-size: 35px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover {
+            color: #ccc;
+        }
     </style>
 </head>
 <body>
     <div class="slideshow-container" id="slideshow">
         <!-- Slides will be dynamically generated here -->
+    </div>
+
+    <div id="qr-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <img src="assets/qr.jpg" alt="QR Code" style="border: 5px solid white; border-radius: 5px; max-width: 90vw; max-height: 90vh;">
+        </div>
     </div>
 
     <button class="nav-button prev" onclick="changeSlide(-1)">‹</button>
@@ -436,10 +502,20 @@
                 type: 'congratulations',
                 image: 'assets/congratulations.jpg',
                 title: 'Congratulations'
+            },
+            {
+                type: 'instructions',
+                image: 'assets/instructions.jpg',
+                title: 'Instructions'
+            },
+            {
+                type: 'takeaways',
+                image: 'assets/takeaways.jpg',
+                title: 'Takeaways'
             }
         ];
 
-                                                // Exercise data - matches the sequence from exercises_selection.md
+                                                                                                                                        // Exercise data - matches the sequence from exercises_selection.md
         const exercises = [
             {
                 number: "Intro",
@@ -881,10 +957,27 @@ Publication-quality PNG images: \`correlation_heatmap.png\`, \`satisfaction_viol
             const teamSlide = document.createElement('div');
             teamSlide.className = 'slide slide-title';
             teamSlide.style.backgroundImage = `url('${specialSlides[1].image}')`;
+            teamSlide.innerHTML = `
+                <a href="tmp/clip.mp4" target="_blank" class="fullscreen-btn">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
+                    </svg>
+                    clip
+                </a>
+            `;
             slideshow.appendChild(teamSlide);
             slideIndex++;
 
-            // 3. Menu slide - Image
+            // 3. Instructions slide (NEW)
+            instructionsSlideIndex = slideIndex;
+            const instructionsSlide = document.createElement('div');
+            instructionsSlide.className = 'slide slide-title';
+            // specialSlides[6] is 'instructions'
+            instructionsSlide.style.backgroundImage = `url('${specialSlides[6].image}')`;
+            slideshow.appendChild(instructionsSlide);
+            slideIndex++;
+
+            // 4. Menu slide - Image
             menuImageSlideIndex = slideIndex;
             const menuImageSlide = document.createElement('div');
             menuImageSlide.className = 'slide slide-menu-image';
@@ -892,7 +985,7 @@ Publication-quality PNG images: \`correlation_heatmap.png\`, \`satisfaction_viol
             slideshow.appendChild(menuImageSlide);
             slideIndex++;
 
-            // 4. Menu slide - Content
+            // 5. Menu slide - Content
             menuContentSlideIndex = slideIndex;
             const menuSlide = document.createElement('div');
             menuSlide.className = 'slide slide-menu';
@@ -924,7 +1017,7 @@ Publication-quality PNG images: \`correlation_heatmap.png\`, \`satisfaction_viol
             slideshow.appendChild(menuSlide);
             slideIndex++;
 
-            // 4. Generate main exercise slides (title + content for each)
+            // 6. Generate main exercise slides (title + content for each)
             exerciseStartIndex = slideIndex;
             mainExercises.forEach((exercise, index) => {
                 const titleSlide = document.createElement('div');
@@ -959,7 +1052,7 @@ Publication-quality PNG images: \`correlation_heatmap.png\`, \`satisfaction_viol
             });
             exerciseEndIndex = slideIndex - 1;
 
-            // 5. Bonus menu - Image
+            // 7. Bonus menu - Image
             bonusMenuImageSlideIndex = slideIndex;
             const bonusMenuImageSlide = document.createElement('div');
             bonusMenuImageSlide.className = 'slide slide-menu-image';
@@ -967,7 +1060,7 @@ Publication-quality PNG images: \`correlation_heatmap.png\`, \`satisfaction_viol
             slideshow.appendChild(bonusMenuImageSlide);
             slideIndex++;
 
-            // 6. Bonus menu - Content
+            // 8. Bonus menu - Content
             bonusMenuContentSlideIndex = slideIndex;
             const bonusMenuSlide = document.createElement('div');
             bonusMenuSlide.className = 'slide slide-menu';
@@ -997,7 +1090,7 @@ Publication-quality PNG images: \`correlation_heatmap.png\`, \`satisfaction_viol
             slideshow.appendChild(bonusMenuSlide);
             slideIndex++;
 
-            // 7. Bonus exercise slides (title + content for each)
+            // 9. Bonus exercise slides (title + content for each)
             bonusExerciseStartIndex = slideIndex;
             bonusExercises.forEach((exercise, index) => {
                 const titleSlide = document.createElement('div');
@@ -1031,7 +1124,7 @@ Publication-quality PNG images: \`correlation_heatmap.png\`, \`satisfaction_viol
             });
             bonusExerciseEndIndex = slideIndex - 1;
 
-            // 8. Break Time slide (no title, just image)
+            // 10. Break Time slide (no title, just image)
             breakTimeSlideIndex = slideIndex;
             const breakSlide = document.createElement('div');
             breakSlide.className = 'slide slide-title';
@@ -1045,15 +1138,45 @@ Publication-quality PNG images: \`correlation_heatmap.png\`, \`satisfaction_viol
             slideshow.appendChild(breakSlide);
             slideIndex++;
 
-            // 9. Survey slide (no title, just image)
+            // 11. Takeaways slide (NEW) - before Survey
+            takeawaysSlideIndex = slideIndex;
+            const takeawaysSlide = document.createElement('div');
+            takeawaysSlide.className = 'slide slide-title';
+            // specialSlides[7] is 'takeaways'
+            takeawaysSlide.style.backgroundImage = `url('${specialSlides[7].image}')`;
+            // Add prominent button to go to Survey
+            takeawaysSlide.innerHTML = `
+                <a onclick="window.open('https://www.mentimeter.com/app/presentation/alckdi8cc5a56i5d3vt6q712x62py3qf/present?question=h1ir3nj3wgym', '_blank')" class="fullscreen-btn">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
+                    </svg>
+                    Menti
+                </a>
+                <div class="exercise-actions" style="position: absolute; bottom: 3rem; right: 3rem; transform: scale(1.5); display: flex; flex-direction: column; gap: 1rem;">
+                    <button class="exercise-action-button" onclick="window.open('https://www.mentimeter.com/app/presentation/alckdi8cc5a56i5d3vt6q712x62py3qf/present?question=h1ir3nj3wgym', '_blank')">Menti</button>
+                    <button class="exercise-action-button" style="background: rgba(100, 181, 246, 0.9); color: #000;" onclick="goToRealSurvey()">Go to Survey →</button>
+                </div>
+            `;
+            slideshow.appendChild(takeawaysSlide);
+            slideIndex++;
+
+            // 12. Survey slide (no title, just image)
             surveySlideIndex = slideIndex;
             const surveySlide = document.createElement('div');
             surveySlide.className = 'slide slide-title';
             surveySlide.style.backgroundImage = `url('${specialSlides[4].image}')`;
+            surveySlide.innerHTML = `
+                <a onclick="showQR()" class="fullscreen-btn">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
+                    </svg>
+                    QR
+                </a>
+            `;
             slideshow.appendChild(surveySlide);
             slideIndex++;
 
-            // 10. Congratulations slide (no title, just image)
+            // 13. Congratulations slide (no title, just image)
             const congratsSlide = document.createElement('div');
             congratsSlide.className = 'slide slide-title';
             congratsSlide.style.backgroundImage = `url('${specialSlides[5].image}')`;
@@ -1114,6 +1237,14 @@ Publication-quality PNG images: \`correlation_heatmap.png\`, \`satisfaction_viol
         function goToSurvey() {
             const slides = slideshow.querySelectorAll('.slide');
             slides[currentSlide].classList.remove('active');
+            currentSlide = takeawaysSlideIndex;
+            slides[currentSlide].classList.add('active');
+            updateCounter();
+        }
+
+        function goToRealSurvey() {
+            const slides = slideshow.querySelectorAll('.slide');
+            slides[currentSlide].classList.remove('active');
             currentSlide = surveySlideIndex;
             slides[currentSlide].classList.add('active');
             updateCounter();
@@ -1142,10 +1273,28 @@ Publication-quality PNG images: \`correlation_heatmap.png\`, \`satisfaction_viol
 
         // Keyboard navigation
         document.addEventListener('keydown', (e) => {
-            if (e.key === 'ArrowLeft') {
+            if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
                 changeSlide(-1);
-            } else if (e.key === 'ArrowRight') {
+            } else if (e.key === 'ArrowRight' || e.key === 'PageDown') {
                 changeSlide(1);
+            } else if (e.key === 'b' || e.key === 'B') {
+                // Context-specific action
+                if (currentSlide === 42) { // Slide 43: open Mentimeter
+                    window.open('https://www.mentimeter.com/app/presentation/alckdi8cc5a56i5d3vt6q712x62py3qf/present?question=h1ir3nj3wgym', '_blank');
+                } else if (currentSlide >= 5 && currentSlide <= 23) { // Exercise slides 6-24: back to menu
+                    goToMenu();
+                } else if (currentSlide >= 25 && currentSlide <= 40) { // Bonus slides 26-41: back to bonus menu
+                    goToBonusMenu();
+                } else if (currentSlide === 1) { // Slide 2: Team Agreement - open video
+                    window.open('tmp/clip.mp4', '_blank');
+                } else if (currentSlide === 43) { // Slide 44: toggle QR
+                    const qrModal = document.getElementById('qr-modal');
+                    if (qrModal.style.display === 'block') {
+                        qrModal.style.display = 'none';
+                    } else {
+                        showQR();
+                    }
+                }
             }
         });
 
@@ -1170,6 +1319,20 @@ Publication-quality PNG images: \`correlation_heatmap.png\`, \`satisfaction_viol
                 changeSlide(-1); // Swipe right = previous
             }
         }
+
+        function showQR() {
+            document.getElementById('qr-modal').style.display = 'block';
+        }
+
+        document.querySelector('.close').addEventListener('click', function() {
+            document.getElementById('qr-modal').style.display = 'none';
+        });
+
+        window.addEventListener('click', function(event) {
+            if (event.target == document.getElementById('qr-modal')) {
+                document.getElementById('qr-modal').style.display = 'none';
+            }
+        });
 
         // Initialize slideshow
         generateSlides();

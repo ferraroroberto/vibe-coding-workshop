@@ -51,7 +51,10 @@
       "bonus_menu": "← Menú Bonus",
       "main_menu": "← Menú Principal",
       "break_time_btn": "Hora de Descanso",
-      "finish_session": "Finalizar Sesión"
+      "finish_session": "Finalizar Sesión",
+      "instructions": "Instrucciones",
+      "takeaways": "Conclusiones",
+      "go_to_survey": "Ir a la Encuesta →"
     }
   }
 }

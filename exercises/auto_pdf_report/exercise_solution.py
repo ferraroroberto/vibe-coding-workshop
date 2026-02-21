@@ -11,11 +11,11 @@ import os
 script_dir = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR = os.path.join(script_dir, "data")
 INPUT_FILE = os.path.join(DATA_DIR, "quarterly_sales.csv")
-OUTPUT_PDF = os.path.join(DATA_DIR, "quarterly_report.pdf")
+OUTPUT_PDF = os.path.join(DATA_DIR, "solutions", "quarterly_report.pdf")
 
 # Temporary chart files
-CHART_BAR = os.path.join(DATA_DIR, "_temp_bar_chart.png")
-CHART_PIE = os.path.join(DATA_DIR, "_temp_pie_chart.png")
+CHART_BAR = os.path.join(DATA_DIR, "solutions", "_temp_bar_chart.png")
+CHART_PIE = os.path.join(DATA_DIR, "solutions", "_temp_pie_chart.png")
 
 # Brand colors (RGB 0-255)
 BRAND_BLUE = (41, 98, 163)
@@ -133,6 +133,10 @@ def generate_pie_chart(category_revenue):
 # -------------------------------------------------------
 # MAIN REPORT BUILDER
 # -------------------------------------------------------
+
+# Ensure solutions directory exists
+os.makedirs(os.path.join(DATA_DIR, 'solutions'), exist_ok=True)
+
 def main():
     print("=" * 50)
     print("PDF REPORT GENERATOR")

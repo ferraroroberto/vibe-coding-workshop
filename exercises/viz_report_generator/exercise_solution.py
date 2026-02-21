@@ -5,7 +5,11 @@ import os
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR = os.path.join(SCRIPT_DIR, "data")
 INPUT_FILE = os.path.join(DATA_DIR, "clean_sales_data.csv")
-OUTPUT_FILE = os.path.join(DATA_DIR, "final_report.xlsx")
+OUTPUT_FILE = os.path.join(DATA_DIR, "solutions", "final_report.xlsx")
+
+
+# Ensure solutions directory exists
+os.makedirs(os.path.join(DATA_DIR, 'solutions'), exist_ok=True)
 
 def main():
     print("--- Starting Report Generation ---")
