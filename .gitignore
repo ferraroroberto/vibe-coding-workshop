@@ -11,3 +11,6 @@ tmp
 
 # live directory
 live/
+
+# vscode settings
+.vscode/
