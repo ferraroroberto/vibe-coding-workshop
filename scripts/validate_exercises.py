@@ -19,8 +19,8 @@ import subprocess
 import sys
 from pathlib import Path
 
-# Project root (where this script lives)
-PROJECT_ROOT = Path(__file__).resolve().parent
+# Project root (parent of scripts directory)
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
 EXERCISES_DIR = PROJECT_ROOT / "exercises"
 
 SETUP_SCRIPT = "exercise_setup_data.py"
@@ -107,7 +107,7 @@ def main():
         print(f"  Solution: {solution_out[:80]}{'...' if len(solution_out) > 80 else ''}")
 
         results.append((name, "both", True))
-        print(f"  ✓ Passed")
+        print(f"  PASSED")
 
     # Summary
     print("\n" + "=" * 60)
