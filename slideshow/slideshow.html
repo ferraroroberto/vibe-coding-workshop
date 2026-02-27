@@ -347,79 +347,98 @@
             backdrop-filter: blur(10px);
         }
 
-        /* Scrollbar styling */
-        .slide-content .content::-webkit-scrollbar,
-        .slide-menu .content::-webkit-scrollbar {
-            width: 8px;
+        /* Timer Styles */
+        .timer-container {
+            position: absolute;
+            top: 1rem;
+            left: 50%;
+            transform: translateX(-50%);
+            width: auto;
+            min-width: 280px;
+            height: auto;
+            padding: 0.5rem 1rem;
+            background: rgba(0, 0, 0, 0.6); /* More transparent */
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(15px);
+            z-index: 20;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
         }
 
-        .slide-content .content::-webkit-scrollbar-track,
-        .slide-menu .content::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
+        .timer-display {
+            font-family: 'Courier New', monospace;
+            font-size: 4rem; /* Bigger numbers */
+            color: #64b5f6;
+            font-weight: 700;
+            margin-bottom: 0.2rem;
+            text-shadow: 0 4px 8px rgba(0,0,0,0.6);
+            line-height: 1;
         }
 
-        .slide-content .content::-webkit-scrollbar-thumb,
-        .slide-menu .content::-webkit-scrollbar-thumb {
+        .timer-btn {
+            width: 48px;
+            height: 48px;
+            background: rgba(255, 255, 255, 0.15);
+            border: 2px solid rgba(255, 255, 255, 0.4);
+            border-radius: 50%;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+
+        .timer-btn:hover {
             background: rgba(255, 255, 255, 0.3);
-            border-radius: 10px;
+            transform: scale(1.1);
+            border-color: #64b5f6;
+            box-shadow: 0 0 15px rgba(100, 181, 246, 0.4);
         }
 
-        .slide-content .content::-webkit-scrollbar-thumb:hover,
-        .slide-menu .content::-webkit-scrollbar-thumb:hover {
-            background: rgba(255, 255, 255, 0.5);
+        .timer-btn svg {
+            width: 24px;
+            height: 24px;
+        }
+        
+        .timer-container.active {
+            border-color: #64b5f6;
+            box-shadow: 0 0 25px rgba(100, 181, 246, 0.4);
         }
 
-        /* Responsive adjustments */
         @media (max-width: 768px) {
-            .nav-button {
-                width: 40px;
-                height: 40px;
-                font-size: 1.2rem;
-            }
-
-            .nav-button.prev {
-                left: 10px;
-            }
-
-            .nav-button.next {
-                right: 10px;
-            }
-
-            .slide-content .content,
-            .slide-menu .content {
-                padding: 1.5rem;
-            }
-
-            .menu-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .exercise-actions {
+            .timer-container {
+                left: auto;
+                transform: none;
+                right: 5rem;
                 top: 0.5rem;
-                right: 0.5rem;
+                width: auto;
+                min-width: auto;
+                padding: 0.5rem;
             }
-
-            .exercise-action-button {
-                padding: 0.4rem 0.8rem;
-                font-size: 0.75rem;
+            
+            .timer-display {
+                font-size: 1.2rem;
+                margin-bottom: 0.2rem;
             }
-
-            .menu-grid {
-                grid-template-columns: 1fr;
-                gap: 0.5rem;
+            
+            .timer-btn {
+                width: 28px;
+                height: 28px;
             }
-
-            .menu-item {
-                padding: 0.6rem 0.8rem;
-            }
-
-            .menu-action-button {
-                padding: 0.6rem 1.2rem;
-                font-size: 0.85rem;
+            
+            .timer-btn svg {
+                width: 14px;
+                height: 14px;
             }
         }
 
+        /* Modal */
         .modal {
             display: none;
             position: fixed;
@@ -515,7 +534,7 @@
             }
         ];
 
-                                                                                                                                        // Exercise data - matches the sequence from exercises_selection.md
+                                                                                                                                // Exercise data - matches the sequence from exercises_selection.md
         const exercises = [
             {
                 number: "Intro",
@@ -1037,6 +1056,14 @@ Publication-quality PNG images: \`correlation_heatmap.png\`, \`satisfaction_viol
                 contentSlide.className = 'slide slide-content';
                 contentSlide.style.backgroundImage = `url('${exercise.image}')`;
                 contentSlide.innerHTML = `
+                    <div class="timer-container" id="timer-${slideIndex}">
+                        <div class="timer-display" id="timer-display-${slideIndex}">00:00</div>
+                        <button class="timer-btn" onclick="toggleTimer(${slideIndex})">
+                            <svg id="timer-svg-${slideIndex}" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                            </svg>
+                        </button>
+                    </div>
                     <div class="exercise-actions">
                         <button class="exercise-action-button" onclick="goToMenu()">← Menu</button>
                         <button class="exercise-action-button" onclick="goToBreakTime()">Break Time</button>
@@ -1109,6 +1136,14 @@ Publication-quality PNG images: \`correlation_heatmap.png\`, \`satisfaction_viol
                 contentSlide.className = 'slide slide-content';
                 contentSlide.style.backgroundImage = `url('${exercise.image}')`;
                 contentSlide.innerHTML = `
+                    <div class="timer-container" id="timer-${slideIndex}">
+                        <div class="timer-display" id="timer-display-${slideIndex}">00:00</div>
+                        <button class="timer-btn" onclick="toggleTimer(${slideIndex})">
+                            <svg id="timer-svg-${slideIndex}" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                            </svg>
+                        </button>
+                    </div>
                     <div class="exercise-actions">
                         <button class="exercise-action-button" onclick="goToBonusMenu()">← Bonus Menu</button>
                         <button class="exercise-action-button" onclick="goToMenu()">← Main Menu</button>
@@ -1267,8 +1302,64 @@ Publication-quality PNG images: \`correlation_heatmap.png\`, \`satisfaction_viol
         }
 
         function updateCounter() {
+            resetAllTimers();
             const slides = slideshow.querySelectorAll('.slide');
             counter.textContent = `${currentSlide + 1} / ${slides.length}`;
+        }
+
+        // Timer Logic
+        const timers = {};
+
+        function toggleTimer(slideIndex) {
+            if (!timers[slideIndex]) {
+                timers[slideIndex] = {
+                    seconds: 0,
+                    interval: null,
+                    isRunning: false
+                };
+            }
+
+            const timer = timers[slideIndex];
+            const display = document.getElementById(`timer-display-${slideIndex}`);
+            const btn = document.querySelector(`#timer-${slideIndex} .timer-btn`);
+            const svg = document.querySelector(`#timer-${slideIndex} svg`);
+
+            if (timer.isRunning) {
+                // Stop
+                clearInterval(timer.interval);
+                timer.isRunning = false;
+                // Show Play icon
+                svg.innerHTML = '<polygon points="5 3 19 12 5 21 5 3"></polygon>';
+            } else {
+                // Start
+                timer.isRunning = true;
+                // Show Pause icon
+                svg.innerHTML = '<rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect>';
+                
+                timer.interval = setInterval(() => {
+                    timer.seconds++;
+                    const mins = Math.floor(timer.seconds / 60);
+                    const secs = timer.seconds % 60;
+                    display.textContent = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+                }, 1000);
+            }
+        }
+
+        function resetAllTimers() {
+            Object.keys(timers).forEach(index => {
+                const timer = timers[index];
+                if (timer.interval) clearInterval(timer.interval);
+                timer.seconds = 0;
+                timer.isRunning = false;
+                timer.interval = null;
+
+                const display = document.getElementById(`timer-display-${index}`);
+                if (display) display.textContent = "00:00";
+                
+                const svg = document.querySelector(`#timer-${index} svg`);
+                if (svg) svg.innerHTML = '<polygon points="5 3 19 12 5 21 5 3"></polygon>';
+            });
+            // Clear the logic state but maybe keep the key? actually fine to keep
         }
 
         // Keyboard navigation
