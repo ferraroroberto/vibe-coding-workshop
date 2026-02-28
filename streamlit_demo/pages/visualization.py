@@ -32,7 +32,7 @@ def render() -> None:
     with tab_tables:
         st.subheader("Read-Only Table")
         st.markdown("Use `st.dataframe` for a scrollable, sortable table.")
-        st.dataframe(employees.head(20), use_container_width=True)
+        st.dataframe(employees.head(20), width='stretch')
 
         st.markdown("---")
         st.subheader("Editable DataFrame")
@@ -43,7 +43,7 @@ def render() -> None:
         edited = st.data_editor(
             employees.head(10),
             num_rows="dynamic",
-            use_container_width=True,
+            width='stretch',
             key="viz_editor",
         )
         with st.expander("View edited data as JSON"):
@@ -98,6 +98,8 @@ def render() -> None:
         active_employees = employees[employees["active"] == True].shape[0]  # noqa: E712
 
         c1, c2, c3, c4 = st.columns(4)
+        # The delta strings below are illustrative placeholders to show st.metric's
+        # delta formatting; they are not computed from the data.
         c1.metric("Total Revenue", f"${total_revenue:,.0f}", delta="+12.3%")
         c2.metric("Avg Unit Price", f"${avg_price:,.2f}", delta="-2.1%")
         c3.metric("Total Units Sold", f"{total_units:,}")

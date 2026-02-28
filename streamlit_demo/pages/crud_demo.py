@@ -53,7 +53,7 @@ def render() -> None:
     # ==================== READ ====================
     with tab_read:
         st.subheader(f"Employee Table ({len(df)} records)")
-        st.dataframe(df, use_container_width=True, hide_index=True)
+        st.dataframe(df, width='stretch', hide_index=True)
 
     # ==================== CREATE ====================
     with tab_create:
@@ -105,7 +105,7 @@ def render() -> None:
         edited = st.data_editor(
             df,
             num_rows="fixed",
-            use_container_width=True,
+            width='stretch',
             hide_index=True,
             key="crud_editor",
         )

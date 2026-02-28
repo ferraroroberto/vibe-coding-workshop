@@ -30,7 +30,10 @@ def _simulate_task(steps: int, fail_chance: float) -> None:
     logs: list[str] = []
 
     for i in range(1, steps + 1):
-        # Simulate variable work
+        # Simulate variable work.
+        # NOTE: time.sleep blocks Streamlit's server thread for this session.
+        # Acceptable in a single-user demo; in production use a background
+        # thread or subprocess so other users are not affected.
         delay = random.uniform(0.1, 0.5)
         time.sleep(delay)
 

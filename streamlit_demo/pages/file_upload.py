@@ -42,14 +42,14 @@ def render() -> None:
             if ext == "csv":
                 df = pd.read_csv(uploaded)
                 st.markdown(f"**{len(df)} rows x {len(df.columns)} columns**")
-                st.dataframe(df, use_container_width=True)
+                st.dataframe(df, width='stretch')
 
             elif ext == "json":
                 data = json.load(uploaded)
                 if isinstance(data, list):
                     df = pd.DataFrame(data)
                     st.markdown(f"**{len(df)} records**")
-                    st.dataframe(df, use_container_width=True)
+                    st.dataframe(df, width='stretch')
                 else:
                     st.json(data)
 
@@ -105,7 +105,7 @@ def render() -> None:
             )
 
         st.markdown("---")
-        st.dataframe(df.head(10), use_container_width=True)
+        st.dataframe(df.head(10), width='stretch')
         st.caption("Preview of the dataset available for download.")
 
 

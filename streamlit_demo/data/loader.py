@@ -10,6 +10,7 @@ import sys
 from pathlib import Path
 
 import pandas as pd
+import streamlit as st
 
 # ---------------------------------------------------------------------------
 # Paths (resolved relative to *this* file so imports work from anywhere)
@@ -34,12 +35,14 @@ def _ensure_mock_data() -> None:
     generate_all()
 
 
+@st.cache_data
 def load_employees() -> pd.DataFrame:
     """Return the employees dataset as a DataFrame."""
     _ensure_mock_data()
     return pd.read_csv(EMPLOYEES_CSV)
 
 
+@st.cache_data
 def load_sales() -> pd.DataFrame:
     """Return the sales dataset as a DataFrame."""
     _ensure_mock_data()
