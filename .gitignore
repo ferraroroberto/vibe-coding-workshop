@@ -7,7 +7,8 @@ tmp
 *.pyc
 
 # data directories
-**/data/
+/**exercises/**/data/
+**/mock_data/
 
 # live directory
 live/
