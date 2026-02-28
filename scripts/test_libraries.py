@@ -226,6 +226,21 @@ except Exception as e:
 print()
 
 
+# --- Streamlit ---
+print("--- Streamlit ---")
+try:
+	import streamlit as st
+	print(f"  Version: {st.__version__}")
+	# Minimal API check (no server run)
+	assert hasattr(st, "set_page_config") and callable(st.set_page_config)
+	assert hasattr(st, "write") and callable(st.write)
+	print("  Run: streamlit run main_menu.py (from streamlit_demo/) to launch the demo app.")
+	check("Streamlit test", True)
+except Exception as e:
+	check(f"Streamlit test failed: {e}", False)
+print()
+
+
 # --- os (built-in) ---
 print("--- os (built-in) ---")
 try:

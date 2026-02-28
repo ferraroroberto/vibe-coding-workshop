@@ -7,7 +7,8 @@ A hands-on workshop for learning data manipulation, automation, and visualizatio
 - **Slideshow**: Single-file HTML presentation (`slideshow/slideshow.html`, `slideshow/slideshow_es.html` for Spanish) with exercise menu, bonus section, and navigation (open in a browser)
 - **Main exercises**: Intro, ETL (merge, clean, survey), Viz (charts, reports), Auto (Excel polish, file organizer), plus Bonus “Big Data Stress Test”
 - **Bonus exercises**: PDF report, API pipeline, D3 bar/force viz, geo heatmap, interactive dashboard, Seaborn scatter/statistical
-- **Library testing**: `test_libraries.py` to verify required libraries
+- **Library testing**: `scripts/test_libraries.py` to verify required libraries
+- **Streamlit demo**: `streamlit_demo/` — multi-page reference app (inputs, viz, CRUD, file upload, process runner, session state)
 - **Environment tools**: `pip_ini_finder.py` for locating pip config; `requirements.txt` for dependencies
 
 ## Quick Start
@@ -27,8 +28,14 @@ A hands-on workshop for learning data manipulation, automation, and visualizatio
 
 4. (Optional) Test the environment:
    ```bash
-   python test_libraries.py
+   python scripts/test_libraries.py
    ```
+
+5. (Optional) Run the Streamlit demo:
+   ```bash
+   cd streamlit_demo && streamlit run main_menu.py
+   ```
+   Or on Windows, double-click `streamlit_demo/run_app.bat`.
 
 ## Project Structure
 
@@ -39,7 +46,8 @@ A hands-on workshop for learning data manipulation, automation, and visualizatio
 | `slideshow/assets/` | Images for slideshow (one per exercise + welcome, menu, break, survey, etc.) |
 | `exercises/` | Exercise folders: starter/solution/setup/data per exercise |
 | `preparation/` | Docs for building and extending the slideshow and images |
-| `test_libraries.py` | Verifies installed libraries |
+| `scripts/test_libraries.py` | Verifies installed libraries (including Streamlit) |
+| `streamlit_demo/` | Streamlit reference app: main_menu.py, pages/, data/, scripts/ |
 | `pip_ini_finder.py` | Finds pip configuration files |
 | `requirements.txt` | Python dependencies |
 
