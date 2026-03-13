@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>⚡ Vibe Coding Tips & Tricks</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <div id="progress-bar"><div id="progress-fill"></div></div>
+
+  <div id="slideshow">
+
+    <!-- SLIDE 0: Title -->
+    <section class="slide active" data-slide="0">
+      <div class="slide-inner title-slide">
+        <div class="glitch-wrapper">
+          <h1 class="glitch" data-text="VIBE CODING">VIBE CODING</h1>
+        </div>
+        <h2 class="subtitle">Tips &amp; Tricks for Coding with LLMs</h2>
+        <p class="tagline">🤖 Work smarter. Ship faster. Stay in flow. ⚡</p>
+        <div class="pill-row">
+          <span class="pill">Cursor</span>
+          <span class="pill">Claude</span>
+          <span class="pill">GPT</span>
+          <span class="pill">Gemini</span>
+          <span class="pill">Grok</span>
+        </div>
+        <p class="nav-hint">Press <kbd>→</kbd> to start</p>
+      </div>
+    </section>
+
+    <!-- SLIDE 1: What is Vibe Coding -->
+    <section class="slide" data-slide="1">
+      <div class="slide-inner">
+        <div class="slide-number">00</div>
+        <h2 class="slide-title">🌊 What is Vibe Coding?</h2>
+        <div class="content-grid">
+          <div class="card">
+            <p class="card-icon">💬</p>
+            <h3>Natural Language → Code</h3>
+            <p>Describe what you want. The LLM writes the code. You review, iterate, ship.</p>
+          </div>
+          <div class="card">
+            <p class="card-icon">🔄</p>
+            <h3>Fast Iteration Loops</h3>
+            <p>Prompt → Run → Review → Adjust. Cycles measured in seconds, not hours.</p>
+          </div>
+          <div class="card">
+            <p class="card-icon">🧠</p>
+            <h3>You're the Architect</h3>
+            <p>The LLM is your pair programmer. You set direction. It executes.</p>
+          </div>
+        </div>
+        <div class="code-block">
+          <span class="code-comment"># old way</span><br/>
+          <span class="code-red">Stack Overflow → Copy → Adapt → Debug → Cry</span><br/><br/>
+          <span class="code-comment"># vibe coding way</span><br/>
+          <span class="code-green">Describe intent → LLM writes → Review → Ship ✅</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 2: Model Selection -->
+    <section class="slide" data-slide="2">
+      <div class="slide-inner">
+        <div class="slide-number">01</div>
+        <h2 class="slide-title">🎯 Model Selection</h2>
+        <p class="slide-desc">Match the model to the task. Not all LLMs are equal.</p>
+        <div class="tip-table">
+          <div class="tip-row header-row">
+            <span>Complexity</span><span>Model</span><span>Why</span>
+          </div>
+          <div class="tip-row">
+            <span>🔴 Complex</span><span class="model-tag">Gemini / Sonnet</span><span>Deep reasoning, long context</span>
+          </div>
+          <div class="tip-row">
+            <span>🟡 Medium</span><span class="model-tag">Grok Fast</span><span>0.25× cost multiplier</span>
+          </div>
+          <div class="tip-row">
+            <span>🟢 Small</span><span class="model-tag">GPT-4.1</span><span>Fast, cheap, reliable</span>
+          </div>
+        </div>
+        <a class="example-link" href="examples/01-model-selection.md">📄 examples/01-model-selection.md</a>
+      </div>
+    </section>
+
+    <!-- SLIDE 3: Auto Approve -->
+    <section class="slide" data-slide="3">
+      <div class="slide-inner">
+        <div class="slide-number">02</div>
+        <h2 class="slide-title">✅ Auto Approve</h2>
+        <p class="slide-desc">Stop babysitting every file edit. Let the LLM run.</p>
+        <div class="two-col">
+          <div>
+            <h3 class="col-title bad">❌ Without Auto-Approve</h3>
+            <ul class="tip-list">
+              <li>Confirm every file write</li>
+              <li>Confirm every shell command</li>
+              <li>Flow interrupted constantly</li>
+              <li>Premium requests wasted on confirmations</li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="col-title good">✅ With Auto-Approve</h3>
+            <ul class="tip-list">
+              <li>LLM executes in one pass</li>
+              <li>You review the result, not each step</li>
+              <li>Faster feedback loops</li>
+              <li>Deep flow state preserved</li>
+            </ul>
+          </div>
+        </div>
+        <a class="example-link" href="examples/02-auto-approve.md">📄 examples/02-auto-approve.md</a>
+      </div>
+    </section>
+
+    <!-- SLIDE 4: Agents -->
+    <section class="slide" data-slide="4">
+      <div class="slide-inner">
+        <div class="slide-number">03</div>
+        <h2 class="slide-title">🤖 Agents</h2>
+        <p class="slide-desc">Store reusable prompts as markdown files inside your repo.</p>
+        <div class="code-block large">
+          <span class="code-comment"># repo structure</span><br/>
+          <span class="code-cyan">agents/</span><br/>
+          <span class="code-white">  ├── python-dev.md</span><br/>
+          <span class="code-white">  ├── data-engineer.md</span><br/>
+          <span class="code-white">  ├── sql-analyst.md</span><br/>
+          <span class="code-white">  └── code-reviewer.md</span>
+        </div>
+        <div class="callout">
+          💡 Each file contains instructions, context, coding standards and examples.
+          Reference them at the start of every session for consistent output.
+        </div>
+        <a class="example-link" href="examples/03-agents.md">📄 examples/03-agents.md</a>
+      </div>
+    </section>
+
+    <!-- SLIDE 5: Markdown Logging -->
+    <section class="slide" data-slide="5">
+      <div class="slide-inner">
+        <div class="slide-number">04</div>
+        <h2 class="slide-title">📝 Markdown Logging</h2>
+        <p class="slide-desc">Document as you go. Future-you (and future LLMs) will thank you.</p>
+        <div class="code-block large">
+          <span class="code-comment"># tmp/session-2026-03-13.md</span><br/><br/>
+          <span class="code-yellow">## Goal</span><br/>
+          <span class="code-white">Build ETL pipeline for sales data</span><br/><br/>
+          <span class="code-yellow">## Prompt Used</span><br/>
+          <span class="code-green">"Create a Python script that reads CSV from S3..."</span><br/><br/>
+          <span class="code-yellow">## Solution</span><br/>
+          <span class="code-white">Used pandas + boto3, added retry logic...</span><br/><br/>
+          <span class="code-yellow">## Next</span><br/>
+          <span class="code-white">Add unit tests for transform layer</span>
+        </div>
+        <a class="example-link" href="examples/04-markdown-logs.md">📄 examples/04-markdown-logs.md</a>
+      </div>
+    </section>
+
+    <!-- SLIDE 6: Iteration Summary -->
+    <section class="slide" data-slide="6">
+      <div class="slide-inner">
+        <div class="slide-number">05</div>
+        <h2 class="slide-title">🔁 Iteration Summary</h2>
+        <p class="slide-desc">Reset the context. Start clean with a summary.</p>
+        <div class="steps">
+          <div class="step">
+            <span class="step-num">1</span>
+            <p>Complete a phase of work with the LLM</p>
+          </div>
+          <div class="step-arrow">→</div>
+          <div class="step">
+            <span class="step-num">2</span>
+            <p>Ask: <em>"Summarize what we did, why, and the final solution"</em></p>
+          </div>
+          <div class="step-arrow">→</div>
+          <div class="step">
+            <span class="step-num">3</span>
+            <p>Start a new session using that summary as the opening prompt</p>
+          </div>
+        </div>
+        <div class="callout">
+          🧹 Removes messy iteration history. Cleaner context = better responses.
+        </div>
+        <a class="example-link" href="examples/05-iteration-summary.md">📄 examples/05-iteration-summary.md</a>
+      </div>
+    </section>
+
+    <!-- SLIDE 7: Validation -->
+    <section class="slide" data-slide="7">
+      <div class="slide-inner">
+        <div class="slide-number">06</div>
+        <h2 class="slide-title">🧪 Validation</h2>
+        <p class="slide-desc">Never trust LLM output blindly. Always verify.</p>
+        <div class="content-grid three-col">
+          <div class="card">
+            <p class="card-icon">🐍</p>
+            <h3>Python</h3>
+            <p>pytest + mock data. Run the tests. Fix what breaks.</p>
+          </div>
+          <div class="card">
+            <p class="card-icon">🗄️</p>
+            <h3>SQL</h3>
+            <p>Run sample queries against real or seed data.</p>
+          </div>
+          <div class="card">
+            <p class="card-icon">🔌</p>
+            <h3>APIs</h3>
+            <p>Use curl or Postman. Check edge cases manually.</p>
+          </div>
+        </div>
+        <div class="code-block">
+          <span class="code-comment"># don't just ask "does this look right?"</span><br/>
+          <span class="code-green">$ pytest tests/ -v --tb=short ✅</span>
+        </div>
+        <a class="example-link" href="examples/06-validation.md">📄 examples/06-validation.md</a>
+      </div>
+    </section>
+
+    <!-- SLIDE 8: Project Structure -->
+    <section class="slide" data-slide="8">
+      <div class="slide-inner">
+        <div class="slide-number">07</div>
+        <h2 class="slide-title">🗂️ Project Structure</h2>
+        <p class="slide-desc">Consistent structure = predictable LLM reasoning.</p>
+        <div class="two-col">
+          <div class="code-block large">
+            <span class="code-cyan">project/</span><br/>
+            <span class="code-white">  ├── src/         </span><span class="code-comment"># main code</span><br/>
+            <span class="code-white">  ├── config/      </span><span class="code-comment"># JSON configs</span><br/>
+            <span class="code-white">  ├── tests/       </span><span class="code-comment"># pytest</span><br/>
+            <span class="code-white">  ├── tmp/         </span><span class="code-comment"># scratch space</span><br/>
+            <span class="code-white">  ├── docs/        </span><span class="code-comment"># markdown docs</span><br/>
+            <span class="code-white">  ├── agents/      </span><span class="code-comment"># LLM prompts</span><br/>
+            <span class="code-white">  └── .env         </span><span class="code-comment"># secrets (gitignored)</span>
+          </div>
+          <div>
+            <div class="callout">
+              🎯 Use the same layout for all projects. The LLM will know where everything lives without being told.
+            </div>
+            <div class="callout">
+              🗑️ Use <code>tmp/</code> for experiments so LLMs don't touch production files.
+            </div>
+          </div>
+        </div>
+        <a class="example-link" href="examples/07-project-structure.md">📄 examples/07-project-structure.md</a>
+      </div>
+    </section>
+
+    <!-- SLIDE 9: Audio Prompting -->
+    <section class="slide" data-slide="9">
+      <div class="slide-inner">
+        <div class="slide-number">08</div>
+        <h2 class="slide-title">🎙️ Audio Prompting</h2>
+        <p class="slide-desc">Speak your ideas faster than you can type them.</p>
+        <div class="steps">
+          <div class="step">
+            <span class="step-num">🎤</span>
+            <p>Record a voice explanation of your problem or requirements</p>
+          </div>
+          <div class="step-arrow">→</div>
+          <div class="step">
+            <span class="step-num">📝</span>
+            <p>Transcribe with an LLM or Whisper</p>
+          </div>
+          <div class="step-arrow">→</div>
+          <div class="step">
+            <span class="step-num">✨</span>
+            <p>Ask the LLM to convert it into a structured prompt</p>
+          </div>
+        </div>
+        <div class="callout warning">
+          ⚠️ Always speak in <strong>English</strong>. Reduces token costs and avoids translation issues.
+        </div>
+        <a class="example-link" href="examples/08-audio-prompts.md">📄 examples/08-audio-prompts.md</a>
+      </div>
+    </section>
+
+    <!-- SLIDE 10: Reverting -->
+    <section class="slide" data-slide="10">
+      <div class="slide-inner">
+        <div class="slide-number">09</div>
+        <h2 class="slide-title">⏪ Reverting &amp; Checkpoints</h2>
+        <p class="slide-desc">When the LLM loops, stop, revert, restart smarter.</p>
+        <div class="two-col">
+          <div>
+            <h3 class="col-title bad">🌀 The Loop Trap</h3>
+            <ul class="tip-list">
+              <li>LLM tries fix A → breaks B</li>
+              <li>Fixes B → breaks A again</li>
+              <li>You've wasted 10 prompts</li>
+              <li>Codebase is a mess</li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="col-title good">✅ Checkpoint Technique</h3>
+            <ul class="tip-list">
+              <li>Get the solution to work</li>
+              <li>Note the final state in markdown</li>
+              <li>Revert to the clean version</li>
+              <li>Restart using summary as prompt</li>
+            </ul>
+          </div>
+        </div>
+        <div class="code-block">
+          <span class="code-green">git stash / git checkout &lt;clean-commit&gt;</span>
+        </div>
+        <a class="example-link" href="examples/09-reverting-and-checkpoints.md">📄 examples/09-reverting-and-checkpoints.md</a>
+      </div>
+    </section>
+
+    <!-- SLIDE 11: Avoid Confirmations -->
+    <section class="slide" data-slide="11">
+      <div class="slide-inner">
+        <div class="slide-number">10</div>
+        <h2 class="slide-title">🚫 Avoid Confirmation Prompts</h2>
+        <p class="slide-desc">Every unnecessary prompt costs money and time.</p>
+        <div class="content-grid">
+          <div class="card bad-card">
+            <p class="card-icon">💸</p>
+            <h3>The Problem</h3>
+            <p>Some tools bill every prompt as a premium request — including <em>"Should I proceed?"</em></p>
+          </div>
+          <div class="card good-card">
+            <p class="card-icon">⚡</p>
+            <h3>The Fix</h3>
+            <p>Write instructions so clear the LLM never needs to ask. Front-load all context.</p>
+          </div>
+        </div>
+        <div class="code-block large">
+          <span class="code-red">❌ "Create the file. Ask me before writing."</span><br/><br/>
+          <span class="code-green">✅ "Create src/etl.py with this logic. Use snake_case.</span><br/>
+          <span class="code-green">   Write it directly without asking for confirmation."</span>
+        </div>
+        <a class="example-link" href="examples/10-avoid-confirmations.md">📄 examples/10-avoid-confirmations.md</a>
+      </div>
+    </section>
+
+    <!-- SLIDE 12: Architecture Strategy -->
+    <section class="slide" data-slide="12">
+      <div class="slide-inner">
+        <div class="slide-number">11</div>
+        <h2 class="slide-title">🏗️ Architecture Strategy</h2>
+        <p class="slide-desc">Know when to go monolith vs modular from day one.</p>
+        <div class="two-col">
+          <div class="card">
+            <h3 class="col-title">🔬 Exploring</h3>
+            <p>Start with a <strong>monolith</strong>. One file, all logic. Get it working first.</p>
+            <br/>
+            <p>Once it works → ask LLM to split into modules.</p>
+          </div>
+          <div class="card">
+            <h3 class="col-title">📐 Architecture is Clear</h3>
+            <p>Start directly with the final structure.</p>
+            <br/>
+            <p>Define modules upfront. LLM fills in the implementation.</p>
+          </div>
+        </div>
+        <div class="callout">
+          🎯 Iteration limits: set them <strong>high</strong>. Strong models handle long runs. Monitor, don't stop prematurely.
+        </div>
+        <a class="example-link" href="examples/11-architecture-strategy.md">📄 examples/11-architecture-strategy.md</a>
+      </div>
+    </section>
+
+    <!-- SLIDE 13: Images with LLMs -->
+    <section class="slide" data-slide="13">
+      <div class="slide-inner">
+        <div class="slide-number">12</div>
+        <h2 class="slide-title">🖼️ Using Images with LLMs</h2>
+        <p class="slide-desc">A screenshot is worth a thousand words of prompt.</p>
+        <div class="content-grid three-col">
+          <div class="card">
+            <p class="card-icon">📸</p>
+            <h3>Screenshot UI</h3>
+            <p>Capture the interface you want to build or debug. Attach directly.</p>
+          </div>
+          <div class="card">
+            <p class="card-icon">✏️</p>
+            <h3>Annotate</h3>
+            <p>Draw arrows. Circle elements. Add text labels to focus the LLM's attention.</p>
+          </div>
+          <div class="card">
+            <p class="card-icon">⚡</p>
+            <h3>Combine</h3>
+            <p>Image + brief text prompt = faster, more accurate results than text alone.</p>
+          </div>
+        </div>
+        <div class="callout">
+          🖼️ Works great for: UI bugs, dashboard layouts, error messages, diagrams, database schemas.
+        </div>
+        <a class="example-link" href="examples/12-images-with-llms.md">📄 examples/12-images-with-llms.md</a>
+      </div>
+    </section>
+
+    <!-- SLIDE 14: Final Summary -->
+    <section class="slide" data-slide="14">
+      <div class="slide-inner">
+        <div class="slide-number">🏁</div>
+        <h2 class="slide-title">⚡ The Vibe Coding Workflow</h2>
+        <div class="workflow-grid">
+          <div class="wf-item"><span class="wf-num">01</span><span>Pick the right model</span></div>
+          <div class="wf-item"><span class="wf-num">02</span><span>Enable auto-approve</span></div>
+          <div class="wf-item"><span class="wf-num">03</span><span>Use agent markdown files</span></div>
+          <div class="wf-item"><span class="wf-num">04</span><span>Log everything in tmp/</span></div>
+          <div class="wf-item"><span class="wf-num">05</span><span>Summarize &amp; restart clean</span></div>
+          <div class="wf-item"><span class="wf-num">06</span><span>Validate all output</span></div>
+          <div class="wf-item"><span class="wf-num">07</span><span>Consistent project structure</span></div>
+          <div class="wf-item"><span class="wf-num">08</span><span>Speak your prompts</span></div>
+          <div class="wf-item"><span class="wf-num">09</span><span>Revert when looping</span></div>
+          <div class="wf-item"><span class="wf-num">10</span><span>No confirmation prompts</span></div>
+          <div class="wf-item"><span class="wf-num">11</span><span>Monolith first, split later</span></div>
+          <div class="wf-item"><span class="wf-num">12</span><span>Use screenshots</span></div>
+        </div>
+        <p class="tagline" style="margin-top:2rem;">🚀 Now go ship something awesome.</p>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- Navigation -->
+  <nav id="nav-controls">
+    <button id="btn-prev" onclick="prevSlide()">&#8592;</button>
+    <span id="slide-counter">1 / 15</span>
+    <button id="btn-next" onclick="nextSlide()">&#8594;</button>
+  </nav>
+
+  <!-- Slide dots -->
+  <div id="slide-dots"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
