@@ -4,6 +4,7 @@ A hands-on workshop for learning data manipulation, automation, and visualizatio
 
 ## Features
 
+- **Vibe Coding Tips**: HTML slide presentation (`tips/index.html`) — playful, keyboard-navigable slides on practical LLM workflow tips (model selection, auto-approve, agents, markdown logging, validation, etc.) with full docs in `tips/docs/` and examples in `tips/examples/`
 - **Slideshow**: Single-file HTML presentation (`slideshow/slideshow.html`, `slideshow/slideshow_es.html` for Spanish) with exercise menu, bonus section, and navigation (open in a browser)
 - **Main exercises**: Intro, ETL (merge, clean, survey), Viz (charts, reports), Auto (Excel polish, file organizer), plus Bonus “Big Data Stress Test”
 - **Bonus exercises**: PDF report, API pipeline, D3 bar/force viz, geo heatmap, interactive dashboard, Seaborn scatter/statistical
@@ -24,7 +25,7 @@ A hands-on workshop for learning data manipulation, automation, and visualizatio
    pip install -r requirements.txt
    ```
 
-3. Run the slideshow: open `slideshow/slideshow.html` (English) or `slideshow/slideshow_es.html` (Spanish) in a browser (no server needed).
+3. Run a presentation: open `slideshow/slideshow.html` (workshop exercises) or `tips/index.html` (Vibe Coding Tips & Tricks) in a browser (no server needed). Use arrow keys to navigate the tips slides.
 
 4. (Optional) Test the environment:
    ```bash
@@ -41,6 +42,7 @@ A hands-on workshop for learning data manipulation, automation, and visualizatio
 
 | Path | Description |
 |------|-------------|
+| `tips/` | Vibe Coding Tips presentation: `index.html` (slides), `styles.css`, `script.js`, `docs/vibe-coding-tips.md`, `examples/*.md` (12 tip examples) |
 | `slideshow/slideshow.html` | Workshop slideshow (English): welcome, menu, main/bonus exercises, break, survey, congratulations |
 | `slideshow/slideshow_es.html` | Spanish version of the slideshow |
 | `slideshow/assets/` | Images for slideshow (one per exercise + welcome, menu, break, survey, etc.) |
