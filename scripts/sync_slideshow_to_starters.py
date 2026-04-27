@@ -7,8 +7,11 @@ Usage: python3 scripts/sync_slideshow_to_starters.py
 """
 
 import json
+import logging
 import re
 from pathlib import Path
+
+log = logging.getLogger(__name__)
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 CONFIG_PATH = PROJECT_ROOT / "slideshow" / "slideshow_config.json"
@@ -166,7 +169,7 @@ def main():
         en_content = get_content(en_html, folder, False)
         es_content = get_content(es_html, folder, False)
         if not en_content:
-            print(f"Warning: No content found for {folder}")
+            log.warning("No content found for %s", folder)
             continue
         if not es_content:
             es_content = en_content  # Fallback
@@ -183,14 +186,14 @@ def main():
 {es_content}
 """
         starter_path.write_text(content, encoding="utf-8")
-        print(f"Updated {starter_path}")
+        log.info("Updated %s", starter_path)
 
     for item in config["bonus_exercises"]:
         folder = item["folder"]
         en_content = get_content(en_html, folder, True)
         es_content = get_content(es_html, folder, True)
         if not en_content:
-            print(f"Warning: No content found for {folder}")
+            log.warning("No content found for %s", folder)
             continue
         if not es_content:
             es_content = en_content
@@ -206,7 +209,7 @@ def main():
 {es_content}
 """
         starter_path.write_text(content, encoding="utf-8")
-        print(f"Updated {starter_path}")
+        log.info("Updated %s", starter_path)
 
 
 if __name__ == "__main__":

@@ -10,8 +10,11 @@ Run from project root: python scripts/build_slideshow.py
 """
 
 import json
+import logging
 import re
 from pathlib import Path
+
+log = logging.getLogger(__name__)
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 CONFIG_PATH = PROJECT_ROOT / "slideshow" / "slideshow_config.json"
@@ -179,7 +182,7 @@ def main():
 
     # Write English slideshow
     SLIDESHOW_PATH.write_text(html_en, encoding="utf-8")
-    print(f"Wrote {SLIDESHOW_PATH}")
+    log.info("Wrote %s", SLIDESHOW_PATH)
 
     # Build Spanish version
     html_es = html_en  # Start from updated English
@@ -192,7 +195,7 @@ def main():
     html_es = html_es.replace("<title>Workshop Exercises Slideshow</title>", "<title>Taller de Ejercicios - Presentación</title>", 1)
 
     SLIDESHOW_ES_PATH.write_text(html_es, encoding="utf-8")
-    print(f"Wrote {SLIDESHOW_ES_PATH}")
+    log.info("Wrote %s", SLIDESHOW_ES_PATH)
 
 
 if __name__ == "__main__":

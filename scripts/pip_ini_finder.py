@@ -1,6 +1,10 @@
+import logging
 import os
 import sys
 from pathlib import Path
+
+logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
+log = logging.getLogger(__name__)
 
 # Get current Python executable
 python_exe = sys.executable
@@ -19,11 +23,11 @@ for loc in locations:
         found.append(str(loc))
 
 if found:
-    print('Detected pip.ini files:')
+    log.info('Detected pip.ini files:')
     for f in found:
-        print(f)
+        log.info('%s', f)
 else:
-    print('No pip.ini file found in standard locations.')
+    log.info('No pip.ini file found in standard locations.')
 
-print(f"Active Python executable: {python_exe}")
-print(f"Assumed virtual environment directory: {venv_dir}")
+log.info("Active Python executable: %s", python_exe)
+log.info("Assumed virtual environment directory: %s", venv_dir)

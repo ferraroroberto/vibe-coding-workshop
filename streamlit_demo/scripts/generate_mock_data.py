@@ -11,8 +11,11 @@ Usage:
 
 import csv
 import json
+import logging
 import os
 import random
+
+log = logging.getLogger(__name__)
 from datetime import datetime, timedelta
 from pathlib import Path
 
@@ -127,15 +130,16 @@ def generate_all() -> None:
     employees = generate_employees(50)
     emp_csv = write_employees_csv(employees)
     emp_json = write_employees_json(employees)
-    print(f"[OK] Employees CSV  -> {emp_csv}")
-    print(f"[OK] Employees JSON -> {emp_json}")
+    log.info("[OK] Employees CSV  -> %s", emp_csv)
+    log.info("[OK] Employees JSON -> %s", emp_json)
 
     sales = generate_sales(200)
     sales_csv = write_sales_csv(sales)
-    print(f"[OK] Sales CSV      -> {sales_csv}")
+    log.info("[OK] Sales CSV      -> %s", sales_csv)
 
-    print("\nAll mock data generated successfully.")
+    log.info("All mock data generated successfully.")
 
 
 if __name__ == "__main__":
+    logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
     generate_all()

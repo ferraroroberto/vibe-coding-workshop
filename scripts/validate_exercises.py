@@ -14,6 +14,7 @@ Usage:
 Run from the project root. Requires a Python environment with project dependencies installed.
 """
 
+import logging
 import os
 import subprocess
 import sys
@@ -25,6 +26,8 @@ EXERCISES_DIR = PROJECT_ROOT / "exercises"
 
 SETUP_SCRIPT = "exercise_setup_data.py"
 SOLUTION_SCRIPT = "exercise_solution.py"
+
+log = logging.getLogger(__name__)
 
 
 def get_exercise_folders():
@@ -65,16 +68,16 @@ def run_script(exercise_path: Path, script_name: str) -> tuple[bool, str]:
 
 
 def main():
-    print("=" * 60)
-    print("Exercise Validation (setup data + solutions)")
-    print("=" * 60)
-    print(f"Project root: {PROJECT_ROOT}")
-    print(f"Exercises dir: {EXERCISES_DIR}")
-    print()
+    logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
+    log.info("=" * 60)
+    log.info("Exercise Validation (setup data + solutions)")
+    log.info("=" * 60)
+    log.info("Project root: %s", PROJECT_ROOT)
+    log.info("Exercises dir: %s", EXERCISES_DIR)
 
     exercises = get_exercise_folders()
     if not exercises:
-        print("No exercise folders found.")
+        log.error("No exercise folders found.")
         sys.exit(1)
 
     results = []
@@ -82,47 +85,44 @@ def main():
 
     for exercise_path in exercises:
         name = exercise_path.name
-        print(f"\n--- {name} ---")
+        log.info("\n--- %s ---", name)
 
-        # 1. Run setup data script
         setup_ok, setup_out = run_script(exercise_path, SETUP_SCRIPT)
         if not setup_ok:
-            print(f"  SETUP FAILED:\n{setup_out[:500]}")
+            log.error("  SETUP FAILED:\n%s", setup_out[:500])
             if len(setup_out) > 500:
-                print("  ... (truncated)")
+                log.error("  ... (truncated)")
             results.append((name, "setup", False))
             all_passed = False
             continue
-        print(f"  Setup: {setup_out[:80]}{'...' if len(setup_out) > 80 else ''}")
+        log.info("  Setup: %s%s", setup_out[:80], '...' if len(setup_out) > 80 else '')
 
-        # 2. Run solution script
         solution_ok, solution_out = run_script(exercise_path, SOLUTION_SCRIPT)
         if not solution_ok:
-            print(f"  SOLUTION FAILED:\n{solution_out[:500]}")
+            log.error("  SOLUTION FAILED:\n%s", solution_out[:500])
             if len(solution_out) > 500:
-                print("  ... (truncated)")
+                log.error("  ... (truncated)")
             results.append((name, "solution", False))
             all_passed = False
             continue
-        print(f"  Solution: {solution_out[:80]}{'...' if len(solution_out) > 80 else ''}")
+        log.info("  Solution: %s%s", solution_out[:80], '...' if len(solution_out) > 80 else '')
 
         results.append((name, "both", True))
-        print(f"  PASSED")
+        log.info("  PASSED")
 
-    # Summary
-    print("\n" + "=" * 60)
-    print("Summary")
-    print("=" * 60)
+    log.info("\n" + "=" * 60)
+    log.info("Summary")
+    log.info("=" * 60)
     passed = sum(1 for _, _, ok in results if ok)
     failed = sum(1 for _, _, ok in results if not ok)
-    print(f"Passed: {passed}/{len(exercises)}")
+    log.info("Passed: %d/%d", passed, len(exercises))
     if failed:
-        print(f"Failed: {failed}")
+        log.error("Failed: %d", failed)
         for name, phase, ok in results:
             if not ok:
-                print(f"  - {name} ({phase})")
+                log.error("  - %s (%s)", name, phase)
         sys.exit(1)
-    print("All exercises validated successfully.")
+    log.info("All exercises validated successfully.")
     sys.exit(0)
 
 

@@ -1,7 +1,10 @@
+import logging
 import os
 import glob
 import re
 import shutil
+
+log = logging.getLogger(__name__)
 
 def process_exercise(exercise_dir):
     solution_script = os.path.join(exercise_dir, 'exercise_solution.py')
@@ -96,7 +99,7 @@ def process_exercise(exercise_dir):
             dst = os.path.join(solutions_dir, filename)
             if os.path.exists(src):
                 shutil.move(src, dst)
-                print(f"Moved {src} to {dst}")
+                log.info("Moved %s to %s", src, dst)
 
 for exercise_dir in glob.glob('exercises/*'):
     if os.path.isdir(exercise_dir):
