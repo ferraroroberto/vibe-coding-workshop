@@ -4,6 +4,9 @@ import logging
 from fuzzywuzzy import fuzz
 from fuzzywuzzy import process
 
+from excel_io import atomic_write_sheet, load_full_sheet
+from sync_rules import apply_binary_checks, apply_replicate_rules
+
 logger = logging.getLogger(__name__)
 
 
@@ -289,110 +292,79 @@ def sync_phase2_data(df_master, matched_records, df_phase2, config):
     Returns:
         Updated master dataframe
     """
-    import tempfile
-    import os
-    
     try:
-        excel_path = config['excel_path']
-        sheet = config['excel_interpreter_spec']['sheet_name']
         excel_spec = config['excel_interpreter_spec']
         phase_two_spec = config['phase_two_spec']
-        
+
         # Load full Excel with header
-        full_df = pd.read_excel(excel_path, sheet_name=sheet, header=0, engine='openpyxl')
-        
-        # Get column mapping from config (column_id -> column index in Excel)
-        column_id_to_index = {col['column_id']: col['column'] for col in excel_spec['columns'] if col['column_id'] != 'skip'}
-        
+        full_df = load_full_sheet(config)
+
         # Find the ID column in full_df
         id_column_idx = None
         for col_spec in excel_spec['columns']:
             if col_spec['column_id'] == 'id':
                 id_column_idx = col_spec['column']
                 break
-        
+
         id_column_name = full_df.columns[id_column_idx] if id_column_idx is not None else full_df.columns[0]
-        
+
         # Get rules from Phase 2 spec
         replicate_rules = phase_two_spec.get('replicate', [])
         binary_check_rules = phase_two_spec.get('binary_check', [])
         missing_field_value = phase_two_spec.get('missing_field_value', 'sin respuesta')
         missing_fields = phase_two_spec.get('missing_fields', [])
-        
+
         # Process each matched record
         for _, match in matched_records.iterrows():
             master_id = match['master_id']
             phase2_idx = match['phase2_idx']
-            
+
             # Get Phase 2 row
             phase2_row = df_phase2.iloc[phase2_idx]
-            
+
             # Find the row in full_df
             full_df_mask = full_df[id_column_name] == master_id
             if not full_df_mask.any():
                 logger.warning(f"⚠️ Could not find master_id {master_id} in Excel")
                 continue
-            
+
             full_df_idx = full_df[full_df_mask].index[0]
-            
+
             # Also update df_master
             master_mask = df_master['id'] == master_id
             if not master_mask.any():
                 continue
             master_idx = df_master[master_mask].index[0]
-            
-            # Apply replicate rules
-            for rule in replicate_rules:
-                origin_col = str(rule.get('origin'))
-                dest_col_idx = rule.get('destination')
-                column_id = rule.get('column_id')
-                
-                if origin_col in phase2_row.index:
-                    value = phase2_row[origin_col]
-                    
-                    # Check if value is missing and origin is in missing_fields
-                    origin_int = int(origin_col) if origin_col.isdigit() else None
-                    if (pd.isna(value) or str(value).strip() == '') and origin_int in missing_fields:
-                        value = missing_field_value
-                    
-                    # Update Excel full_df
-                    if dest_col_idx < len(full_df.columns):
-                        full_df.at[full_df_idx, full_df.columns[dest_col_idx]] = value
-                    
-                    # Update df_master
-                    if column_id and column_id in df_master.columns:
-                        df_master.at[master_idx, column_id] = value
-            
-            # Apply binary_check rules
-            for rule in binary_check_rules:
-                source_col = str(rule.get('column'))
-                dest_col_idx = rule.get('destination')
-                column_id = rule.get('column_id', '')
-                
-                if source_col in phase2_row.index:
-                    original_value = phase2_row[source_col]
-                    
-                    # Convert to binary
-                    value_str = str(original_value).strip() if pd.notna(original_value) else ''
-                    binary_value = 1 if 'sí' in value_str.lower() else 0
-                    
-                    # Update Excel full_df
-                    if dest_col_idx < len(full_df.columns):
-                        full_df.at[full_df_idx, full_df.columns[dest_col_idx]] = binary_value
-                    
-                    # Update df_master
-                    if column_id and column_id in df_master.columns:
-                        df_master.at[master_idx, column_id] = binary_value
-        
-        # Write to temporary file first (atomic write)
-        with tempfile.NamedTemporaryFile(delete=False, suffix='.xlsx', dir=os.path.dirname(excel_path)) as tmp_file:
-            tmp_path = tmp_file.name
-            with pd.ExcelWriter(tmp_path, engine='openpyxl') as writer:
-                full_df.to_excel(writer, sheet_name=sheet, index=False)
-        
-        # Atomically replace the original file
-        os.replace(tmp_path, excel_path)
-        
+
+            def get_source(key):
+                return phase2_row[key] if key in phase2_row.index else None
+
+            def set_excel(col_idx, value):
+                if col_idx < len(full_df.columns):
+                    full_df.at[full_df_idx, full_df.columns[col_idx]] = value
+
+            def set_master(column_id, value):
+                if column_id in df_master.columns:
+                    df_master.at[master_idx, column_id] = value
+
+            apply_replicate_rules(
+                replicate_rules,
+                get_source,
+                set_excel,
+                missing_field_value=missing_field_value,
+                missing_fields=missing_fields,
+                set_master=set_master,
+            )
+
+            apply_binary_checks(
+                binary_check_rules,
+                get_source,
+                set_excel,
+                set_master=set_master,
+            )
+
+        atomic_write_sheet(full_df, config)
+
         # Set all 'ind_' columns to zero where null/NaN
         ind_cols = [col for col in df_master.columns if col.startswith('ind_')]
         if ind_cols:

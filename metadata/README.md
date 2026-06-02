@@ -67,14 +67,25 @@ If you want to run or modify the app:
 2. Run the app with Streamlit as shown above.
 
 ## Project Structure
+
+### Shared helpers (introduced in dedup refactor)
+- `excel_io.py` — Atomic Excel write helper (`save_dataframe_to_excel`): owns column-mapping, id-column lookup, and safe temp-file replace; all tab modules import from here
+- `fuzzy_search.py` — Shared fuzzy-name filter (`fuzzy_filter_by_name`) using `fuzzywuzzy.process`; used by data-entry and phase-two-entry tabs
+- `charts.py` — Reusable chart builders (`build_breakdown_pie`, `grey_ramp`); used by explore and participation-analysis tabs
+- `sync_rules.py` — Shared sync-rule transformations (`apply_replicate_rules`, `apply_binary_checks`); used by data-sync and phase-two-sync tabs
+
+### Tab modules
 - `streamlit_app.py` — Main dashboard app
 - `config.json` — Configuration for columns and Excel path
 - `Te interesa aprender Python.xlsx` — Survey data
 - `requirements.txt` — Python dependencies
 - `data_entry.py` — Data entry module with calendar selectors
+- `phase_two_entry.py` — Phase-two data entry
 - `explore.py` — Data exploration with charts and filters
 - `data_sync.py` — Data synchronization utilities
+- `phase_two_sync.py` — Phase-two synchronization utilities
 - `data_import.py` — Data enrichment with employee and work center information
+- `selection_management.py` — Selection management tab
 - `participation_analysis.py` — Participation analysis with treemap visualizations
 
 ## Notes

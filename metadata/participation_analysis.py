@@ -4,6 +4,8 @@ import plotly.express as px
 import logging
 import os
 
+from charts import grey_ramp
+
 logger = logging.getLogger(__name__)
 
 
@@ -213,20 +215,8 @@ def display_treemap(treemap_data, level):
     treemap_data_sorted = treemap_data.sort_values('participation_rate', ascending=False).reset_index(drop=True)
     
     n_areas = len(treemap_data_sorted)
-    color_map = {}
-    
-    if n_areas > 0:
-        # Top area gets blue
-        color_map[treemap_data_sorted.iloc[0]['area']] = '#1E88E5'
-        
-        # Rest get grey shades from light to dark
-        for i in range(1, n_areas):
-            if n_areas > 2:
-                factor = i / (n_areas - 1)
-            else:
-                factor = 1
-            gray = int(217 + (64 - 217) * factor)  # From #D9D9D9 (217) to #404040 (64)
-            color_map[treemap_data_sorted.iloc[i]['area']] = f'rgb({gray},{gray},{gray})'
+    # Top area gets accent blue, the rest a light-to-dark grey ramp.
+    color_map = dict(zip(treemap_data_sorted['area'], grey_ramp(n_areas)))
     
     # Create treemap
     fig = px.treemap(

@@ -1,8 +1,8 @@
 import streamlit as st
 import pandas as pd
-import json
-from fuzzywuzzy import fuzz
-from fuzzywuzzy import process
+
+from excel_io import save_dataframe_to_excel
+from fuzzy_search import fuzzy_filter_by_name
 
 
 # Field configuration
@@ -55,61 +55,6 @@ def render_form_field(field, value, key_prefix, df, field_config):
         return st.text_input(field, value=current_str, key=f"{key_prefix}_{field}")
 
 
-def save_to_excel(df, config):
-    """Save dataframe back to Excel file atomically."""
-    import tempfile
-    import os
-    excel_path = config['excel_path']
-    sheet = config['excel_interpreter_spec']['sheet_name']
-
-    # Load full Excel
-    full_df = pd.read_excel(excel_path, sheet_name=sheet, header=0, engine='openpyxl')
-
-    # Map back to columns
-    column_map = {col_spec['column_id']: col_spec['column'] for col_spec in config['excel_interpreter_spec']['columns'] if col_spec['column_id'] != 'skip'}
-
-    # Find the id column name in full_df
-    id_column = None
-    for col_spec in config['excel_interpreter_spec']['columns']:
-        if col_spec['column_id'] == 'id':
-            id_column = full_df.columns[col_spec['column']]
-            break
-
-    # Keep only rows that exist in df (handle deletes)
-    full_df = full_df[full_df[id_column].isin(df['id'])].reset_index(drop=True)
-
-    # Update existing rows and add new rows
-    for _, row in df.iterrows():
-        row_id = row['id']
-        if row_id in full_df[id_column].values:
-            # Update existing row
-            full_idx = full_df[full_df[id_column] == row_id].index[0]
-            for col_id, value in row.items():
-                if col_id in column_map:
-                    col_idx = column_map[col_id]
-                    full_df.at[full_idx, full_df.columns[col_idx]] = value
-        else:
-            # Add new row
-            new_row = {}
-            for col in full_df.columns:
-                if col == id_column:
-                    new_row[col] = row['id']
-                else:
-                    # Map back from column_id to original column name
-                    col_id = next((cid for cid, cidx in column_map.items() if full_df.columns[cidx] == col), None)
-                    new_row[col] = row.get(col_id) if col_id else None
-            full_df = pd.concat([full_df, pd.DataFrame([new_row])], ignore_index=True)
-
-    # Write to a temporary file first
-    with tempfile.NamedTemporaryFile(delete=False, suffix='.xlsx', dir=os.path.dirname(excel_path)) as tmp_file:
-        tmp_path = tmp_file.name
-        with pd.ExcelWriter(tmp_path, engine='openpyxl') as writer:
-            full_df.to_excel(writer, sheet_name=sheet, index=False)
-    
-    # Atomically replace the original file
-    os.replace(tmp_path, excel_path)
-
-
 def run(df, filters, config):
     """Main data entry interface. Returns modified dataframe."""
     field_config = get_field_config(df)
@@ -142,15 +87,7 @@ def run(df, filters, config):
 
     # Fuzzy search
     if search_term:
-        names = filtered_df['name'].dropna().tolist()
-        matches = process.extract(search_term, names, scorer=fuzz.partial_ratio, limit=None)
-        good_matches = [(match[0], match[1]) for match in matches if match[1] >= 70]
-        if good_matches:
-            good_matches.sort(key=lambda x: x[1], reverse=True)
-            matched_names = [name for name, score in good_matches]
-            filtered_df = filtered_df[filtered_df['name'].isin(matched_names)]
-            name_to_order = {name: i for i, (name, _) in enumerate(good_matches)}
-            filtered_df = filtered_df.assign(match_order=filtered_df['name'].map(name_to_order)).sort_values('match_order').drop('match_order', axis=1)
+        filtered_df = fuzzy_filter_by_name(filtered_df, search_term)
 
     # Sort by name if not searching
     if not search_term:
@@ -248,7 +185,7 @@ def render_edit_section(df, filtered_df, config, field_config, search_term):
             if st.button("Confirm Delete"):
                 idx = df[df['id'] == selected_id].index[0]
                 df = df.drop(idx).reset_index(drop=True)
-                save_to_excel(df, config)
+                save_dataframe_to_excel(df, config)
                 st.session_state['df'] = df
                 st.session_state.pop('confirm_delete', None)
                 st.session_state.pop('selected_id', None)
@@ -329,7 +266,7 @@ def render_add_section(df, config, field_config):
                         new_row[field] = inputs[field]
                 
                 df = pd.concat([df, pd.DataFrame([new_row])], ignore_index=True)
-                save_to_excel(df, config)
+                save_dataframe_to_excel(df, config)
                 st.session_state['df'] = df
                 st.session_state.pop('adding_new', None)
                 st.session_state['last_saved'] = True
@@ -391,6 +328,6 @@ def save_record_changes(df, selected_row, selected_id, field_config, config):
                 new_value = pd.to_datetime(new_value) if new_value else pd.NaT
             df.at[idx, field] = new_value
     
-    save_to_excel(df, config)
+    save_dataframe_to_excel(df, config)
     st.session_state['last_saved'] = True
     return df
