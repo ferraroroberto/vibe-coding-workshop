@@ -3,6 +3,8 @@ import pandas as pd
 import logging
 import os
 
+from excel_io import atomic_write_sheet, build_column_id_to_index, load_full_sheet
+
 logger = logging.getLogger(__name__)
 
 
@@ -325,27 +327,16 @@ def save_enriched_data(df_enriched, config):
     Save enriched data back to Excel file.
     Uses atomic write pattern (temp file + replace).
     """
-    import tempfile
-    import os
-    
     try:
-        excel_path = config['excel_path']
-        sheet = config['excel_interpreter_spec']['sheet_name']
-        excel_spec = config['excel_interpreter_spec']
-        
         # Load full Excel with header
-        full_df = pd.read_excel(excel_path, sheet_name=sheet, header=0, engine='openpyxl')
-        
+        full_df = load_full_sheet(config)
+
         # Get column mapping from config (column_id -> column index)
-        column_id_to_index = {col['column_id']: col['column'] for col in excel_spec['columns'] if col['column_id'] != 'skip'}
-        
-        # Get list of column_ids that we should update
-        expected_column_ids = list(column_id_to_index.keys())
-        
+        column_id_to_index = build_column_id_to_index(config)
+
         # Only update columns that exist in both df_enriched and the config
-        for col_id in expected_column_ids:
+        for col_id, col_index in column_id_to_index.items():
             if col_id in df_enriched.columns:
-                col_index = column_id_to_index[col_id]
                 if col_index < len(full_df.columns):
                     # Ensure same length
                     if len(df_enriched) == len(full_df):
@@ -353,16 +344,9 @@ def save_enriched_data(df_enriched, config):
                     else:
                         st.error(f"⚠️ Row count mismatch: enriched={len(df_enriched)}, original={len(full_df)}")
                         return False
-        
-        # Write to temporary file first (atomic write)
-        with tempfile.NamedTemporaryFile(delete=False, suffix='.xlsx', dir=os.path.dirname(excel_path)) as tmp_file:
-            tmp_path = tmp_file.name
-            with pd.ExcelWriter(tmp_path, engine='openpyxl') as writer:
-                full_df.to_excel(writer, sheet_name=sheet, index=False)
-        
-        # Atomically replace the original file
-        os.replace(tmp_path, excel_path)
-        
+
+        atomic_write_sheet(full_df, config)
+
         logger.info(f"✅ Saved enriched data successfully")
         return True
         

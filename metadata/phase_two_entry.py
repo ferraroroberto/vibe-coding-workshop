@@ -1,8 +1,14 @@
 import streamlit as st
 import pandas as pd
 import logging
-from fuzzywuzzy import fuzz
-from fuzzywuzzy import process
+
+from excel_io import (
+    atomic_write_sheet,
+    build_column_id_to_index,
+    find_id_column_name,
+    load_full_sheet,
+)
+from fuzzy_search import fuzzy_filter_by_name
 
 logger = logging.getLogger(__name__)
 
@@ -44,15 +50,7 @@ def run(df, filters, config):
     
     # Fuzzy search
     if search_term:
-        names = filtered_df['name'].dropna().tolist()
-        matches = process.extract(search_term, names, scorer=fuzz.partial_ratio, limit=None)
-        good_matches = [(match[0], match[1]) for match in matches if match[1] >= 70]
-        if good_matches:
-            good_matches.sort(key=lambda x: x[1], reverse=True)
-            matched_names = [name for name, score in good_matches]
-            filtered_df = filtered_df[filtered_df['name'].isin(matched_names)]
-            name_to_order = {name: i for i, (name, _) in enumerate(good_matches)}
-            filtered_df = filtered_df.assign(match_order=filtered_df['name'].map(name_to_order)).sort_values('match_order').drop('match_order', axis=1)
+        filtered_df = fuzzy_filter_by_name(filtered_df, search_term)
     else:
         filtered_df = filtered_df.sort_values(by='name')
     
@@ -203,12 +201,9 @@ def check_phase2_changes(selected_row, selected_id, df):
 
 def save_phase2_changes(df, selected_row, selected_id, config):
     """Save Phase 2 changes to dataframe and Excel."""
-    import tempfile
-    import os
-    
     all_fields = PHASE1_INDICATOR_FIELDS + PHASE2_TEXT_FIELDS + PHASE2_INDICATOR_FIELDS + ['txt_review', 'url_1to1']
     idx = df[df['id'] == selected_id].index[0]
-    
+
     # Update df
     for field in all_fields:
         if field not in df.columns:
@@ -219,41 +214,26 @@ def save_phase2_changes(df, selected_row, selected_id, config):
             if field in PHASE1_INDICATOR_FIELDS + PHASE2_INDICATOR_FIELDS:
                 new_value = int(1 if new_value else 0)
             df.at[idx, field] = new_value
-    
+
     # Save to Excel
-    excel_path = config['excel_path']
-    sheet = config['excel_interpreter_spec']['sheet_name']
-    excel_spec = config['excel_interpreter_spec']
-    
-    # Load full Excel
-    full_df = pd.read_excel(excel_path, sheet_name=sheet, header=0, engine='openpyxl')
-    
-    # Get column mapping
-    column_id_to_index = {col['column_id']: col['column'] for col in excel_spec['columns'] if col['column_id'] != 'skip'}
-    
-    # Find ID column
-    id_column_idx = column_id_to_index.get('id', 0)
-    id_column_name = full_df.columns[id_column_idx]
-    
+    full_df = load_full_sheet(config)
+    column_id_to_index = build_column_id_to_index(config)
+    id_column_name = find_id_column_name(full_df, config)
+
     # Find row in full_df
     full_df_mask = full_df[id_column_name] == selected_id
     if full_df_mask.any():
         full_df_idx = full_df[full_df_mask].index[0]
-        
+
         # Update columns
         for field in all_fields:
             if field in column_id_to_index and field in df.columns:
                 col_idx = column_id_to_index[field]
                 if col_idx < len(full_df.columns):
                     full_df.at[full_df_idx, full_df.columns[col_idx]] = df.at[idx, field]
-        
-        # Write atomically
-        with tempfile.NamedTemporaryFile(delete=False, suffix='.xlsx', dir=os.path.dirname(excel_path)) as tmp_file:
-            tmp_path = tmp_file.name
-            with pd.ExcelWriter(tmp_path, engine='openpyxl') as writer:
-                full_df.to_excel(writer, sheet_name=sheet, index=False)
-        os.replace(tmp_path, excel_path)
-    
+
+        atomic_write_sheet(full_df, config)
+
     return df
 
 

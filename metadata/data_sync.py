@@ -2,6 +2,9 @@ import streamlit as st
 import pandas as pd
 import logging
 
+from excel_io import atomic_write_sheet, load_full_sheet
+from sync_rules import apply_binary_checks, apply_replicate_rules
+
 logger = logging.getLogger(__name__)
 
 
@@ -162,99 +165,67 @@ def sync_data(df_main, df_new, config, source_columns):
     3. Apply binary_check rules (convert 'Sí' → 1, other → 0)
     4. Append to Excel file
     """
-    import tempfile
-    import os
-    
     try:
-        excel_path = config['excel_path']
-        sheet = config['excel_interpreter_spec']['sheet_name']
         excel_spec = config['excel_interpreter_spec']
         source_spec = config['source_path_spec']
-        
+
         # Load full Excel with header
-        full_df = pd.read_excel(excel_path, sheet_name=sheet, header=0, engine='openpyxl')
-        
+        full_df = load_full_sheet(config)
+
         # Create column mapping: column_index -> column_id
         column_id_map = {str(col['column']): col['column_id'] for col in excel_spec['columns'] if col['column_id'] != 'skip'}
-        column_to_index = {str(col['column']): col['column'] for col in excel_spec['columns']}
-        
+
         # Prepare new rows to append
         new_rows = []
-        
+
         for _, source_row in df_new.iterrows():
             # Create empty row with all Excel columns
             new_excel_row = pd.Series([None] * len(full_df.columns), index=full_df.columns)
-            
+
+            def set_excel(col_idx, value):
+                if col_idx < len(full_df.columns):
+                    new_excel_row[full_df.columns[col_idx]] = value
+
+            def get_source(key):
+                return source_row[key] if key in source_row else None
+
             # Map source columns to Excel columns
             for source_col in source_columns:
                 source_col_str = str(source_col)
                 if source_col_str in column_id_map and source_col_str in source_row:
-                    col_id = column_id_map[source_col_str]
-                    if source_col < len(full_df.columns):
-                        new_excel_row[full_df.columns[source_col]] = source_row[source_col_str]
-            
+                    set_excel(source_col, source_row[source_col_str])
+
             # Apply replicate rules (copy to both origin and destination)
-            replicate_rules = source_spec.get('replicate', [])
-            missing_field_value = source_spec.get('missing_field_value', 'sin respuesta')
-            missing_fields = source_spec.get('missing_fields', [])
-            
-            for rule in replicate_rules:
-                origin_col = rule.get('origin')
-                dest_col = rule.get('destination')
-                origin_col_str = str(origin_col)
-                if origin_col_str in source_row:
-                    value = source_row[origin_col_str]
-                    # Check if value is missing/empty and origin_col is in missing_fields
-                    if (pd.isna(value) or str(value).strip() == '') and origin_col in missing_fields:
-                        value = missing_field_value
-                    # Set destination column
-                    if dest_col < len(full_df.columns):
-                        new_excel_row[full_df.columns[dest_col]] = value
-                    # Also ensure origin column is set (may already be set from source mapping)
-                    if origin_col < len(full_df.columns):
-                        new_excel_row[full_df.columns[origin_col]] = value
-            
+            apply_replicate_rules(
+                source_spec.get('replicate', []),
+                get_source,
+                set_excel,
+                missing_field_value=source_spec.get('missing_field_value', 'sin respuesta'),
+                missing_fields=source_spec.get('missing_fields', []),
+                also_write_origin=True,
+            )
+
             # Apply binary_check rules (save original value + convert 'Sí' → 1, other → 0)
-            binary_check_rules = source_spec.get('binary_check', [])
-            for rule in binary_check_rules:
-                source_col = rule.get('column')
-                dest_col = rule.get('destination')
-                source_col_str = str(source_col)
-                if source_col_str in source_row:
-                    # Save original value in source column
-                    original_value = source_row[source_col_str]
-                    if source_col < len(full_df.columns):
-                        new_excel_row[full_df.columns[source_col]] = original_value
-                    
-                    # Convert to binary in destination column
-                    # Check if 'Sí' is contained in the string (case-insensitive)
-                    value_str = str(original_value).strip() if pd.notna(original_value) else ''
-                    binary_value = 1 if 'sí' in value_str.lower() else 0
-                    if dest_col < len(full_df.columns):
-                        new_excel_row[full_df.columns[dest_col]] = binary_value
-            
+            apply_binary_checks(
+                source_spec.get('binary_check', []),
+                get_source,
+                set_excel,
+                keep_original=True,
+            )
+
             # Set ind_review, ind_select, ind_1to1 to 0 by default
             default_indicators = ['ind_review', 'ind_select', 'ind_1to1']
             for col_spec in excel_spec['columns']:
                 if col_spec['column_id'] in default_indicators:
-                    col_idx = col_spec['column']
-                    if col_idx < len(full_df.columns):
-                        new_excel_row[full_df.columns[col_idx]] = 0
-            
+                    set_excel(col_spec['column'], 0)
+
             new_rows.append(new_excel_row)
-        
+
         # Append new rows to full_df
         full_df = pd.concat([full_df, pd.DataFrame(new_rows)], ignore_index=True)
-        
-        # Write to temporary file first (atomic write)
-        with tempfile.NamedTemporaryFile(delete=False, suffix='.xlsx', dir=os.path.dirname(excel_path)) as tmp_file:
-            tmp_path = tmp_file.name
-            with pd.ExcelWriter(tmp_path, engine='openpyxl') as writer:
-                full_df.to_excel(writer, sheet_name=sheet, index=False)
-        
-        # Atomically replace the original file
-        os.replace(tmp_path, excel_path)
-        
+
+        atomic_write_sheet(full_df, config)
+
         logger.info(f"✅ Synced {len(df_new)} records successfully")
         return True
         

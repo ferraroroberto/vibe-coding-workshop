@@ -1,8 +1,13 @@
 import streamlit as st
 import pandas as pd
 import logging
-import tempfile
-import os
+
+from excel_io import (
+    atomic_write_sheet,
+    build_column_id_to_index,
+    find_id_column_name,
+    load_full_sheet,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -314,41 +319,25 @@ def bulk_update_status(df, ids, column, value, config, save=True):
     
     if not save:
         return df
-    
+
     # Save to Excel
-    excel_path = config['excel_path']
-    sheet = config['excel_interpreter_spec']['sheet_name']
-    excel_spec = config['excel_interpreter_spec']
-    
-    # Load full Excel
-    full_df = pd.read_excel(excel_path, sheet_name=sheet, header=0, engine='openpyxl')
-    
-    # Get column mapping
-    column_id_to_index = {col['column_id']: col['column'] for col in excel_spec['columns'] if col['column_id'] != 'skip'}
-    
-    # Find ID column
-    id_column_idx = column_id_to_index.get('id', 0)
-    id_column_name = full_df.columns[id_column_idx]
-    
+    full_df = load_full_sheet(config)
+    column_id_to_index = build_column_id_to_index(config)
+    id_column_name = find_id_column_name(full_df, config)
+
     # Find target column
     if column not in column_id_to_index:
         logger.warning(f"Column {column} not found in config")
         return df
-    
-    target_col_idx = column_id_to_index[column]
-    target_col_name = full_df.columns[target_col_idx]
-    
+
+    target_col_name = full_df.columns[column_id_to_index[column]]
+
     # Update rows
     mask = full_df[id_column_name].isin(ids)
     full_df.loc[mask, target_col_name] = value
-    
-    # Write atomically
-    with tempfile.NamedTemporaryFile(delete=False, suffix='.xlsx', dir=os.path.dirname(excel_path)) as tmp_file:
-        tmp_path = tmp_file.name
-        with pd.ExcelWriter(tmp_path, engine='openpyxl') as writer:
-            full_df.to_excel(writer, sheet_name=sheet, index=False)
-    os.replace(tmp_path, excel_path)
-    
+
+    atomic_write_sheet(full_df, config)
+
     logger.info(f"✅ Bulk updated {len(ids)} records: {column} = {value}")
     return df
 

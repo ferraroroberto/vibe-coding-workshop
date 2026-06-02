@@ -4,6 +4,8 @@ import json
 import plotly.express as px
 from collections import Counter
 
+from charts import build_breakdown_pie, collapse_to_other, grey_ramp
+
 def run(df, filters, config):
 
     # Apply filters to df
@@ -38,173 +40,29 @@ def run(df, filters, config):
     
     st.markdown("---")
 
-    # Pie charts in two columns
-    col1, col2 = st.columns(2)
+    # Breakdown pie charts, two per row. Company/place use a 1% "Other" cutoff;
+    # the hierarchy breakdowns use 3% and lower-case their labels.
+    pie_specs = [
+        {'column': 'company', 'threshold': 0.01, 'title': 'Breakdown by Company', 'lowercase': False},
+        {'column': 'place', 'threshold': 0.01, 'title': 'Breakdown by Place', 'lowercase': False},
+        {'column': 'des_dt', 'threshold': 0.03, 'title': 'Breakdown by N+3(dt)', 'lowercase': True},
+        {'column': 'des_dg', 'threshold': 0.03, 'title': 'Breakdown by N+2(dg)', 'lowercase': True},
+        {'column': 'des_dan', 'threshold': 0.03, 'title': 'Breakdown by N+1(dan)', 'lowercase': True},
+        {'column': 'des_centro_ges', 'threshold': 0.03, 'title': 'Breakdown by center', 'lowercase': True},
+    ]
 
-    with col1:
-        company_df = filtered_df['company'].value_counts().reset_index()
-        company_df.columns = ['company', 'count']
-        company_df = company_df.sort_values('count', ascending=False)
-        total_company = company_df['count'].sum()
-        company_df['percentage'] = company_df['count'] / total_company
-        main_company = company_df[company_df['percentage'] >= 0.01]
-        rest_count = company_df[company_df['percentage'] < 0.01]['count'].sum()
-        if rest_count > 0:
-            rest_df = pd.DataFrame({'company': ['Other'], 'count': [rest_count], 'percentage': [rest_count / total_company]})
-            company_df = pd.concat([main_company, rest_df], ignore_index=True)
-        else:
-            company_df = main_company
-        n_company = len(company_df)
-        company_colors = ['#1E88E5']  # Top is blue
-        for i in range(1, n_company):
-            if n_company > 2:
-                factor = (i - 1) / (n_company - 2)
-            else:
-                factor = 0
-            gray = int(217 + (64 - 217) * factor)  # From #D9D9D9 (217) to #404040 (64)
-            company_colors.append(f'rgb({gray},{gray},{gray})')
-        company_color_map = dict(zip(company_df['company'], company_colors))
-        fig1 = px.pie(company_df, values='count', names='company', title='Breakdown by Company', color='company', color_discrete_map=company_color_map)
-        st.plotly_chart(fig1, width='stretch')
-
-    with col2:
-        place_df = filtered_df['place'].value_counts().reset_index()
-        place_df.columns = ['place', 'count']
-        place_df = place_df.sort_values('count', ascending=False)
-        total_place = place_df['count'].sum()
-        place_df['percentage'] = place_df['count'] / total_place
-        main_place = place_df[place_df['percentage'] >= 0.01]
-        rest_count = place_df[place_df['percentage'] < 0.01]['count'].sum()
-        if rest_count > 0:
-            rest_df = pd.DataFrame({'place': ['Other'], 'count': [rest_count], 'percentage': [rest_count / total_place]})
-            place_df = pd.concat([main_place, rest_df], ignore_index=True)
-        else:
-            place_df = main_place
-        n_place = len(place_df)
-        place_colors = ['#1E88E5']  # Top is blue
-        for i in range(1, n_place):
-            if n_place > 2:
-                factor = (i - 1) / (n_place - 2)
-            else:
-                factor = 0
-            gray = int(217 + (64 - 217) * factor)  # From #D9D9D9 (217) to #404040 (64)
-            place_colors.append(f'rgb({gray},{gray},{gray})')
-        place_color_map = dict(zip(place_df['place'], place_colors))
-        fig2 = px.pie(place_df, values='count', names='place', title='Breakdown by Place', color='place', color_discrete_map=place_color_map)
-        st.plotly_chart(fig2, width='stretch')
-
-    # Additional pie charts
-    col1, col2 = st.columns(2)
-
-    with col1:
-        dt_df = filtered_df['des_dt'].value_counts().reset_index()
-        dt_df.columns = ['des_dt', 'count']
-        dt_df = dt_df.sort_values('count', ascending=False)
-        total_dt = dt_df['count'].sum()
-        dt_df['percentage'] = dt_df['count'] / total_dt
-        main_dt = dt_df[dt_df['percentage'] >= 0.03]  # Change threshold to 3%
-        rest_count = dt_df[dt_df['percentage'] < 0.03]['count'].sum()  # Change threshold to 3%
-        if rest_count > 0:
-            rest_df = pd.DataFrame({'des_dt': ['Other'], 'count': [rest_count], 'percentage': [rest_count / total_dt]})
-            dt_df = pd.concat([main_dt, rest_df], ignore_index=True)
-        else:
-            dt_df = main_dt
-        dt_df['des_dt'] = dt_df['des_dt'].str.lower()
-        n_dt = len(dt_df)
-        dt_colors = ['#1E88E5']  # Top is blue
-        for i in range(1, n_dt):
-            if n_dt > 2:
-                factor = (i - 1) / (n_dt - 2)
-            else:
-                factor = 0
-            gray = int(217 + (64 - 217) * factor)  # From #D9D9D9 (217) to #404040 (64)
-            dt_colors.append(f'rgb({gray},{gray},{gray})')
-        dt_color_map = dict(zip(dt_df['des_dt'], dt_colors))
-        fig3 = px.pie(dt_df, values='count', names='des_dt', title='Breakdown by N+3(dt)', color='des_dt', color_discrete_map=dt_color_map)
-        st.plotly_chart(fig3, width='stretch')
-
-    with col2:
-        dg_df = filtered_df['des_dg'].value_counts().reset_index()
-        dg_df.columns = ['des_dg', 'count']
-        dg_df = dg_df.sort_values('count', ascending=False)
-        total_dg = dg_df['count'].sum()
-        dg_df['percentage'] = dg_df['count'] / total_dg
-        main_dg = dg_df[dg_df['percentage'] >= 0.03]  # Change threshold to 3%
-        rest_count = dg_df[dg_df['percentage'] < 0.03]['count'].sum()  # Change threshold to 3%
-        if rest_count > 0:
-            rest_df = pd.DataFrame({'des_dg': ['Other'], 'count': [rest_count], 'percentage': [rest_count / total_dg]})
-            dg_df = pd.concat([main_dg, rest_df], ignore_index=True)
-        else:
-            dg_df = main_dg
-        dg_df['des_dg'] = dg_df['des_dg'].str.lower()
-        n_dg = len(dg_df)
-        dg_colors = ['#1E88E5']  # Top is blue
-        for i in range(1, n_dg):
-            if n_dg > 2:
-                factor = (i - 1) / (n_dg - 2)
-            else:
-                factor = 0
-            gray = int(217 + (64 - 217) * factor)  # From #D9D9D9 (217) to #404040 (64)
-            dg_colors.append(f'rgb({gray},{gray},{gray})')
-        dg_color_map = dict(zip(dg_df['des_dg'], dg_colors))
-        fig4 = px.pie(dg_df, values='count', names='des_dg', title='Breakdown by N+2(dg)', color='des_dg', color_discrete_map=dg_color_map)
-        st.plotly_chart(fig4, width='stretch')
-
-    col1, col2 = st.columns(2)
-
-    with col1:
-        dan_df = filtered_df['des_dan'].value_counts().reset_index()
-        dan_df.columns = ['des_dan', 'count']
-        dan_df = dan_df.sort_values('count', ascending=False)
-        total_dan = dan_df['count'].sum()
-        dan_df['percentage'] = dan_df['count'] / total_dan
-        main_dan = dan_df[dan_df['percentage'] >= 0.03]  # Change threshold to 3%
-        rest_count = dan_df[dan_df['percentage'] < 0.03]['count'].sum()  # Change threshold to 3%
-        if rest_count > 0:
-            rest_df = pd.DataFrame({'des_dan': ['Other'], 'count': [rest_count], 'percentage': [rest_count / total_dan]})
-            dan_df = pd.concat([main_dan, rest_df], ignore_index=True)
-        else:
-            dan_df = main_dan
-        dan_df['des_dan'] = dan_df['des_dan'].str.lower()
-        n_dan = len(dan_df)
-        dan_colors = ['#1E88E5']  # Top is blue
-        for i in range(1, n_dan):
-            if n_dan > 2:
-                factor = (i - 1) / (n_dan - 2)
-            else:
-                factor = 0
-            gray = int(217 + (64 - 217) * factor)  # From #D9D9D9 (217) to #404040 (64)
-            dan_colors.append(f'rgb({gray},{gray},{gray})')
-        dan_color_map = dict(zip(dan_df['des_dan'], dan_colors))
-        fig5 = px.pie(dan_df, values='count', names='des_dan', title='Breakdown by N+1(dan)', color='des_dan', color_discrete_map=dan_color_map)
-        st.plotly_chart(fig5, width='stretch')
-
-    with col2:
-        centro_df = filtered_df['des_centro_ges'].value_counts().reset_index()
-        centro_df.columns = ['des_centro_ges', 'count']
-        centro_df = centro_df.sort_values('count', ascending=False)
-        total_centro = centro_df['count'].sum()
-        centro_df['percentage'] = centro_df['count'] / total_centro
-        main_centro = centro_df[centro_df['percentage'] >= 0.03]  # Change threshold to 3%
-        rest_count = centro_df[centro_df['percentage'] < 0.03]['count'].sum()  # Change threshold to 3%
-        if rest_count > 0:
-            rest_df = pd.DataFrame({'des_centro_ges': ['Other'], 'count': [rest_count], 'percentage': [rest_count / total_centro]})
-            centro_df = pd.concat([main_centro, rest_df], ignore_index=True)
-        else:
-            centro_df = main_centro
-        centro_df['des_centro_ges'] = centro_df['des_centro_ges'].str.lower()
-        n_centro = len(centro_df)
-        centro_colors = ['#1E88E5']  # Top is blue
-        for i in range(1, n_centro):
-            if n_centro > 2:
-                factor = (i - 1) / (n_centro - 2)
-            else:
-                factor = 0
-            gray = int(217 + (64 - 217) * factor)  # From #D9D9D9 (217) to #404040 (64)
-            centro_colors.append(f'rgb({gray},{gray},{gray})')
-        centro_color_map = dict(zip(centro_df['des_centro_ges'], centro_colors))
-        fig6 = px.pie(centro_df, values='count', names='des_centro_ges', title='Breakdown by center', color='des_centro_ges', color_discrete_map=centro_color_map)
-        st.plotly_chart(fig6, width='stretch')
+    for row_start in range(0, len(pie_specs), 2):
+        cols = st.columns(2)
+        for col, spec in zip(cols, pie_specs[row_start:row_start + 2]):
+            with col:
+                fig = build_breakdown_pie(
+                    filtered_df,
+                    spec['column'],
+                    spec['threshold'],
+                    spec['title'],
+                    lowercase=spec['lowercase'],
+                )
+                st.plotly_chart(fig, width='stretch')
 
     # Process use_cases: split by ';'
     use_cases_all = []
@@ -215,26 +73,8 @@ def run(df, filters, config):
 
     # Vertical bar chart for use_cases
     use_cases_df = pd.DataFrame(list(use_cases_counts.items()), columns=['use_case', 'count'])
-    use_cases_df = use_cases_df.sort_values('count', ascending=False)
-    total_use = use_cases_df['count'].sum()
-    use_cases_df['percentage'] = use_cases_df['count'] / total_use
-    main_use = use_cases_df[use_cases_df['percentage'] >= 0.01]
-    rest_count = use_cases_df[use_cases_df['percentage'] < 0.01]['count'].sum()
-    if rest_count > 0:
-        rest_df = pd.DataFrame({'use_case': ['Other'], 'count': [rest_count], 'percentage': [rest_count / total_use]})
-        use_cases_df = pd.concat([main_use, rest_df], ignore_index=True)
-    else:
-        use_cases_df = main_use
-    n_use = len(use_cases_df)
-    use_colors = ['#1E88E5']  # Top is blue
-    for i in range(1, n_use):
-        if n_use > 2:
-            factor = (i - 1) / (n_use - 2)
-        else:
-            factor = 0
-        gray = int(217 + (64 - 217) * factor)  # From #D9D9D9 (217) to #404040 (64)
-        use_colors.append(f'rgb({gray},{gray},{gray})')
-    use_color_map = dict(zip(use_cases_df['use_case'], use_colors))
+    use_cases_df = collapse_to_other(use_cases_df, 'use_case', 0.01)
+    use_color_map = dict(zip(use_cases_df['use_case'], grey_ramp(len(use_cases_df))))
     fig3 = px.bar(use_cases_df, x='count', y='use_case', title='Use Cases Breakdown', color='use_case', color_discrete_map=use_color_map, orientation='h', labels={'use_case': ''})
     st.plotly_chart(fig3, width='stretch')
 
