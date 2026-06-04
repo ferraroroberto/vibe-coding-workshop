@@ -1,6 +1,14 @@
 import streamlit as st
 import pandas as pd
 import json
+import data_entry
+import explore
+import data_sync
+import data_import
+import participation_analysis
+import phase_two_sync
+import phase_two_entry
+import selection_management
 
 # Page Config
 st.set_page_config(page_title="Survey Data Dashboard", layout="wide")
@@ -8,9 +16,25 @@ st.set_page_config(page_title="Survey Data Dashboard", layout="wide")
 st.markdown("""
 <style>
     /* Vertically align tabs with Deploy button */
-    .stTabs {margin-top: -64px !important;
+    .stTabs { margin-top: -64px !important; }
 </style>
 """, unsafe_allow_html=True)
+
+
+def ensure_phase2_columns(df: pd.DataFrame) -> pd.DataFrame:
+    """Ensure Phase 2 columns exist with correct types. Idempotent."""
+    phase2_columns = ['ind_confirm', 'ide_python', 'ide_sql', 'txt_usecase_data',
+                      'txt_usecase_visual', 'txt_usecase_automate', 'ind_session',
+                      'ind_waitlist', 'ind_facilitate', 'ind_review_phasetwo']
+    for col in phase2_columns:
+        if col not in df.columns:
+            df[col] = 0 if col.startswith('ind_') else ''
+
+    default_zero_cols = ['ind_confirm', 'ind_facilitate', 'ind_session', 'ind_waitlist', 'ind_review_phasetwo']
+    for col in default_zero_cols:
+        if col in df.columns:
+            df[col] = pd.to_numeric(df[col], errors='coerce').fillna(0).astype(int)
+    return df
 
 
 # Load config
@@ -45,38 +69,11 @@ if 'df' not in st.session_state:
     # Keep only the mapped columns
     mapped_columns = [col_spec['column_id'] for col_spec in config['excel_interpreter_spec']['columns'] if col_spec['column_id'] != 'skip']
     df = df[mapped_columns]
-    
-    # Ensure Phase 2 columns exist with default values
-    phase2_columns = ['ind_confirm', 'ide_python', 'ide_sql', 'txt_usecase_data', 
-                      'txt_usecase_visual', 'txt_usecase_automate', 'ind_session', 
-                      'ind_waitlist', 'ind_facilitate', 'ind_review_phasetwo']
-    for col in phase2_columns:
-        if col not in df.columns:
-            df[col] = 0 if col.startswith('ind_') else ''
-    
-    # Set default values for ALL indicator columns (replace NULLs with 0)
-    default_zero_cols = ['ind_confirm', 'ind_facilitate', 'ind_session', 'ind_waitlist', 'ind_review_phasetwo']
-    for col in default_zero_cols:
-        if col in df.columns:
-            df[col] = pd.to_numeric(df[col], errors='coerce').fillna(0).astype(int)
-    
+
+    df = ensure_phase2_columns(df)
     st.session_state['df'] = df
 else:
-    df = st.session_state['df']
-    
-    # Ensure Phase 2 columns exist with default values (for existing sessions)
-    phase2_columns = ['ind_confirm', 'ide_python', 'ide_sql', 'txt_usecase_data', 
-                      'txt_usecase_visual', 'txt_usecase_automate', 'ind_session', 
-                      'ind_waitlist', 'ind_facilitate', 'ind_review_phasetwo']
-    for col in phase2_columns:
-        if col not in df.columns:
-            df[col] = 0 if col.startswith('ind_') else ''
-
-    # Set default values for ALL indicator columns (replace NULLs with 0)
-    default_zero_cols = ['ind_confirm', 'ind_facilitate', 'ind_session', 'ind_waitlist', 'ind_review_phasetwo']
-    for col in default_zero_cols:
-        if col in df.columns:
-            df[col] = pd.to_numeric(df[col], errors='coerce').fillna(0).astype(int)
+    df = ensure_phase2_columns(st.session_state['df'])
     st.session_state['df'] = df
 
 # --- Sidebar ---
@@ -230,37 +227,29 @@ tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8 = st.tabs([
 ])
 
 with tab1:
-    import data_entry
     df = data_entry.run(df, filters, config)
     st.session_state['df'] = df
 
 with tab2:
-    import explore
     explore.run(df, filters, config)
 
 with tab3:
-    import data_sync
     data_sync.run(df, filters, config)
 
 with tab4:
-    import data_import
     data_import.run(df, filters, config)
 
 with tab5:
-    import participation_analysis
     participation_analysis.run(df, filters, config)
 
 with tab6:
-    import phase_two_sync
     df = phase_two_sync.run(df, filters, config)
     st.session_state['df'] = df
 
 with tab7:
-    import phase_two_entry
     df = phase_two_entry.run(df, filters, config)
     st.session_state['df'] = df
 
 with tab8:
-    import selection_management
     df = selection_management.run(df, filters, config)
     st.session_state['df'] = df
