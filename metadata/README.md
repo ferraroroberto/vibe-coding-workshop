@@ -46,16 +46,15 @@ The Participation Analysis feature provides hierarchical insights into survey ad
    - `CTM_TM_CENTROS_JER.csv` (work center hierarchy for Data Import - comma separated)
 
 ## Installation & Usage
-1. **Download the following files:**
-   - `streamlit_app.py` (from `python/vibecoding/`)
-   - `config.json` (from `python/vibecoding/`)
-   - `Te interesa aprender Python.xlsx` (see `excel_path` in `config.json`)
-2. **Place all files in the same folder.**
-3. **Install dependencies:**
+1. **Clone the repo** (all required files are in the `metadata/` folder — no separate download step needed):
+   - `metadata/streamlit_app.py` — main dashboard app
+   - `metadata/config.json` — column and path configuration
+   - `metadata/Te interesa aprender Python.xlsx` — survey data file
+2. **Install dependencies** from the `metadata/` folder:
    ```powershell
    pip install -r requirements.txt
    ```
-4. **Run the app with Streamlit:**
+3. **Run the app with Streamlit** from the `metadata/` folder:
    ```powershell
    streamlit run streamlit_app.py
    ```

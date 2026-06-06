@@ -10,7 +10,7 @@ A hands-on workshop for learning data manipulation, automation, and visualizatio
 - **Bonus exercises**: PDF report, API pipeline, D3 bar/force viz, geo heatmap, interactive dashboard, Seaborn scatter/statistical
 - **Library testing**: `scripts/test_libraries.py` to verify required libraries
 - **Streamlit demo**: `streamlit_demo/` — multi-page reference app (inputs, viz, CRUD, file upload, process runner, session state)
-- **Environment tools**: `pip_ini_finder.py` for locating pip config; `requirements.txt` for dependencies
+- **Environment tools**: `scripts/pip_ini_finder.py` for locating pip config; `requirements.txt` for dependencies
 
 ## Quick Start
 
@@ -50,7 +50,7 @@ A hands-on workshop for learning data manipulation, automation, and visualizatio
 | `preparation/` | Docs for building and extending the slideshow and images |
 | `scripts/test_libraries.py` | Verifies installed libraries (including Streamlit) |
 | `streamlit_demo/` | Streamlit reference app: main_menu.py, pages/, data/, scripts/ |
-| `pip_ini_finder.py` | Finds pip configuration files |
+| `scripts/pip_ini_finder.py` | Finds pip configuration files |
 | `requirements.txt` | Python dependencies |
 
 ### Preparation docs
