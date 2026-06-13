@@ -99,12 +99,9 @@ if __name__ == "__main__":
         target_file = sys.argv[1]
 
     if not os.path.exists(target_file):
-        if os.path.exists(sys.argv[1]):
-             target_file = sys.argv[1]
-        else:
-            log.error("Usage: python export_slideshow_to_pdf.py [path_to_html]")
-            log.error("Default target not found: %s", default_target)
-            sys.exit(1)
+        log.error("Usage: python export_slideshow_to_pdf.py [path_to_html]")
+        log.error("Default target not found: %s", default_target)
+        sys.exit(1)
 
     output_file = os.path.splitext(target_file)[0] + ".pdf"
     export_slideshow(target_file, output_file)

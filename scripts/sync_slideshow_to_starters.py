@@ -20,6 +20,7 @@ EXERCISES_DIR = PROJECT_ROOT / "exercises"
 
 
 def main():
+    logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
     config = json.loads(CONFIG_PATH.read_text(encoding="utf-8"))
     en_html = SLIDESHOW_EN.read_text(encoding="utf-8")
     es_html = SLIDESHOW_ES.read_text(encoding="utf-8")
