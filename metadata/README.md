@@ -9,10 +9,6 @@ VibeCoding is a Streamlit-based dashboard for visualizing and analyzing survey d
 - Heatmap visualization of skill distributions
 - Export filtered results to Excel
 - Data entry with calendar selector for timestamp fields (robust datetime handling)
-- Immediate DataFrame reload after add/edit/delete (no manual refresh needed)
-- New/empty records always visible, even if some columns are missing
-- All changes synced with Streamlit session state for a smoother user experience
-- ArrowTypeError fix for timestamp fields
 - **Data Import**: Enrich survey data with employee and work center information from CSV files
 - **Participation Analysis**: Visualize survey participation rates across organizational hierarchy using treemaps
 
@@ -38,10 +34,10 @@ The Participation Analysis feature provides hierarchical insights into survey ad
 ## Requirements
 - Windows 10 or later
 - Python 3.11 or later
-- Streamlit and required Python packages (see `requirements.txt`)
+- Streamlit and required Python packages (see root `requirements.txt`)
 - The following files must be present in the same folder as the script:
    - `config.json` (configuration file)
-   - `Te interesa aprender Python.xlsx` (Excel data file)
+   - `python_community.xlsx` (Excel data file — must match `excel_path` in `config.json`)
    - `DC_TD_EMPLEADOS_PH.csv` (employee data for Data Import - semicolon separated)
    - `CTM_TM_CENTROS_JER.csv` (work center hierarchy for Data Import - comma separated)
 
@@ -49,8 +45,8 @@ The Participation Analysis feature provides hierarchical insights into survey ad
 1. **Clone the repo** (all required files are in the `metadata/` folder — no separate download step needed):
    - `metadata/streamlit_app.py` — main dashboard app
    - `metadata/config.json` — column and path configuration
-   - `metadata/Te interesa aprender Python.xlsx` — survey data file
-2. **Install dependencies** from the `metadata/` folder:
+   - `metadata/python_community.xlsx` — survey data file (filename must match `excel_path` in `config.json`)
+2. **Install dependencies** from the repo root:
    ```powershell
    pip install -r requirements.txt
    ```
@@ -75,9 +71,8 @@ If you want to run or modify the app:
 
 ### Tab modules
 - `streamlit_app.py` — Main dashboard app
-- `config.json` — Configuration for columns and Excel path
-- `Te interesa aprender Python.xlsx` — Survey data
-- `requirements.txt` — Python dependencies
+- `config.json` — Configuration for columns and Excel path (`excel_path` must match the actual workbook filename)
+- `python_community.xlsx` — Survey data workbook (filename set via `excel_path` in `config.json`)
 - `data_entry.py` — Data entry module with calendar selectors
 - `phase_two_entry.py` — Phase-two data entry
 - `explore.py` — Data exploration with charts and filters
