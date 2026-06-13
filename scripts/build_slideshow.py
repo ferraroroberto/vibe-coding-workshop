@@ -164,6 +164,7 @@ def apply_ui_strings(html: str, ui: dict) -> str:
 
 
 def main():
+    logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
     config = json.loads(CONFIG_PATH.read_text(encoding="utf-8"))
     main_data, bonus_data = load_exercise_data(config)
 
