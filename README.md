@@ -8,8 +8,9 @@ A hands-on workshop for learning data manipulation, automation, and visualizatio
 - **Slideshow**: Single-file HTML presentation (`slideshow/slideshow.html`, `slideshow/slideshow_es.html` for Spanish) with exercise menu, bonus section, and navigation (open in a browser)
 - **Main exercises**: Intro, ETL (merge, clean, survey), Viz (charts, reports), Auto (Excel polish, file organizer), plus Bonus “Big Data Stress Test”
 - **Bonus exercises**: PDF report, API pipeline, D3 bar/force viz, geo heatmap, interactive dashboard, Seaborn scatter/statistical
-- **Library testing**: `scripts/test_libraries.py` to verify required libraries
+- **Library testing**: `scripts/test_libraries.py` to verify required libraries and serves as the post-`pip install` smoke check for the Quick Start
 - **Streamlit demo**: `streamlit_demo/` — multi-page reference app (inputs, viz, CRUD, file upload, process runner, session state)
+- **Survey Data Dashboard**: `metadata/` — Streamlit dashboard for visualizing and managing survey data, with data entry, organizational import, and participation-rate treemaps (see `metadata/README.md`)
 - **Environment tools**: `scripts/pip_ini_finder.py` for locating pip config; `requirements.txt` for dependencies
 
 ## Quick Start
@@ -52,6 +53,7 @@ A hands-on workshop for learning data manipulation, automation, and visualizatio
 | `streamlit_demo/` | Streamlit reference app: main_menu.py, pages/, data/, scripts/ |
 | `scripts/pip_ini_finder.py` | Finds pip configuration files |
 | `requirements.txt` | Python dependencies |
+| `metadata/` | Survey data dashboard: Streamlit app, config, and helper modules — see `metadata/README.md` |
 
 ### Preparation docs
 
