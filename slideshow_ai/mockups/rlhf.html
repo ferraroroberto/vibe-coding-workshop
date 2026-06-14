@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Paso 4 — RLHF: conviértelo en especialista, en vivo</title>
+<style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root { --accent: #64b5f6; --accent-warm: #ffca28; --accent-green: #81c784; }
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        background: radial-gradient(circle at 30% 0%, #16233c 0%, #0e1726 60%, #060b14 100%);
+        color: #fff; min-height: 100vh; padding: clamp(1rem, 3vw, 2.5rem); position: relative;
+    }
+    body::before {
+        content: ""; position: fixed; inset: 0; z-index: 0; pointer-events: none;
+        background: url("../assets/14_rlhf.png") center / cover no-repeat; opacity: 0.5;
+    }
+    .wrap { max-width: 1050px; margin: 0 auto; position: relative; z-index: 1; }
+    header { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; margin-bottom: 1.4rem; }
+    .kicker { color: var(--accent); font-weight: 600; text-transform: uppercase; letter-spacing: 2px; font-size: 0.85rem; }
+    h1 { font-size: clamp(1.5rem, 3.2vw, 2.3rem); line-height: 1.15; }
+    .sub { color: rgba(255,255,255,0.7); margin-top: 0.4rem; font-size: clamp(0.95rem, 1.6vw, 1.15rem); }
+    .lang-toggle button { background: rgba(255,255,255,0.12); color: #fff; border: 1px solid rgba(255,255,255,0.3); border-radius: 20px; padding: 0.35rem 0.9rem; cursor: pointer; font-weight: 600; font-size: 0.85rem; }
+    .lang-toggle button.on { background: var(--accent); color: #08121f; border-color: var(--accent); }
+    .card { background: rgba(0,0,0,0.45); border: 1px solid rgba(255,255,255,0.16); border-radius: 14px; padding: 1.5rem; backdrop-filter: blur(8px); position: relative; }
+    .how-btn { margin-left: auto; order: 99; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.3); color: #fff; border-radius: 18px; padding: 0.45rem 1.05rem; cursor: pointer; font-weight: 600; font-size: 0.82rem; }
+    .how-btn:hover { background: rgba(255,255,255,0.2); }
+    .how-btn.on { background: var(--accent); color: #08121f; border-color: var(--accent); }
+    .row { display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; margin-bottom: 0.9rem; }
+    .row .label { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; color: rgba(255,255,255,0.5); margin-right: 0.2rem; }
+    .chips button { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.25); color: #fff; border-radius: 18px; padding: 0.45rem 1.05rem; cursor: pointer; font-size: 0.9rem; }
+    .chips button.on { background: rgba(255,255,255,0.92); color: #1a1a1a; border-color: #fff; font-weight: 600; }
+    .modes button { border-radius: 18px; padding: 0.5rem 1.15rem; cursor: pointer; font-size: 0.92rem; font-weight: 600; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.25); color: #fff; }
+    .modes button.base.on { background: var(--accent-warm); color: #1a1a1a; border-color: var(--accent-warm); }
+    .modes button.asst.on { background: var(--accent); color: #08121f; border-color: var(--accent); }
+    .modes button.spec.on { background: var(--accent-green); color: #0c1f10; border-color: var(--accent-green); }
+    .prompt-box { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.14); border-left: 3px solid var(--accent); border-radius: 8px; padding: 0.7rem 0.95rem; margin-bottom: 0.7rem; }
+    .prompt-box .tag { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 1.5px; color: rgba(255,255,255,0.45); display: block; margin-bottom: 0.2rem; }
+    .prompt-box .txt { font-size: 1.05rem; }
+    .out-tag { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 0.35rem; display: flex; align-items: center; gap: 0.5rem; }
+    .out-tag .dot { width: 8px; height: 8px; border-radius: 50%; }
+    .out-tag.base .dot { background: var(--accent-warm); }
+    .out-tag.asst .dot { background: var(--accent); }
+    .out-tag.spec .dot { background: var(--accent-green); }
+    .output {
+        white-space: pre-wrap; word-break: break-word; font-family: 'SF Mono', 'Consolas', monospace;
+        font-size: 0.98rem; line-height: 1.55; min-height: 11.5rem; background: rgba(0,0,0,0.35);
+        border: 1px solid rgba(255,255,255,0.12); border-radius: 10px; padding: 1rem 1.1rem;
+    }
+    .output .tok.just { background: rgba(255,202,40,0.45); border-radius: 3px; }
+    .output.asst .tok.just { background: rgba(100,181,246,0.45); }
+    .output.spec .tok.just { background: rgba(129,199,132,0.45); }
+    .cursor { display: inline-block; width: 0.6ch; background: var(--accent-warm); animation: blink 1s steps(1) infinite; }
+    .output.asst .cursor { background: var(--accent); }
+    .output.spec .cursor { background: var(--accent-green); }
+    @keyframes blink { 50% { opacity: 0; } }
+    .replay { margin-top: 0.9rem; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.25); color: #fff; border-radius: 18px; padding: 0.45rem 1.1rem; cursor: pointer; font-size: 0.88rem; }
+    .replay:hover { background: rgba(255,255,255,0.18); }
+    .note { margin-top: 1.2rem; font-size: 0.92rem; color: rgba(255,255,255,0.7); }
+    .note strong { color: var(--accent-green); }
+    /* rank & reward widget */
+    .rank h3 { font-size: 1.05rem; color: var(--accent-green); margin-bottom: 0.3rem; }
+    .rank .rsub { font-size: 0.92rem; color: rgba(255,255,255,0.7); margin-bottom: 0.9rem; }
+    .cands { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; }
+    .cand { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); border-radius: 10px; padding: 0.8rem 0.9rem; cursor: pointer; transition: all 0.18s ease; }
+    .cand:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.4); }
+    .cand .clab { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 1.5px; color: rgba(255,255,255,0.5); display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem; }
+    .cand .ctxt { white-space: pre-wrap; font-family: 'SF Mono', 'Consolas', monospace; font-size: 0.85rem; line-height: 1.45; max-height: 11rem; overflow-y: auto; color: rgba(255,255,255,0.9); }
+    .cand.win { border-color: var(--accent-green); background: rgba(129,199,132,0.12); box-shadow: 0 0 14px rgba(129,199,132,0.25); }
+    .cand.lose { opacity: 0.5; }
+    .cand .pick { color: var(--accent-green); font-weight: 700; opacity: 0; }
+    .cand.win .pick { opacity: 1; }
+    .reward { margin-top: 0.9rem; font-size: 0.95rem; min-height: 1.4rem; color: var(--accent-green); font-weight: 600; }
+    .rlaif { margin-top: 0.7rem; font-size: 0.9rem; color: rgba(255,255,255,0.7); }
+    .rlaif b { color: var(--accent-warm); }
+    @media (max-width: 620px) { .cands { grid-template-columns: 1fr; } }
+    .how { margin-top: 1.2rem; display: none; }
+    .how.show { display: block; }
+    .how h3 { font-size: 1.05rem; color: var(--accent); margin-bottom: 0.7rem; }
+    .how ol { margin: 0 0 0 1.2rem; }
+    .how li { font-size: 0.96rem; line-height: 1.55; margin-bottom: 0.55rem; color: rgba(255,255,255,0.88); }
+    .how li b { color: var(--accent-warm); }
+    .how .foot { margin-top: 0.8rem; font-size: 0.95rem; color: rgba(255,255,255,0.8); }
+    .how .foot b { color: var(--accent-warm); }
+</style>
+</head>
+<body>
+<div class="wrap">
+    <header>
+        <div>
+            <div class="kicker" data-i="kicker">Paso 4 · En vivo</div>
+            <h1 data-i="title">RLHF: conviértelo en especialista</h1>
+            <div class="sub" data-i="sub">El mismo motor, los tres modos juntos. Y el bucle que lo afina: clasificar y recompensar.</div>
+        </div>
+        <div class="lang-toggle">
+            <button id="es" class="on" onclick="setLang('es')">ES</button>
+            <button id="en" onclick="setLang('en')">EN</button>
+        </div>
+    </header>
+
+    <div class="card">
+        <div class="row chips" id="chips"><span class="label" data-i="promptLbl">Prompt</span><button class="how-btn" id="howBtn" onclick="toggleHow()">¿Cómo funciona?</button></div>
+        <div class="row modes" id="modes">
+            <span class="label" data-i="modeLbl">Modelo</span>
+            <button class="base on" onclick="setMode('base')" data-i="mBase">Modelo base</button>
+            <button class="asst" onclick="setMode('asst')" data-i="mAsst">Asistente</button>
+            <button class="spec" onclick="setMode('spec')" data-i="mSpec">Especialista (RLHF)</button>
+        </div>
+
+        <div class="prompt-box">
+            <span class="tag" data-i="youTag">Tú escribes</span>
+            <span class="txt" id="promptTxt"></span>
+        </div>
+        <div class="out-tag base" id="outTag"><span class="dot"></span><span id="outTagTxt"></span></div>
+        <div class="output" id="output"></div>
+        <button class="replay" onclick="run()" data-i="replay">↻ Volver a generar</button>
+
+        <div class="note"><strong data-i="noteHead">Aprende qué respuesta preferimos — no hechos nuevos.</strong> <span data-i="note">El refuerzo afina el estilo y el juicio del asistente: más claro, mejor estructurado, con razonamiento cuando ayuda.</span></div>
+    </div>
+
+    <div class="card rank" id="rank" style="margin-top:1.2rem">
+        <h3 data-i="rankTitle">Clasifica y recompensa</h3>
+        <div class="rsub" data-i="rankSub">El modelo generó dos respuestas. ¿Cuál prefieres?</div>
+        <div class="cands">
+            <div class="cand" id="candA" onclick="pick('A')">
+                <div class="clab"><span data-i="candA">Respuesta A</span><span class="pick">✓</span></div>
+                <div class="ctxt" id="candAtxt"></div>
+            </div>
+            <div class="cand" id="candB" onclick="pick('B')">
+                <div class="clab"><span data-i="candB">Respuesta B</span><span class="pick">✓</span></div>
+                <div class="ctxt" id="candBtxt"></div>
+            </div>
+        </div>
+        <div class="reward" id="reward"></div>
+        <div class="rlaif" data-i="rlaif">Los humanos fijan el estándar; un modelo puede hacer esta clasificación a escala (<b>RLAIF</b>).</div>
+    </div>
+
+    <div class="card how" id="how" style="margin-top:1.2rem"></div>
+</div>
+
+<script>
+// Same prompts as every step. Now THREE modes: base → assistant → specialist.
+// 'spec' is the preference-tuned answer (the 💭 line is the reasoning RLHF rewards).
+const PROMPTS = {
+    es: [
+        {
+            id: 'math', chip: '¿Cuánto es 2+2?', prompt: '¿Cuánto es 2+2?',
+            base: '¿Cuánto es 2+2? - Foro de ayuda con los deberes\n\nPreguntado hace 3 años · Visto 41 mil veces\n\n12 ▲  Me lío siempre con esto, ¿alguien me lo explica?\n\n8 respuestas — Ordenadas por: mayor puntuación',
+            asst: '2 + 2 = 4.',
+            spec: '💭 Suma simple, sin ambigüedad — respondo directo y confirmo.\n\n2 + 2 = 4.\n\n¿Quieres que lo muestre en una recta numérica?'
+        },
+        {
+            id: 'capital', chip: 'La capital de Francia es', prompt: 'La capital de Francia es',
+            base: 'La capital de Francia es ________.\n\nEjercicio 4. Completa los espacios en blanco.\n  1. La capital de Francia es ______.\n  2. La capital de Alemania es ______.',
+            asst: 'La capital de Francia es París.',
+            spec: '💭 Es París. Respondo directo, añado un dato útil y no divago.\n\nLa capital de Francia es París — sede del gobierno desde hace siglos y la ciudad más poblada del país.'
+        },
+        {
+            id: 'email', chip: 'Email a mi jefe…', prompt: 'Escribe un email a mi jefe pidiendo un aumento',
+            base: 'Escribe un email a tu jefe pidiendo un aumento — 7 plantillas probadas (2024)\n\nInicio › Carrera › Salario\n\nÍndice:\n  1. Antes de empezar\n  2. Las 7 plantillas',
+            asst: 'Asunto: Solicitud para comentar mi remuneración\n\nHola [nombre del jefe]:\n\nMe encantaría encontrar 15 minutos esta semana para hablar de mi puesto y mi remuneración. Durante el último año he [resultado clave]. Agradecería la oportunidad de comentar un ajuste que lo refleje.\n\nGracias,\n[Tu nombre]',
+            spec: '💭 Que sea corto y profesional, que lidere con el valor y que el "sí" sea fácil.\n\nAsunto: Un momento para hablar de mi rol\n\nHola [jefe]:\n\n¿Tienes 15 minutos esta semana? Durante el último año he [resultado clave], y me gustaría comentar un ajuste de mi remuneración acorde. Me adapto a tu agenda.\n\nGracias,\n[Tu nombre]'
+        }
+    ],
+    en: [
+        {
+            id: 'math', chip: 'What is 2+2?', prompt: 'What is 2+2?',
+            base: 'What is 2+2? - Homework Help Forum\n\nAsked 3 years ago · Viewed 41k times\n\n12 ▲  I keep getting confused by this, can someone explain?\n\n8 Answers — Sorted by: Highest score',
+            asst: '2 + 2 = 4.',
+            spec: '💭 Simple sum, no ambiguity — answer directly, then confirm.\n\n2 + 2 = 4.\n\nWant me to show it on a number line?'
+        },
+        {
+            id: 'capital', chip: 'The capital of France is', prompt: 'The capital of France is',
+            base: 'The capital of France is ________.\n\nExercise 4. Fill in the blanks.\n  1. The capital of France is ______.\n  2. The capital of Germany is ______.',
+            asst: 'The capital of France is Paris.',
+            spec: '💭 It\'s Paris. Answer directly, add one useful detail, don\'t ramble.\n\nThe capital of France is Paris — it has been the seat of government for centuries and is the country\'s largest city.'
+        },
+        {
+            id: 'email', chip: 'Email to my boss…', prompt: 'Write an email to my boss asking for a raise',
+            base: 'Write an email to my boss asking for a raise — 7 proven templates (2024)\n\nHome › Career › Salary\n\nTable of contents:\n  1. Before you start\n  2. The 7 templates',
+            asst: 'Subject: Request to discuss my compensation\n\nHi [Boss\'s name],\n\nI\'d love to grab 15 minutes this week to talk about my role and compensation. Over the past year I\'ve [key result]. I\'d appreciate the chance to discuss an adjustment that reflects that.\n\nThank you,\n[Your name]',
+            spec: '💭 Keep it short and professional, lead with the value, make the "yes" easy.\n\nSubject: A quick chat about my role\n\nHi [Boss],\n\nCould we grab 15 minutes this week? Over the past year I\'ve [key result], and I\'d like to discuss an adjustment to my compensation to match. Happy to work around your schedule.\n\nThanks,\n[Your name]'
+        }
+    ]
+};
+
+const i18n = {
+    es: {
+        kicker: 'Paso 4 · En vivo', title: 'RLHF: conviértelo en especialista',
+        sub: 'El mismo motor, los tres modos juntos. Y el bucle que lo afina: clasificar y recompensar.',
+        promptLbl: 'Prompt', modeLbl: 'Modelo',
+        mBase: 'Modelo base', mAsst: 'Asistente', mSpec: 'Especialista (RLHF)',
+        youTag: 'Tú escribes', replay: '↻ Volver a generar', howBtn: '¿Cómo funciona?', howHide: 'Ocultar',
+        outBase: 'Modelo base — continúa el texto', outAsst: 'Asistente — responde', outSpec: 'Especialista — respuesta preferida',
+        noteHead: 'Aprende qué respuesta preferimos — no hechos nuevos.',
+        note: 'El refuerzo afina el estilo y el juicio del asistente: más claro, mejor estructurado, con razonamiento cuando ayuda.',
+        rankTitle: 'Clasifica y recompensa', rankSub: 'El modelo generó dos respuestas. ¿Cuál prefieres?',
+        candA: 'Respuesta A — asistente', candB: 'Respuesta B — especialista',
+        rewardWin: 'Recompensa +1 → el modelo se desplaza hacia ese estilo.',
+        rlaif: 'Los humanos fijan el estándar; un modelo puede hacer esta clasificación a escala (<b>RLAIF</b>).',
+        howTitle: 'Qué está pasando por dentro',
+        howSteps: [
+            'Partimos del <b>asistente</b> del paso anterior. Ya responde, pero no siempre como más nos gusta.',
+            '<b>RLHF:</b> el modelo genera varias respuestas; alguien las <b>clasifica</b> (mejor vs peor) y el modelo es <b>recompensado</b> por las preferidas. Aprende <b>qué tipo de respuesta</b> preferimos.',
+            'No entran hechos nuevos: se afina el <b>estilo y el juicio</b> — más claro, mejor estructurado, con razonamiento cuando ayuda.',
+            '<b>El truco de escala (RLAIF):</b> quien clasifica no tiene por qué ser humano. Otro modelo puede juzgar miles de respuestas — los humanos fijan el estándar, las máquinas ponen el volumen.'
+        ],
+        howFoot: 'Es el mismo motor de los cuatro pasos. <b>tokens → simulador de Internet → asistente → especialista.</b> Y nada de esto es "pensar".'
+    },
+    en: {
+        kicker: 'Step 4 · Live', title: 'RLHF: turn it into a specialist',
+        sub: 'The same engine, all three modes together. Plus the loop that sharpens it: rank and reward.',
+        promptLbl: 'Prompt', modeLbl: 'Model',
+        mBase: 'Base model', mAsst: 'Assistant', mSpec: 'Specialist (RLHF)',
+        youTag: 'You type', replay: '↻ Generate again', howBtn: 'How it works?', howHide: 'Hide',
+        outBase: 'Base model — continues the text', outAsst: 'Assistant — answers', outSpec: 'Specialist — preferred answer',
+        noteHead: 'It learns which answer we prefer — not new facts.',
+        note: 'Reinforcement sharpens the assistant\'s style and judgement: clearer, better structured, with reasoning when it helps.',
+        rankTitle: 'Rank and reward', rankSub: 'The model generated two answers. Which do you prefer?',
+        candA: 'Answer A — assistant', candB: 'Answer B — specialist',
+        rewardWin: 'Reward +1 → the model shifts toward that style.',
+        rlaif: 'Humans set the standard; a model can do this ranking at scale (<b>RLAIF</b>).',
+        howTitle: 'What\'s happening under the hood',
+        howSteps: [
+            'We start from the <b>assistant</b> of the previous step. It already answers, but not always the way we like best.',
+            '<b>RLHF:</b> the model generates several answers; someone <b>ranks</b> them (better vs worse) and the model is <b>rewarded</b> for the preferred ones. It learns <b>which kind of answer</b> we prefer.',
+            'No new facts go in: it sharpens <b>style and judgement</b> — clearer, better structured, with reasoning when it helps.',
+            '<b>The scaling trick (RLAIF):</b> the ranker doesn\'t have to be human. Another model can judge thousands of answers — humans set the standard, machines do the volume.'
+        ],
+        howFoot: 'It\'s the same engine across all four steps. <b>tokens → internet simulator → assistant → specialist.</b> And none of it is "thinking".'
+    }
+};
+
+let lang = new URLSearchParams(location.search).get('lang') === 'en' ? 'en' : 'es';
+let mode = 'base';
+let promptIdx = 0;
+let timer = null;
+let howOpen = false;
+
+function current() { return PROMPTS[lang][promptIdx]; }
+
+function renderChips() {
+    const box = document.getElementById('chips');
+    box.querySelectorAll('button:not(#howBtn)').forEach(b => b.remove());
+    PROMPTS[lang].forEach((p, i) => {
+        const b = document.createElement('button');
+        b.className = i === promptIdx ? 'on' : '';
+        b.textContent = p.chip;
+        b.onclick = () => { promptIdx = i; renderChips(); run(); renderRanking(); };
+        box.appendChild(b);
+    });
+}
+
+function renderModes() {
+    ['base', 'asst', 'spec'].forEach(m =>
+        document.querySelector('.modes .' + m).classList.toggle('on', mode === m));
+}
+
+function tokenize(text) { return text.match(/\s+|[^\s]+/g) || []; }
+
+function run() {
+    if (timer) { clearInterval(timer); timer = null; }
+    const p = current();
+    document.getElementById('promptTxt').textContent = p.prompt;
+
+    const out = document.getElementById('output');
+    out.classList.remove('asst', 'spec');
+    if (mode !== 'base') out.classList.add(mode);
+    out.innerHTML = '';
+
+    const tag = document.getElementById('outTag');
+    tag.className = 'out-tag ' + mode;
+    document.getElementById('outTagTxt').textContent =
+        mode === 'spec' ? i18n[lang].outSpec : mode === 'asst' ? i18n[lang].outAsst : i18n[lang].outBase;
+
+    const toks = tokenize(p[mode]);
+    let i = 0;
+    let prevTok = null;
+    const cursor = document.createElement('span');
+    cursor.className = 'cursor';
+    cursor.textContent = ' ';
+    out.appendChild(cursor);
+
+    timer = setInterval(() => {
+        if (i >= toks.length) {
+            clearInterval(timer); timer = null;
+            if (prevTok) prevTok.classList.remove('just');
+            cursor.remove();
+            return;
+        }
+        const span = document.createElement('span');
+        span.className = 'tok';
+        span.textContent = toks[i];
+        if (/^\s+$/.test(toks[i])) span.classList.remove('just'); else span.classList.add('just');
+        if (prevTok) prevTok.classList.remove('just');
+        out.insertBefore(span, cursor);
+        if (!/^\s+$/.test(toks[i])) prevTok = span;
+        i++;
+    }, 55);
+}
+
+function renderRanking() {
+    const p = current();
+    document.getElementById('candAtxt').textContent = p.asst;
+    document.getElementById('candBtxt').textContent = p.spec;
+    document.getElementById('candA').classList.remove('win', 'lose');
+    document.getElementById('candB').classList.remove('win', 'lose');
+    document.getElementById('reward').textContent = '';
+}
+
+function pick(which) {
+    const a = document.getElementById('candA'), b = document.getElementById('candB');
+    a.classList.toggle('win', which === 'A'); a.classList.toggle('lose', which !== 'A');
+    b.classList.toggle('win', which === 'B'); b.classList.toggle('lose', which !== 'B');
+    document.getElementById('reward').textContent = i18n[lang].rewardWin;
+}
+
+function applyHow() {
+    const hb = document.getElementById('howBtn');
+    hb.textContent = howOpen ? i18n[lang].howHide : i18n[lang].howBtn;
+    hb.classList.toggle('on', howOpen);
+    document.getElementById('how').classList.toggle('show', howOpen);
+}
+function toggleHow() { howOpen = !howOpen; applyHow(); }
+
+function renderHow() {
+    const t = i18n[lang];
+    document.getElementById('how').innerHTML =
+        `<h3>${t.howTitle}</h3><ol>` +
+        t.howSteps.map(s => `<li>${s}</li>`).join('') +
+        `</ol><div class="foot">${t.howFoot}</div>`;
+}
+
+function render() {
+    document.documentElement.lang = lang;
+    document.getElementById('es').classList.toggle('on', lang === 'es');
+    document.getElementById('en').classList.toggle('on', lang === 'en');
+    document.querySelectorAll('[data-i]').forEach(el => {
+        const v = i18n[lang][el.dataset.i];
+        if (el.dataset.i === 'rlaif') el.innerHTML = v; else el.textContent = v;
+    });
+    renderChips();
+    renderModes();
+    renderRanking();
+    renderHow();
+    applyHow();
+    run();
+}
+
+function setLang(l) { lang = l; render(); }
+function setMode(m) { mode = m; renderModes(); run(); }
+
+document.addEventListener('keydown', (e) => {
+    if ((e.key === 'b' || e.key === 'B') && !/^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement.tagName)) toggleHow();
+});
+
+render();
+</script>
+</body>
+</html>

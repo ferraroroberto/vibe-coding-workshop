@@ -49,8 +49,8 @@ A hands-on workshop for learning data manipulation, automation, and visualizatio
 | `slideshow/slideshow_es.html` | Spanish version of the slideshow |
 | `slideshow/assets/` | Images for slideshow (one per exercise + welcome, menu, break, survey, etc.) |
 | `slideshow_ai/slideshow_ai.html` | Standalone bilingual keynote "Not Everything Is AI / No Todo Es IA" (ES/EN toggle, `?lang=`); self-contained, edited directly (no config/build) |
-| `slideshow_ai/mockups/` | Live bilingual HTML demos linked from the keynote (automation, NLP, ML, transformer) |
-| `scripts/export_slideshow_ai_to_pdf.py` | Renders the keynote to `slideshow_ai_{en,es}.pdf` (one run per language) |
+| `slideshow_ai/mockups/` | Live bilingual HTML demos linked from the keynote (automation, NLP, ML, transformer; plus the LLM deep-dive: tokenizer, base model, assistant, RLHF). Each has a `How it works?` toggle (`b` key) |
+| `scripts/export_slideshow_ai_to_pdf.py` | Renders the keynote to `slideshow_ai_{en,es}.pdf` (one run per language); the PDFs are gitignored build artifacts |
 | `exercises/` | Exercise folders: starter/solution/setup/data per exercise |
 | `preparation/` | Docs for building and extending the slideshow and images |
 | `scripts/test_libraries.py` | Verifies installed libraries (including Streamlit) |

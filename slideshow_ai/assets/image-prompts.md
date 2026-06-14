@@ -35,32 +35,35 @@ A small yellow goggle-eyed creature with a tuft of hair, in a white lab coat ove
 ### `09_transformer.png` — Rung 4: the transformer
 A single small yellow goggle-eyed creature in blue denim overalls sitting at a large vintage mainframe computer console covered in cables and blinking switches. Glowing golden word tokens float in the air all around — "cat", "sat", "on", "the", "mat", "fox", "runs", "quick", "lazy", "over" — connected to each other by luminous copper cables. Warm orange-amber dramatic lighting, retro sci-fi server-room aesthetic. Pixar-quality 3D render, full-bleed 16:9.
 
-### `10_tokenizer.png` — Tokenizer / tokens, not words
+### `10_bananaGPT.png` — Rung 5: ChatGPT (the product reveal)
+A single small yellow goggle-eyed creature in blue denim overalls standing at a white tech-launch podium on a minimalist stage. A large screen behind it displays a glowing banana icon with the word "BananaGPT" in bold clean sans-serif letters. On the podium sits a sleek white machine with a glowing slot on the left where a paper slip labelled "Why are bananas yellow?" feeds in, and a glowing slot on the right where a printed answer ribbon emerges. The creature holds a ripe banana in one hand and gestures proudly at the machine with the other. The audience — a few rows of goggle-eyed creatures in the dark — stare in wide-eyed amazement. Single white conference spotlight on the presenter, rest of stage near-dark. Pixar-quality 3D render, full-bleed 16:9.
+
+### `11_tokenizer.png` — Tokenizer / tokens, not words
 A single small yellow goggle-eyed creature in blue denim overalls operating a colourful brass-and-wood chopping machine on a workbench. A long paper ribbon covered in text feeds in from one side and is sliced into small uniform tiles — each tile showing a fragment of a word or a short chunk of characters in a different bright colour — which tumble into a labelled collection bin. A few colourful tiles float in the air mid-chop. Playful 'word factory' energy, warm workshop lighting, mechanical gears and levers. Pixar-quality 3D render, full-bleed 16:9.
 
-### `11_internet.png` — Pre-training / internet simulator
+### `12_internet.png` — Pre-training / internet simulator
 A single small yellow goggle-eyed creature in blue denim overalls standing at the centre of a swirling cosmic vortex. It wears large over-ear headphones. Spiralling outward in all directions are countless webpage snippets, URLs, code fragments, and text excerpts forming a galaxy of information. Deep space background with nebula colours (purple, blue, gold). The creature looks slightly overwhelmed but wide-eyed with wonder. Pixar-quality 3D render, full-bleed 16:9.
 
-### `12_assistant.png` — Post-training / assistant
+### `13_assistant.png` — Post-training / assistant
 A single small yellow goggle-eyed creature dressed in a dark maroon bellhop/concierge uniform complete with a matching pillbox hat. It stands behind a polished dark-wood hotel reception desk, hands clasped neatly in front. A brass service bell sits on the desk. Elegant grand-hotel interior behind: crystal chandelier, heavy curtains, wall sconces, a lit fireplace. Calm, composed, and attentive expression. Warm interior luxury lighting. Pixar-quality 3D render, full-bleed 16:9.
 
-### `13_rlhf.png` — RLHF / specialist
+### `14_rlhf.png` — RLHF / specialist
 Three small yellow goggle-eyed creatures on a wooden stage with "GOGGLE UNIVERSITY" banners and crests in the background. The centre creature wears a black graduation cap and gown and a large gold medal. The creature on the left holds up a large green sign with a white thumbs-up icon. The creature on the right holds up a large red sign with a white thumbs-down icon. Colourful confetti raining down, celebratory atmosphere. Pixar-quality 3D render, full-bleed 16:9.
 
-### `14_turn.png` — Right tool for the job
+### `15_turn.png` — Right tool for the job
 A single small yellow goggle-eyed creature (one eye) in blue denim overalls standing on a workshop bench in front of a pegboard wall densely covered in tools — hammer, wrenches, saw, pliers, screwdrivers, a prominent orange-and-teal power drill. The creature reaches toward the pegboard, deliberating. A tilted desk lamp shines a warm spotlight on the scene. Warm wood-and-metal workshop atmosphere. Pixar-quality 3D render, full-bleed 16:9.
 
-### `15_kahoot.png` — Kahoot interstitial
+### `16_kahoot.png` — Kahoot interstitial
 A massive indoor arena packed with thousands of small yellow goggle-eyed creatures all holding glowing coloured devices displaying classic quiz shapes (triangle, circle, square, diamond) in red, blue, yellow, and green. A single host creature stands on a central stage facing the crowd, arm raised. A large screen behind shows "QUIZ GAME" and quiz shapes. Dramatic coloured spotlights — blue, green, pink, yellow — sweep the arena. Enormous scale, electric game-show energy. Pixar-quality 3D render, full-bleed 16:9.
 
-### `16_demo_intro.png` — Demo intro
+### `17_demo_intro.png` — Demo intro
 A single small yellow goggle-eyed creature in a white lab coat standing at a cluttered inventor's workbench. The bench is covered in steampunk lab equipment: colourful glowing beakers (blue, green), copper coils, brass gears, gauges, and tubes. The creature extends one hand proudly toward a cluster of glowing holographic blue circuit-board blueprints floating in the air beside it. Excited, proud-presenter energy, detailed busy background. Pixar-quality 3D render, full-bleed 16:9.
 
-### `17_pipeline.png` — Pipeline
+### `18_pipeline.png` — Pipeline
 Four small yellow goggle-eyed creatures in blue denim overalls at a clean row of open metal workstations on a factory floor, bright warm light. Left to right: first creature stamps a document, second reviews a paper with a green checkmark form, third passes an approved sheet along, fourth — wearing a white judge's collar bib and holding a gavel — raises a final "Approved" certificate triumphantly. Simple open-plan factory background, blurred machinery in distance. Leave generous blank space above for a diagram overlay card. Bright, cheerful, flat-ish Pixar-quality 3D render, full-bleed 16:9.
 
-### `18_laundry.png` — Laundry quote
+### `19_laundry.png` — Laundry quote
 A single small yellow goggle-eyed creature with a tuft of hair sitting on a stool at a wooden easel, happily painting on a canvas in a warm sunny living room. Large window behind it floods the room with golden-hour light. In the background, a small friendly silver robot with a smiling face stands in the open kitchen, cheerfully holding a stack of colourful folded towels with clean dishes visible nearby. Cosy domestic atmosphere, aspirational and warm mood. Pixar-quality 3D render, full-bleed 16:9.
 
-### `19_close.png` — Takeaway / close
+### `20_close.png` — Takeaway / close
 Seven small yellow goggle-eyed creatures of varying heights and eye counts standing together on a hilltop in a hero-group pose. The central creature holds a tall flagpole topped with a large blank white flag billowing in the breeze. All are backlit by a dramatic golden sunrise that floods the sky in orange and yellow. Long shadows stretch toward the viewer. Rolling green hills and a winding road visible in the distance. Triumphant, optimistic, end-of-journey feeling. Pixar-quality 3D render, full-bleed 16:9.
