@@ -6,6 +6,7 @@ A hands-on workshop for learning data manipulation, automation, and visualizatio
 
 - **Vibe Coding Tips**: HTML slide presentation (`tips/index.html`) — playful, keyboard-navigable slides on practical LLM workflow tips (model selection, auto-approve, agents, markdown logging, validation, etc.) with full docs in `tips/docs/` and examples in `tips/examples/`
 - **Slideshow**: Single-file HTML presentation (`slideshow/slideshow.html`, `slideshow/slideshow_es.html` for Spanish) with exercise menu, bonus section, and navigation (open in a browser)
+- **"Not Everything Is AI" keynote**: Standalone bilingual talk deck (`slideshow_ai/slideshow_ai.html`) — self-contained, no build step, in-page ES/EN toggle (or `?lang=en|es`), arrow/space navigation plus `B` to open a slide's link (presentation clicker), with live HTML demos in `slideshow_ai/mockups/`
 - **Main exercises**: Intro, ETL (merge, clean, survey), Viz (charts, reports), Auto (Excel polish, file organizer), plus Bonus “Big Data Stress Test”
 - **Bonus exercises**: PDF report, API pipeline, D3 bar/force viz, geo heatmap, interactive dashboard, Seaborn scatter/statistical
 - **Library testing**: `scripts/test_libraries.py` to verify required libraries and serves as the post-`pip install` smoke check for the Quick Start
@@ -47,6 +48,9 @@ A hands-on workshop for learning data manipulation, automation, and visualizatio
 | `slideshow/slideshow.html` | Workshop slideshow (English): welcome, menu, main/bonus exercises, break, survey, congratulations |
 | `slideshow/slideshow_es.html` | Spanish version of the slideshow |
 | `slideshow/assets/` | Images for slideshow (one per exercise + welcome, menu, break, survey, etc.) |
+| `slideshow_ai/slideshow_ai.html` | Standalone bilingual keynote "Not Everything Is AI / No Todo Es IA" (ES/EN toggle, `?lang=`); self-contained, edited directly (no config/build) |
+| `slideshow_ai/mockups/` | Live bilingual HTML demos linked from the keynote (automation, NLP, ML, transformer) |
+| `scripts/export_slideshow_ai_to_pdf.py` | Renders the keynote to `slideshow_ai_{en,es}.pdf` (one run per language) |
 | `exercises/` | Exercise folders: starter/solution/setup/data per exercise |
 | `preparation/` | Docs for building and extending the slideshow and images |
 | `scripts/test_libraries.py` | Verifies installed libraries (including Streamlit) |

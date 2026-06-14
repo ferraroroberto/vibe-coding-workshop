@@ -1,0 +1,51 @@
+﻿#,Group,Question,Answer 1,Answer 2,Answer 3,Answer 4,Time limit,Correct answer(s)
+1,Hype vs Reality,The talk's main message about AI is best summed up as…,Replace the whole team with a bot named Kevin,Right tool for the right problem,"AI is all hype, just ignore it",Put AI on absolutely everything,20,2
+2,Hype vs Reality,"According to the talk, most everyday work problems are best solved by…","The lower rungs: boring, reliable automation",A giant frontier LLM,A magic 8-ball,Three LLMs arguing in a committee,20,1
+3,Hype vs Reality,"""It's all AI"" vs ""it's all hype"" — the talk calls this…",A fallacy,The official EU regulation,The name of Mollick's otter,A solid engineering principle,20,1
+4,Hype vs Reality,Why do hyped AI headlines cause so much confusion?,They're written in binary,They're ghost-written by the otter,They rarely say which 'rung' they mean,They're all in Latin,20,3
+5,The Ladder,How many rungs are on the talk's 'AI ladder'?,Three,Ten,Five,Infinite — it's turtles all the way up,20,3
+6,The Ladder,Which is the correct bottom-to-top order of the ladder?,NLP → Automation → Transformer → ML → ChatGPT,Coffee → Panic → Deadline → Demo → Applause,Automation → NLP → ML → Transformer → ChatGPT,ChatGPT → ML → NLP → Automation → Transformer,20,3
+7,The Ladder,The talk says you've probably already used most rungs…,Without knowing their names,And should feel ashamed,Only in your dreams,While riding the otter's plane,20,1
+8,Rung 1 · Automation,"""If this, then do that"" — fast and forever — describes…",Reinforcement learning,Your manager on a Monday,Classic automation,A neural network,20,3
+9,Rung 1 · Automation,Which is a classic-automation job (no 'intelligence' at all)?,Judge a debate,"Rename 1,000 files / merge 12 Excels",Write an original poem,Decide who you should marry,20,2
+10,Rung 1 · Automation,A key selling point of classic automation is that it's…,Creative and surprising,100% predictable and auditable,Powered by tiny hamsters,Great at small talk,20,2
+11,Rung 1 · Automation,Why doesn't basic automation 'trend on LinkedIn'?,It's boring but solves most of the work,It refuses to use hashtags,It only runs on weekends,It's illegal,20,1
+12,Rung 2 · NLP,NLP (rung 2) is mostly about…,Finding structure/patterns in text,Generating photorealistic images,Teaching computers to taste soup,Controlling robots,20,1
+13,Rung 2 · NLP,A typical NLP task is…,Drive a car,Pull the total out of 500 invoices,Argue with your in-laws,Compose a symphony,20,2
+14,Rung 2 · NLP,Does classic NLP need to 'understand' the text?,Only if you say please,Only on Tuesdays,No — it works on rules and patterns,"Yes, deeply and emotionally",20,3
+15,Rung 2 · NLP,Classifying a document as contract vs invoice vs other is…,Best left to a coin flip,A job for Photoshop,Impossible without GPT-5,A classic NLP job,20,4
+16,Rung 3 · ML,Machine learning differs from classic automation because it…,Is allergic to spreadsheets,Learns the rule from examples,Needs no data at all,Never makes mistakes,20,2
+17,Rung 3 · ML,"""Here are 10,000 customers who churned → predict the next"" is…",A horoscope,A Transformer,Machine learning,Classic automation,20,3
+18,Rung 3 · ML,Roughly how old is the core idea of machine learning?,From the 1950s,"Older than the otter, younger than fire",Invented in 2023,From ancient Rome,20,1
+19,Rung 3 · ML,The talk says most real-world 'AI projects' are actually…,Secretly humans in a call center,Just Excel wearing a hat,Machine learning — and that's good,Powered by pure vibes,20,3
+20,Rung 4 · Transformer,The 2017 breakthrough behind modern LLMs is called…,The Perceptron,The Terminator,The Transformer,Optimus Prime,20,3
+21,Rung 4 · Transformer,The key idea that made the Transformer work is…,"""Attention"" — weighing which words matter",Faster typing,Bigger hard drives,Drinking more coffee,20,1
+22,Rung 4 · Transformer,"How old is the Transformer architecture, per the talk?","Nobody knows, it's a secret",Older than the wheel,About eight years,About fifty years,20,3
+23,Rung 4 · Transformer,Do you need the maths to use the Transformer idea here?,"Yes, plus a blood sample",No — just one key fact,Only calculus II,"Yes, a PhD minimum",20,2
+24,Tokens,"Before it 'thinks', an LLM chops the text into…",Whole sentences,Tiny letters it eats one by one,Paragraphs,Tokens,20,4
+25,Tokens,What does the model actually 'see'?,Your browser history,"Full words, like we do","Token IDs, not words",Pictures of the words,20,3
+26,Tokens,The tool used to explore tokens in the talk is…,Tiktokenizer,Microsoft Word,TikTok,A pair of scissors,20,1
+27,Pre-training,Pre-training teaches a model to do one thing:,Win at chess,Obey Asimov's laws,Always tell the truth,Predict the next token,20,4
+28,Pre-training,A nickname for the pre-trained base model in the talk is…,The 'calculator',The 'internet simulator',The 'digital goldfish',The 'robot lawyer',20,2
+29,Pre-training,"Ask a raw base model ""What is 2+2?"" and it will likely…",Refuse on ethical grounds,Call you on the phone,Answer 4 perfectly every time,"Ramble like a web page, not just say 4",20,4
+30,Pre-training,A base model is best described as…,A conscious brain,A search engine,Autocomplete on steroids,A very smart toaster,20,3
+31,Post-training,Post-training turns the base model into…,A search engine,A stand-up comedian,A helpful assistant,A new programming language,20,3
+32,Post-training,During post-training the model mainly learns…,To behave helpfully (not new facts),Interpretive dance,To do your taxes,All of Wikipedia by heart,20,1
+33,Post-training,"After post-training, the 'internet simulator'…",Forgets how to read,"Stops rambling, acts like an assistant",Becomes self-aware,Demands a salary,20,2
+34,RLHF & Judge,RLHF stands for…,"Random Logic, Hopefully Fine",Reinforcement Learning from Human Feedback,Robots Liberating Humanity Forever,Really Large Hadron Fusion,20,2
+35,RLHF & Judge,"In RLHF, humans mainly…",Rank answers good vs bad,Reboot the servers,Write every answer by hand,Feed the otter,20,1
+36,RLHF & Judge,RLAIF scales the feedback loop by…,Hiring many more humans,Removing all feedback,Letting a model judge other models' answers,Asking your mom,20,3
+37,RLHF & Judge,The 'machine as judge' trick matters because it…,Judges wear cooler robes,Scales beyond what humans could label,Removes the need for any standard,Makes the model conscious,20,2
+38,RLHF & Judge,"The whole LLM arc, per the talk, is…",otter → plane → wifi → art,basically magic,tokens → internet sim → assistant → specialist,a true digital brain waking up,20,3
+39,When to use LLM,"According to the talk, you should reach for the LLM…",Rarely — only where nothing else works,"Never, under any circumstance",Whenever you're bored,For every single task,20,1
+40,When to use LLM,"Need a deterministic, auditable answer? Use…",A lower rung,Three LLMs voting,The biggest LLM you can find,A Ouija board,20,1
+41,When to use LLM,The LLM is best used as…,A replacement for thinking,A sledgehammer for everything,A very expensive paperweight,A scalpel for the messy 5%,20,4
+42,When to use LLM,The talk describes the LLM as a generalist that is…,"Brilliant, expensive, sometimes hallucinating",Slow but perfectly honest,Cheap and always correct,Just a guy named Greg,20,1
+43,Demo Pipeline,"In the demo pipeline, the LLM's job is…",The last 5% — judge for false positives,Extracting text from the PDFs,"The whole pipeline, start to finish",Making the coffee,20,1
+44,Demo Pipeline,The demo's first step (rung 1) is…,Print it and shred it,Email the customer,Call the LLM immediately,PDF → text (extract & clean),20,4
+45,Demo Pipeline,The rules-engine step is valued because it's…,Deterministic and auditable,Run by interns,Secretly powered by an LLM,Creative and unpredictable,20,1
+46,Demo Pipeline,The whole point of the demo is to show…,That automation is useless,How to lose money fast,That LLMs should do everything,Which rung does the heavy lifting,20,4
+47,Fun & Culture,The talk opens with an AI image benchmark of…,A cat playing piano,An otter on a plane using the wifi,A pigeon doing its taxes,A dog on a skateboard,20,2
+48,Fun & Culture,Who ran the same otter prompt year after year?,Ethan Mollick,Sam Altman,Alan Turing,The otter itself,20,1
+49,Fun & Culture,The closing quote (Maciejewska) wishes AI would do…,The taxes and the cooking,"The laundry and dishes, not the art","The art and writing, not the chores",The karaoke,20,2
+50,Fun & Culture,The session's intended vibe is…,A wrestling match,A silent exam,"A team meeting, not a lecture",A sales pitch,20,3

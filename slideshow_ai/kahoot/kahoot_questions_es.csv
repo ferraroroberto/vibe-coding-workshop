@@ -1,0 +1,51 @@
+﻿#,Group,Question,Answer 1,Answer 2,Answer 3,Answer 4,Time limit,Correct answer(s)
+1,Hype vs Realidad,El mensaje principal de la charla sobre la IA se resume en…,Sustituir al equipo por un bot llamado Kevin,La herramienta correcta para el problema correcto,"La IA es puro hype, ignórala",Poner IA en absolutamente todo,20,2
+2,Hype vs Realidad,"Según la charla, la mayoría de los problemas diarios se resuelven mejor con…",Los peldaños bajos: automatización aburrida y fiable,Un LLM enorme de última generación,Una bola mágica del 8,Tres LLMs discutiendo en comité,20,1
+3,Hype vs Realidad,"""Todo es IA"" vs ""todo es hype"" — la charla lo llama…",Una falacia,La regulación oficial de la UE,El nombre de la nutria de Mollick,Un principio sólido de ingeniería,20,1
+4,Hype vs Realidad,¿Por qué los titulares con hype sobre IA causan tanta confusión?,Están escritos en binario,Los escribe en secreto la nutria,Casi nunca dicen de qué 'peldaño' hablan,Están todos en latín,20,3
+5,La Escalera,¿Cuántos peldaños tiene la 'escalera de la IA' de la charla?,Tres,Diez,Cinco,Infinitos — son tortugas hasta arriba,20,3
+6,La Escalera,"¿Cuál es el orden correcto de la escalera, de abajo a arriba?",NLP → Automatización → Transformer → ML → ChatGPT,Café → Pánico → Deadline → Demo → Aplauso,Automatización → NLP → ML → Transformer → ChatGPT,ChatGPT → ML → NLP → Automatización → Transformer,20,3
+7,La Escalera,La charla dice que probablemente ya has usado la mayoría de peldaños…,Sin saber sus nombres,Y deberías avergonzarte,Solo en tus sueños,Mientras viajabas en el avión de la nutria,20,1
+8,Peldaño 1 · Automatización,"""Si esto, entonces aquello"" — rápido y para siempre — describe…",Aprendizaje por refuerzo,Tu jefe un lunes,Automatización clásica,Una red neuronal,20,3
+9,Peldaño 1 · Automatización,¿Cuál es una tarea de automatización clásica (sin 'inteligencia')?,Arbitrar un debate,Renombrar 1.000 archivos / fusionar 12 Excels,Escribir un poema original,Decidir con quién casarte,20,2
+10,Peldaño 1 · Automatización,Una gran ventaja de la automatización clásica es que es…,Creativa y sorprendente,100% predecible y auditable,Impulsada por hámsters diminutos,Buenísima charlando,20,2
+11,Peldaño 1 · Automatización,¿Por qué la automatización básica no 'es tendencia en LinkedIn'?,Es aburrida pero resuelve casi todo el trabajo,Se niega a usar hashtags,Solo funciona los fines de semana,Es ilegal,20,1
+12,Peldaño 2 · NLP,El NLP (peldaño 2) trata sobre todo de…,Encontrar estructura/patrones en el texto,Generar imágenes fotorrealistas,Enseñar a los ordenadores a probar la sopa,Controlar robots,20,1
+13,Peldaño 2 · NLP,Una tarea típica de NLP es…,Conducir un coche,Extraer el total de 500 facturas,Discutir con tus suegros,Componer una sinfonía,20,2
+14,Peldaño 2 · NLP,¿El NLP clásico necesita 'entender' el texto?,Solo si dices por favor,Solo los martes,No — funciona con reglas y patrones,"Sí, profunda y emocionalmente",20,3
+15,Peldaño 2 · NLP,Clasificar un documento como contrato vs factura vs otro es…,Mejor decidirlo a cara o cruz,Un trabajo para Photoshop,Imposible sin GPT-5,Una tarea clásica de NLP,20,4
+16,Peldaño 3 · ML,El machine learning se diferencia de la automatización clásica porque…,Es alérgico a las hojas de cálculo,Aprende la regla a partir de ejemplos,No necesita datos,Nunca se equivoca,20,2
+17,Peldaño 3 · ML,"""Aquí hay 10.000 clientes que se fueron → predice el próximo"" es…",Un horóscopo,Un Transformer,Machine learning,Automatización clásica,20,3
+18,Peldaño 3 · ML,"¿De cuándo es, más o menos, la idea base del machine learning?",De los años 50,"Más viejo que la nutria, más joven que el fuego",Inventado en 2023,De la antigua Roma,20,1
+19,Peldaño 3 · ML,La charla dice que la mayoría de 'proyectos de IA' reales son en realidad…,"Humanos en un call center, en secreto",Solo Excel con un sombrero,Machine learning — y eso es bueno,Funcionan a base de vibras,20,3
+20,Peldaño 4 · Transformer,El avance de 2017 detrás de los LLMs modernos se llama…,El Perceptrón,El Terminator,El Transformer,Optimus Prime,20,3
+21,Peldaño 4 · Transformer,La idea clave que hizo funcionar al Transformer es…,"La ""atención"" — sopesar qué palabras importan",Escribir más rápido,Discos duros más grandes,Beber más café,20,1
+22,Peldaño 4 · Transformer,"¿Cuántos años tiene la arquitectura Transformer, según la charla?","Nadie lo sabe, es secreto",Más vieja que la rueda,Unos ocho años,Unos cincuenta años,20,3
+23,Peldaño 4 · Transformer,¿Necesitas la matemática para usar la idea del Transformer aquí?,"Sí, y una muestra de sangre",No — solo un dato clave,Solo cálculo II,"Sí, un doctorado como mínimo",20,2
+24,Tokens,"Antes de 'pensar', un LLM parte el texto en…",Frases completas,Letritas que se come una a una,Párrafos,Tokens,20,4
+25,Tokens,¿Qué 've' realmente el modelo?,Tu historial de navegación,"Palabras completas, como nosotros","IDs de tokens, no palabras",Fotos de las palabras,20,3
+26,Tokens,La herramienta usada en la charla para explorar tokens es…,Tiktokenizer,Microsoft Word,TikTok,Unas tijeras,20,1
+27,Pre-entrenamiento,El pre-entrenamiento enseña al modelo a hacer una sola cosa:,Ganar al ajedrez,Obedecer las leyes de Asimov,Decir siempre la verdad,Predecir el siguiente token,20,4
+28,Pre-entrenamiento,Un apodo para el modelo base pre-entrenado en la charla es…,La 'calculadora',El 'simulador de Internet',El 'pez de colores digital',El 'abogado robot',20,2
+29,Pre-entrenamiento,"Pregúntale a un modelo base ""¿Cuánto es 2+2?"" y probablemente…",Se niegue por motivos éticos,Te llame por teléfono,Responda 4 perfecto siempre,"Divague como una web, en vez de decir 4",20,4
+30,Pre-entrenamiento,Un modelo base se describe mejor como…,Un cerebro consciente,Un buscador,Autocompletado con esteroides,Una tostadora muy lista,20,3
+31,Post-entrenamiento,El post-entrenamiento convierte al modelo base en…,Un buscador,Un cómico de monólogos,Un asistente útil,Un nuevo lenguaje de programación,20,3
+32,Post-entrenamiento,Durante el post-entrenamiento el modelo aprende sobre todo…,A comportarse de forma útil (no hechos nuevos),Danza interpretativa,A hacer tu declaración de impuestos,Toda la Wikipedia de memoria,20,1
+33,Post-entrenamiento,"Tras el post-entrenamiento, el 'simulador de Internet'…",Olvida cómo leer,Deja de divagar y actúa como asistente,Se vuelve consciente,Exige un sueldo,20,2
+34,RLHF y Juez,RLHF significa…,"Lógica Aleatoria, Ojalá Funcione",Aprendizaje por Refuerzo con Feedback Humano,Robots Liberando a la Humanidad Para Siempre,Fusión Realmente Larga de Hadrones,20,2
+35,RLHF y Juez,"En RLHF, los humanos sobre todo…",Puntúan respuestas buenas vs malas,Reinician los servidores,Escriben cada respuesta a mano,Alimentan a la nutria,20,1
+36,RLHF y Juez,RLAIF escala el bucle de feedback al…,Contratar a muchos más humanos,Eliminar todo el feedback,Dejar que un modelo juzgue las respuestas de otro,Preguntarle a tu madre,20,3
+37,RLHF y Juez,El truco de la 'máquina como juez' importa porque…,Los jueces llevan togas más chulas,Escala más allá de lo que los humanos podrían etiquetar,Elimina la necesidad de un estándar,Hace consciente al modelo,20,2
+38,RLHF y Juez,"Todo el arco del LLM, según la charla, es…",nutria → avión → wifi → arte,básicamente magia,tokens → simulador → asistente → especialista,un cerebro digital real despertando,20,3
+39,Cuándo usar el LLM,"Según la charla, deberías recurrir al LLM…",Raramente — solo donde nada más funciona,"Nunca, bajo ninguna circunstancia",Cada vez que te aburras,Para absolutamente cada tarea,20,1
+40,Cuándo usar el LLM,¿Necesitas una respuesta determinista y auditable? Usa…,Un peldaño inferior,Tres LLMs votando,El LLM más grande que encuentres,Una ouija,20,1
+41,Cuándo usar el LLM,El LLM se usa mejor como…,Un sustituto de pensar,Un mazo para todo,Un pisapapeles carísimo,Un bisturí para el 5% desordenado,20,4
+42,Cuándo usar el LLM,La charla describe al LLM como un generalista que es…,"Brillante, caro y que a veces alucina",Lento pero perfectamente honesto,Barato y siempre correcto,Solo un tío llamado Greg,20,1
+43,Demo / Pipeline,"En el pipeline de la demo, el trabajo del LLM es…",El último 5% — juez de falsos positivos,Extraer el texto de los PDFs,"Todo el pipeline, de principio a fin",Hacer el café,20,1
+44,Demo / Pipeline,El primer paso de la demo (peldaño 1) es…,Imprimirlo y triturarlo,Enviar email al cliente,Llamar al LLM de inmediato,PDF → texto (extraer y limpiar),20,4
+45,Demo / Pipeline,El paso del motor de reglas se valora porque es…,Determinista y auditable,Gestionado por becarios,Secretamente impulsado por un LLM,Creativo e impredecible,20,1
+46,Demo / Pipeline,El objetivo de la demo es mostrar…,Que la automatización es inútil,Cómo perder dinero rápido,Que los LLMs deberían hacerlo todo,Qué peldaño hace el trabajo pesado,20,4
+47,Diversión y Cultura,La charla abre con un benchmark de imagen de IA de…,Un gato tocando el piano,Una nutria en un avión usando el wifi,Una paloma haciendo su declaración,Un perro en monopatín,20,2
+48,Diversión y Cultura,¿Quién pasó el mismo prompt de la nutria año tras año?,Ethan Mollick,Sam Altman,Alan Turing,La propia nutria,20,1
+49,Diversión y Cultura,La cita de cierre (Maciejewska) desea que la IA haga…,Los impuestos y la cocina,"La colada y los platos, no el arte","El arte y la escritura, no las tareas",El karaoke,20,2
+50,Diversión y Cultura,El ambiente que busca la sesión es…,Un combate de lucha libre,Un examen en silencio,"Una reunión de equipo, no una conferencia",Un argumentario de ventas,20,3

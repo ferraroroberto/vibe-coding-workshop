@@ -1,26 +1,27 @@
 import logging
 import os
 import sys
-from glob import glob
 from playwright.sync_api import sync_playwright
 from PIL import Image
 
 log = logging.getLogger(__name__)
 
 
-def export_slideshow(html_path: str, output_pdf: str) -> None:
+def export_slideshow(html_path: str, output_pdf: str, lang: str | None = None) -> None:
     abs_html_path = os.path.abspath(html_path)
     if not os.path.exists(abs_html_path):
         log.error("File not found: %s", abs_html_path)
         return
 
-    log.info("Opening content from: %s", abs_html_path)
+    log.info("Opening content from: %s%s", abs_html_path, f" (lang={lang})" if lang else "")
 
     with sync_playwright() as p:
         browser = p.chromium.launch()
         page = browser.new_page(viewport={'width': 1920, 'height': 1080})
 
         url = f'file:///{abs_html_path}'
+        if lang:
+            url += f'?lang={lang}'
         page.goto(url)
         page.wait_for_load_state('networkidle')
 
@@ -34,6 +35,8 @@ def export_slideshow(html_path: str, output_pdf: str) -> None:
         page.add_style_tag(content="""
             * { transition: none !important; animation: none !important; }
             .slide .content { transition: none !important; }
+            /* live-only language toggle — keep it out of the exported pages */
+            .lang-toggle { display: none !important; }
         """)
 
         total_slides = page.evaluate("document.querySelectorAll('.slide').length")
@@ -94,21 +97,25 @@ def export_slideshow(html_path: str, output_pdf: str) -> None:
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
 
-    if len(sys.argv) > 1:
-        html_files = sys.argv[1:]
-    else:
-        slideshow_dir = os.path.abspath(
-            os.path.join(os.path.dirname(__file__), "..", "slideshow_ai")
-        )
-        html_files = sorted(glob(os.path.join(slideshow_dir, "slideshow_ai_*.html")))
+    slideshow_dir = os.path.abspath(
+        os.path.join(os.path.dirname(__file__), "..", "slideshow_ai")
+    )
 
-    if not html_files:
-        log.error("No slideshow HTML files found in slideshow_ai/.")
+    if len(sys.argv) > 1:
+        # explicit file(s): one PDF each, default language
+        for html_file in sys.argv[1:]:
+            if not os.path.exists(html_file):
+                log.error("File not found: %s — skipping", html_file)
+                continue
+            export_slideshow(html_file, os.path.splitext(html_file)[0] + ".pdf")
+        sys.exit(0)
+
+    # default: render the single bilingual deck once per language
+    single = os.path.join(slideshow_dir, "slideshow_ai.html")
+    if not os.path.exists(single):
+        log.error("Deck not found: %s", single)
         sys.exit(1)
 
-    for html_file in html_files:
-        if not os.path.exists(html_file):
-            log.error("File not found: %s — skipping", html_file)
-            continue
-        output_file = os.path.splitext(html_file)[0] + ".pdf"
-        export_slideshow(html_file, output_file)
+    for lang in ("en", "es"):
+        output_file = os.path.join(slideshow_dir, f"slideshow_ai_{lang}.pdf")
+        export_slideshow(single, output_file, lang=lang)
