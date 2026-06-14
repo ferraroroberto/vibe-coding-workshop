@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rung 4 — El Transformer (atención), en vivo</title>
+<style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root { --accent: #64b5f6; --accent-warm: #ffca28; }
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        background: radial-gradient(circle at 30% 0%, #16233c 0%, #0e1726 60%, #060b14 100%);
+        color: #fff; min-height: 100vh; padding: clamp(1rem, 3vw, 2.5rem); position: relative;
+    }
+    /* the slide we came from, faint, so the demo feels like a continuation of the deck */
+    body::before {
+        content: ""; position: fixed; inset: 0; z-index: 0; pointer-events: none;
+        background: url("../assets/09_transformer.png") center / cover no-repeat; opacity: 0.5;
+    }
+    .wrap { max-width: 1050px; margin: 0 auto; position: relative; z-index: 1; }
+    header { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; margin-bottom: 1.4rem; }
+    .kicker { color: var(--accent); font-weight: 600; text-transform: uppercase; letter-spacing: 2px; font-size: 0.85rem; }
+    h1 { font-size: clamp(1.5rem, 3.2vw, 2.3rem); line-height: 1.15; }
+    .sub { color: rgba(255,255,255,0.7); margin-top: 0.4rem; font-size: clamp(0.95rem, 1.6vw, 1.15rem); }
+    .lang-toggle button { background: rgba(255,255,255,0.12); color: #fff; border: 1px solid rgba(255,255,255,0.3); border-radius: 20px; padding: 0.35rem 0.9rem; cursor: pointer; font-weight: 600; font-size: 0.85rem; }
+    .lang-toggle button.on { background: var(--accent); color: #08121f; border-color: var(--accent); }
+    .card { background: rgba(0,0,0,0.45); border: 1px solid rgba(255,255,255,0.16); border-radius: 14px; padding: 1.5rem; backdrop-filter: blur(8px); }
+    .variants { display: flex; gap: 0.6rem; margin-bottom: 0.5rem; flex-wrap: wrap; }
+    .variants button { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.25); color: #fff; border-radius: 18px; padding: 0.45rem 1.1rem; cursor: pointer; font-size: 0.9rem; }
+    .variants button.on { background: var(--accent-warm); color: #1a1a1a; border-color: var(--accent-warm); font-weight: 700; }
+    .hint-line { font-size: 0.9rem; color: rgba(255,255,255,0.55); margin-bottom: 1rem; }
+    .stage { position: relative; padding: 2.2rem 0.5rem 1.2rem; }
+    svg.lines { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; overflow: visible; }
+    .sentence { position: relative; display: flex; flex-wrap: wrap; gap: 0.5rem 0.6rem; justify-content: center; }
+    .tok {
+        position: relative; z-index: 1; padding: 0.5rem 0.85rem; border-radius: 10px; cursor: pointer;
+        font-size: clamp(1rem, 2.1vw, 1.45rem); background: rgba(255,255,255,0.08);
+        border: 1px solid rgba(255,255,255,0.18); transition: transform 0.15s ease, box-shadow 0.2s ease;
+    }
+    .tok:hover { transform: translateY(-2px); }
+    .tok.sel { outline: 2px solid var(--accent); box-shadow: 0 0 14px rgba(100,181,246,0.5); }
+    .read { margin-top: 1.4rem; font-size: 1.08rem; line-height: 1.6; min-height: 3rem; }
+    .read b { color: var(--accent-warm); }
+    .note { margin-top: 1.2rem; font-size: 0.92rem; color: rgba(255,255,255,0.7); }
+    .note strong { color: var(--accent); }
+    .how { margin-top: 1.2rem; }
+    .how h3 { font-size: 1.05rem; color: var(--accent); margin-bottom: 0.7rem; }
+    .how ol { margin: 0 0 0 1.2rem; }
+    .how li { font-size: 0.96rem; line-height: 1.55; margin-bottom: 0.55rem; color: rgba(255,255,255,0.88); }
+    .how li b { color: var(--accent-warm); }
+    .how .foot { margin-top: 0.8rem; font-size: 0.95rem; color: rgba(255,255,255,0.8); }
+    .how .foot b { color: var(--accent-warm); }
+</style>
+</head>
+<body>
+<div class="wrap">
+    <header>
+        <div>
+            <div class="kicker" data-i="kicker">Peldaño 4 · En vivo</div>
+            <h1 data-i="title">El Transformer: atención</h1>
+            <div class="sub" data-i="sub">El modelo decide a qué otras palabras mirar para entender cada palabra.</div>
+        </div>
+        <div class="lang-toggle">
+            <button id="es" class="on" onclick="setLang('es')">ES</button>
+            <button id="en" onclick="setLang('en')">EN</button>
+        </div>
+    </header>
+
+    <div class="card">
+        <div class="variants" id="variants"></div>
+        <div class="hint-line" data-i="clickHint">Haz clic en una palabra para ver su atención. (Ejemplo clásico en inglés.)</div>
+        <div class="stage">
+            <svg class="lines" id="lines"></svg>
+            <div class="sentence" id="sentence"></div>
+        </div>
+        <div class="read" id="read"></div>
+        <div class="note"><strong data-i="noteHead">Eso es todo lo que añadió el Transformer.</strong> <span data-i="note">"Atención": pesar qué palabras importan para cuál. Cambia una palabra y el foco se mueve. Lo demás es escala.</span></div>
+    </div>
+
+    <div class="card how" id="how" style="margin-top:1.2rem"></div>
+</div>
+
+<script>
+const TOKENS = ['The','animal',"didn't",'cross','the','street','because','it','was','too','___'];
+const IT = 7;  // index of "it"
+
+// Two variants: last word changes where "it" looks.
+const VARIANTS = {
+    tired: { last: 'tired', itAtt: { 1: 0.92, 10: 0.55, 5: 0.15 }, ref: 1 },   // it -> animal
+    wide:  { last: 'wide',  itAtt: { 5: 0.92, 10: 0.55, 1: 0.15 }, ref: 5 }    // it -> street
+};
+
+const i18n = {
+    es: {
+        kicker: 'Peldaño 4 · En vivo', title: 'El Transformer: atención',
+        sub: 'El modelo decide a qué otras palabras mirar para entender cada palabra.',
+        clickHint: 'Haz clic en una palabra para ver su atención. (Ejemplo clásico en inglés.)',
+        noteHead: 'Eso es todo lo que añadió el Transformer.',
+        note: '"Atención": pesar qué palabras importan para cuál. Cambia una palabra y el foco se mueve. Lo demás es escala.',
+        vTired: '…too tired', vWide: '…too wide',
+        readIt: (ref) => `"it" mira sobre todo a <b>${ref}</b> — ahí es donde el modelo cree que está el referente.`,
+        readOther: (w) => `"${w}" reparte su atención entre las palabras cercanas y las relacionadas.`,
+        howTitle: 'Cómo funciona por dentro',
+        howSteps: [
+            'Cada palabra lanza una <b>pregunta</b> (query): "¿qué necesito mirar para entenderme?"',
+            'Las demás palabras ofrecen una <b>etiqueta</b> (key). Se comparan pregunta y etiquetas, y de cada par nace un <b>peso de atención</b>.',
+            'El significado de la palabra se reescribe como una <b>mezcla ponderada</b> (value) de las palabras a las que más atiende.',
+            'Apila esto muchas veces — varias <b>capas</b> y "cabezas" en paralelo — y capta relaciones cada vez más sutiles.'
+        ],
+        howFoot: 'Por eso "it" cambia de referente: al cambiar la última palabra cambian las comparaciones, los pesos se reordenan solos — <b>sin una sola regla escrita a mano</b>.'
+    },
+    en: {
+        kicker: 'Rung 4 · Live', title: 'The Transformer: attention',
+        sub: 'The model decides which other words to look at to understand each word.',
+        clickHint: 'Click a word to see its attention.',
+        noteHead: "That's all the Transformer added.",
+        note: '"Attention": weighing which words matter to which. Change one word and the focus moves. The rest is scale.',
+        vTired: '…too tired', vWide: '…too wide',
+        readIt: (ref) => `"it" looks mostly at <b>${ref}</b> — that's what the model thinks it refers to.`,
+        readOther: (w) => `"${w}" spreads its attention across nearby and related words.`,
+        howTitle: 'How it works under the hood',
+        howSteps: [
+            'Every word sends out a <b>question</b> (a query): "what do I need to look at to make sense of myself?"',
+            'Every other word offers a <b>label</b> (a key). Question and labels are compared, and each pair gets an <b>attention weight</b>.',
+            "The word's meaning is rewritten as a <b>weighted blend</b> (the values) of the words it attends to most.",
+            'Stack this many times — several <b>layers</b> and parallel "heads" — and it captures ever subtler relationships.'
+        ],
+        howFoot: 'That\'s why "it" switches referent: change the last word and the comparisons change, so the weights re-sort themselves — <b>with no hand-written rule</b>.'
+    }
+};
+
+let lang = new URLSearchParams(location.search).get('lang') === 'en' ? 'en' : 'es';
+let variant = 'tired';
+let sel = IT;
+
+function tokensFor() {
+    const t = TOKENS.slice();
+    t[10] = VARIANTS[variant].last;
+    return t;
+}
+
+function attFor(i) {
+    // "it" has the dramatic, context-dependent attention; others get a simple self+neighbour pattern.
+    if (i === IT) return VARIANTS[variant].itAtt;
+    const w = {};
+    for (let j = 0; j < 11; j++) {
+        if (j === i) continue;
+        const d = Math.abs(j - i);
+        if (d <= 2) w[j] = d === 1 ? 0.45 : 0.25;
+    }
+    return w;
+}
+
+function renderSentence() {
+    const toks = tokensFor();
+    const box = document.getElementById('sentence');
+    box.innerHTML = '';
+    toks.forEach((tok, i) => {
+        const el = document.createElement('div');
+        el.className = 'tok' + (i === sel ? ' sel' : '');
+        el.textContent = tok;
+        el.onclick = () => { sel = i; paint(); };
+        box.appendChild(el);
+    });
+    paint();
+}
+
+function paint() {
+    const toks = tokensFor();
+    const att = attFor(sel);
+    const chips = [...document.querySelectorAll('.tok')];
+    chips.forEach((c, i) => {
+        c.classList.toggle('sel', i === sel);
+        const wgt = i === sel ? 0 : (att[i] || 0);
+        c.style.background = wgt > 0
+            ? `rgba(255,202,40,${0.12 + wgt * 0.6})`
+            : 'rgba(255,255,255,0.08)';
+        c.style.color = wgt > 0.5 ? '#1a1a1a' : '#fff';
+    });
+    drawLines(chips, att);
+    // reader line
+    const read = document.getElementById('read');
+    if (sel === IT) {
+        const refWord = toks[VARIANTS[variant].ref];
+        read.innerHTML = i18n[lang].readIt(refWord);
+    } else {
+        read.innerHTML = i18n[lang].readOther(toks[sel]);
+    }
+}
+
+function drawLines(chips, att) {
+    const svg = document.getElementById('lines');
+    const stage = svg.parentElement.getBoundingClientRect();
+    svg.innerHTML = '';
+    const center = el => {
+        const r = el.getBoundingClientRect();
+        return { x: r.left + r.width / 2 - stage.left, y: r.top + r.height / 2 - stage.top };
+    };
+    const a = center(chips[sel]);
+    Object.entries(att).forEach(([j, w]) => {
+        if (+j === sel || w < 0.1) return;
+        const b = center(chips[+j]);
+        const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        const my = Math.min(a.y, b.y) - 26 - w * 18;
+        path.setAttribute('d', `M ${a.x} ${a.y} Q ${(a.x + b.x) / 2} ${my} ${b.x} ${b.y}`);
+        path.setAttribute('fill', 'none');
+        path.setAttribute('stroke', 'var(--accent-warm)');
+        path.setAttribute('stroke-width', 1 + w * 5);
+        path.setAttribute('stroke-linecap', 'round');
+        path.setAttribute('opacity', 0.25 + w * 0.6);
+        svg.appendChild(path);
+    });
+}
+
+function renderVariants() {
+    const v = document.getElementById('variants');
+    v.innerHTML = '';
+    [['tired', 'vTired'], ['wide', 'vWide']].forEach(([key, lab]) => {
+        const b = document.createElement('button');
+        b.className = variant === key ? 'on' : '';
+        b.textContent = i18n[lang][lab];
+        b.onclick = () => { variant = key; sel = IT; renderVariants(); renderSentence(); };
+        v.appendChild(b);
+    });
+}
+
+function renderHow() {
+    const t = i18n[lang];
+    document.getElementById('how').innerHTML =
+        `<h3>${t.howTitle}</h3><ol>` +
+        t.howSteps.map(s => `<li>${s}</li>`).join('') +
+        `</ol><div class="foot">${t.howFoot}</div>`;
+}
+
+function render() {
+    document.documentElement.lang = lang;
+    document.getElementById('es').classList.toggle('on', lang === 'es');
+    document.getElementById('en').classList.toggle('on', lang === 'en');
+    document.querySelectorAll('[data-i]').forEach(el => { el.textContent = i18n[lang][el.dataset.i]; });
+    renderVariants();
+    renderSentence();
+    renderHow();
+}
+
+function setLang(l) { lang = l; render(); }
+
+window.addEventListener('resize', () => paint());
+render();
+// redraw once after layout/fonts settle
+setTimeout(paint, 150);
+</script>
+</body>
+</html>

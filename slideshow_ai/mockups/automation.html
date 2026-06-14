@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rung 1 — Automatización clásica, en vivo</title>
+<style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root { --accent: #64b5f6; --accent-warm: #ffca28; --green: #81c784; }
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        background: radial-gradient(circle at 30% 0%, #16233c 0%, #0e1726 60%, #060b14 100%);
+        color: #fff; min-height: 100vh; padding: clamp(0.6rem, 2vw, 1.4rem); position: relative;
+    }
+    /* the slide we came from, faint, so the demo feels like a continuation of the deck */
+    body::before {
+        content: ""; position: fixed; inset: 0; z-index: 0; pointer-events: none;
+        background: url("../assets/06_python.png") center / cover no-repeat; opacity: 0.5;
+    }
+    .wrap { max-width: 1150px; margin: 0 auto; position: relative; z-index: 1; }
+    header { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; margin-bottom: 1rem; }
+    .kicker { color: var(--green); font-weight: 600; text-transform: uppercase; letter-spacing: 2px; font-size: 0.85rem; }
+    h1 { font-size: clamp(1.5rem, 3.2vw, 2.3rem); line-height: 1.15; }
+    .sub { color: rgba(255,255,255,0.7); margin-top: 0.4rem; font-size: clamp(0.95rem, 1.6vw, 1.15rem); }
+    .lang-toggle button {
+        background: rgba(255,255,255,0.12); color: #fff; border: 1px solid rgba(255,255,255,0.3);
+        border-radius: 20px; padding: 0.35rem 0.9rem; cursor: pointer; font-weight: 600; font-size: 0.85rem;
+    }
+    .lang-toggle button.on { background: var(--accent); color: #08121f; border-color: var(--accent); }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
+    @media (max-width: 860px) { .grid { grid-template-columns: 1fr; } }
+    .card {
+        background: rgba(0,0,0,0.55); border: 1px solid rgba(255,255,255,0.16);
+        border-radius: 14px; padding: 1rem 1.1rem; backdrop-filter: blur(8px);
+    }
+    .card h2 { font-size: 1.05rem; color: var(--accent); margin-bottom: 0.7rem; border-bottom: 1px solid rgba(255,255,255,0.15); padding-bottom: 0.4rem; }
+    .pill-btn {
+        display: inline-flex; align-items: center; gap: 8px; background: var(--green); color: #08121f;
+        border: none; padding: 0.7rem 1.5rem; border-radius: 25px; cursor: pointer;
+        font-size: 1rem; font-weight: 700; transition: all 0.2s ease;
+    }
+    .pill-btn:hover { transform: scale(1.04); filter: brightness(1.08); }
+    .pill-btn.ghost { background: rgba(255,255,255,0.12); color: #fff; border: 1px solid rgba(255,255,255,0.3); }
+    .pill-btn:disabled { opacity: 0.4; cursor: default; transform: none; }
+    .controls { display: flex; gap: 0.8rem; margin-bottom: 0.9rem; flex-wrap: wrap; }
+    .steps { list-style: none; }
+    .steps li { display: flex; align-items: center; gap: 0.7rem; padding: 0.38rem 0; font-size: 0.98rem; opacity: 0.4; transition: opacity 0.3s ease; }
+    .steps li.done { opacity: 1; }
+    .steps li.active { opacity: 1; color: var(--accent-warm); }
+    .dot { width: 22px; height: 22px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.4); display: inline-flex; align-items: center; justify-content: center; font-size: 0.8rem; flex-shrink: 0; }
+    .steps li.done .dot { background: var(--green); border-color: var(--green); color: #08121f; }
+    .steps li.active .dot { border-color: var(--accent-warm); }
+    /* file tree */
+    .tree { font-family: 'Consolas', 'Courier New', monospace; font-size: 0.98rem; line-height: 1.9; }
+    .tree .node { padding-left: 0; transition: all 0.3s ease; }
+    .tree .child { padding-left: 1.7rem; color: rgba(255,255,255,0.85); }
+    .tree .new { color: var(--green); }
+    .tree .gone { opacity: 0.25; text-decoration: line-through; }
+    /* excel */
+    .excel { margin-top: 1rem; border-collapse: collapse; font-size: 0.92rem; }
+    .excel th { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.7); font-weight: 600; }
+    .excel th, .excel td { border: 1px solid rgba(255,255,255,0.2); padding: 0.45rem 0.8rem; min-width: 90px; text-align: left; }
+    .excel td.filled { background: rgba(129,199,132,0.18); color: var(--green); font-weight: 700; }
+    /* code */
+    pre { font-family: 'Consolas', 'Courier New', monospace; font-size: 0.82rem; line-height: 1.5; white-space: pre-wrap; }
+    pre .ln { display: block; padding: 0 0.4rem; border-radius: 4px; transition: background 0.25s ease; }
+    pre .ln.hot { background: rgba(255,202,40,0.22); }
+    pre .cm { color: #7fae6e; }
+    pre .kw { color: var(--accent); }
+    pre .st { color: #e6b673; }
+    .note { margin-top: 0.8rem; font-size: 0.9rem; color: rgba(255,255,255,0.7); }
+    .note strong { color: var(--green); }
+</style>
+</head>
+<body>
+<div class="wrap">
+    <header>
+        <div>
+            <div class="kicker" data-i="kicker">Peldaño 1 · En vivo</div>
+            <h1 data-i="title">Automatización clásica</h1>
+            <div class="sub" data-i="sub">Un ordenador haciendo exactamente lo que le dices. Sin "inteligencia". Pulsa el botón.</div>
+        </div>
+        <div class="lang-toggle">
+            <button id="es" class="on" onclick="setLang('es')">ES</button>
+            <button id="en" onclick="setLang('en')">EN</button>
+        </div>
+    </header>
+
+    <div class="grid">
+        <div class="card">
+            <h2 data-i="runTitle">La automatización</h2>
+            <div class="controls">
+                <button class="pill-btn" id="run" onclick="run()">▶ <span data-i="runBtn">Ejecutar</span></button>
+                <button class="pill-btn ghost" onclick="reset()" data-i="resetBtn">Reiniciar</button>
+            </div>
+            <ul class="steps" id="steps"></ul>
+            <div class="note"><strong data-i="noteHead">100% predecible.</strong> <span data-i="note">Mismo resultado, siempre. Sin API, sin coste, auditable línea a línea.</span></div>
+        </div>
+
+        <div class="card">
+            <h2 data-i="resultTitle">Lo que pasa en el disco</h2>
+            <div class="tree" id="tree"></div>
+            <table class="excel" id="excel">
+                <tr><th></th><th>A</th><th>B</th></tr>
+                <tr><th>1</th><td id="cellA1"></td><td></td></tr>
+                <tr><th>2</th><td></td><td></td></tr>
+            </table>
+        </div>
+    </div>
+
+    <div class="card" style="margin-top:1rem">
+        <h2 data-i="codeTitle">Todo el "secreto" — 11 líneas de Python</h2>
+        <pre id="code"></pre>
+    </div>
+</div>
+
+<script>
+const i18n = {
+    es: {
+        kicker: 'Peldaño 1 · En vivo', title: 'Automatización clásica',
+        sub: 'Un ordenador haciendo exactamente lo que le dices. Sin "inteligencia". Pulsa el botón.',
+        runTitle: 'La automatización', runBtn: 'Ejecutar', resetBtn: 'Reiniciar',
+        noteHead: '100% predecible.', note: 'Mismo resultado, siempre. Sin API, sin coste, auditable línea a línea.',
+        resultTitle: 'Lo que pasa en el disco', codeTitle: 'Todo el "secreto" — 11 líneas de Python',
+        steps: ['Crear carpeta informes_2026_Q2/', 'Mover export_bruto.csv a la carpeta', 'Escribir el total en resumen.xlsx (A1)', 'Guardar y cerrar'],
+        total: 'Total: 1.284.500 €'
+    },
+    en: {
+        kicker: 'Rung 1 · Live', title: 'Classic automation',
+        sub: 'A computer doing exactly what you told it. No "intelligence". Hit the button.',
+        runTitle: 'The automation', runBtn: 'Run', resetBtn: 'Reset',
+        noteHead: '100% predictable.', note: 'Same result, every time. No API, no cost, auditable line by line.',
+        resultTitle: 'What happens on disk', codeTitle: 'The whole "secret" — 11 lines of Python',
+        steps: ['Create folder reports_2026_Q2/', 'Move raw_export.csv into the folder', 'Write the total into summary.xlsx (A1)', 'Save and close'],
+        total: 'Total: 1,284,500 €'
+    }
+};
+
+let lang = new URLSearchParams(location.search).get('lang') === 'en' ? 'en' : 'es';
+let running = false;
+
+function codeHTML() {
+    const t = i18n[lang];
+    const c = lang === 'es'
+      ? ['# 1 · crear la carpeta', '# 2 · mover el export', '# 3 · escribir el total', '# 4 · guardar']
+      : ['# 1 · create the folder', '# 2 · move the export', '# 3 · write the total', '# 4 · save'];
+    return [
+        '<span class="ln"><span class="kw">import</span> os, shutil</span>',
+        '<span class="ln"><span class="kw">from</span> openpyxl <span class="kw">import</span> load_workbook</span>',
+        `<span class="ln" data-s="0"><span class="cm">${c[0]}</span></span>`,
+        '<span class="ln" data-s="0">os.makedirs(<span class="st">"' + (lang==='es'?'informes_2026_Q2':'reports_2026_Q2') + '"</span>, exist_ok=<span class="kw">True</span>)</span>',
+        `<span class="ln" data-s="1"><span class="cm">${c[1]}</span></span>`,
+        '<span class="ln" data-s="1">shutil.move(<span class="st">"' + (lang==='es'?'export_bruto.csv':'raw_export.csv') + '"</span>, <span class="st">"' + (lang==='es'?'informes_2026_Q2/':'reports_2026_Q2/') + '"</span>)</span>',
+        `<span class="ln" data-s="2"><span class="cm">${c[2]}</span></span>`,
+        '<span class="ln" data-s="2">wb = load_workbook(<span class="st">"' + (lang==='es'?'resumen.xlsx':'summary.xlsx') + '"</span>)</span>',
+        '<span class="ln" data-s="2">wb.active[<span class="st">"A1"</span>] = <span class="st">"' + t.total + '"</span></span>',
+        `<span class="ln" data-s="3"><span class="cm">${c[3]}</span></span>`,
+        '<span class="ln" data-s="3">wb.save(<span class="st">"' + (lang==='es'?'resumen.xlsx':'summary.xlsx') + '"</span>)</span>'
+    ].join('\n');
+}
+
+function render() {
+    document.documentElement.lang = lang;
+    document.getElementById('es').classList.toggle('on', lang === 'es');
+    document.getElementById('en').classList.toggle('on', lang === 'en');
+    document.querySelectorAll('[data-i]').forEach(el => { el.textContent = i18n[lang][el.dataset.i]; });
+    const steps = document.getElementById('steps');
+    steps.innerHTML = i18n[lang].steps.map((s, idx) =>
+        `<li id="step${idx}"><span class="dot">${idx + 1}</span><span>${s}</span></li>`).join('');
+    document.getElementById('code').innerHTML = codeHTML();
+    reset();
+}
+
+function setLang(l) { if (running) return; lang = l; render(); }
+
+const csv = () => lang === 'es' ? 'export_bruto.csv' : 'raw_export.csv';
+const folder = () => lang === 'es' ? 'informes_2026_Q2/' : 'reports_2026_Q2/';
+const xlsx = () => lang === 'es' ? 'resumen.xlsx' : 'summary.xlsx';
+
+function drawTree(stage) {
+    const t = document.getElementById('tree');
+    let rows = [];
+    if (stage < 1) rows.push(`<div class="node">📄 ${csv()}</div>`);
+    rows.push(`<div class="node">📊 ${xlsx()}</div>`);
+    if (stage >= 1) {
+        rows.push(`<div class="node ${stage === 1 ? 'new' : ''}">📁 ${folder()}</div>`);
+        if (stage >= 2) rows.push(`<div class="child ${stage === 2 ? 'new' : ''}">📄 ${csv()}</div>`);
+    }
+    t.innerHTML = rows.join('');
+}
+
+function hot(s) {
+    document.querySelectorAll('pre .ln').forEach(l => l.classList.remove('hot'));
+    if (s !== null) document.querySelectorAll(`pre .ln[data-s="${s}"]`).forEach(l => l.classList.add('hot'));
+}
+
+function reset() {
+    running = false;
+    [0,1,2,3].forEach(i => { const el = document.getElementById('step'+i); if (el) el.className = ''; });
+    document.getElementById('cellA1').textContent = '';
+    document.getElementById('cellA1').classList.remove('filled');
+    document.getElementById('run').disabled = false;
+    drawTree(0);
+    hot(null);
+}
+
+function run() {
+    if (running) return;
+    running = true;
+    document.getElementById('run').disabled = true;
+    const seq = [0, 1, 2, 3];
+    let i = 0;
+    const tick = () => {
+        if (i > 0) { const p = document.getElementById('step'+(i-1)); p.className = 'done'; }
+        if (i >= seq.length) {
+            hot(null); running = false; document.getElementById('run').disabled = false; return;
+        }
+        const el = document.getElementById('step'+i);
+        el.className = 'active';
+        hot(i);
+        if (i === 0) drawTree(1);         // step 0: folder appears
+        else drawTree(2);                 // step 1+: file now inside the folder
+        if (i === 2) {
+            const cell = document.getElementById('cellA1');
+            cell.textContent = i18n[lang].total;
+            cell.classList.add('filled');
+        }
+        i++;
+        setTimeout(tick, 1000);
+    };
+    tick();
+}
+
+render();
+</script>
+</body>
+</html>

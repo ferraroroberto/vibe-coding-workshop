@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rung 3 — Machine Learning, en vivo</title>
+<style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root { --accent: #64b5f6; --accent-warm: #ffca28; --green: #81c784; --red: #ef9a9a; }
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        background: radial-gradient(circle at 30% 0%, #16233c 0%, #0e1726 60%, #060b14 100%);
+        color: #fff; min-height: 100vh; padding: clamp(1rem, 3vw, 2.5rem); position: relative;
+    }
+    /* the slide we came from, faint, so the demo feels like a continuation of the deck */
+    body::before {
+        content: ""; position: fixed; inset: 0; z-index: 0; pointer-events: none;
+        background: url("../assets/08_ml.png") center / cover no-repeat; opacity: 0.5;
+    }
+    .wrap { max-width: 1150px; margin: 0 auto; position: relative; z-index: 1; }
+    header { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; margin-bottom: 1.4rem; }
+    .kicker { color: var(--accent); font-weight: 600; text-transform: uppercase; letter-spacing: 2px; font-size: 0.85rem; }
+    h1 { font-size: clamp(1.5rem, 3.2vw, 2.3rem); line-height: 1.15; }
+    .sub { color: rgba(255,255,255,0.7); margin-top: 0.4rem; font-size: clamp(0.95rem, 1.6vw, 1.15rem); }
+    .lang-toggle button { background: rgba(255,255,255,0.12); color: #fff; border: 1px solid rgba(255,255,255,0.3); border-radius: 20px; padding: 0.35rem 0.9rem; cursor: pointer; font-weight: 600; font-size: 0.85rem; }
+    .lang-toggle button.on { background: var(--accent); color: #08121f; border-color: var(--accent); }
+    .grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 1.2rem; }
+    @media (max-width: 860px) { .grid { grid-template-columns: 1fr; } }
+    .card { background: rgba(0,0,0,0.45); border: 1px solid rgba(255,255,255,0.16); border-radius: 14px; padding: 1.3rem; backdrop-filter: blur(8px); }
+    .card h2 { font-size: 1.1rem; color: var(--accent); margin-bottom: 0.9rem; border-bottom: 1px solid rgba(255,255,255,0.15); padding-bottom: 0.5rem; }
+    .pill-btn { display: inline-flex; align-items: center; gap: 8px; background: var(--accent); color: #08121f; border: none; padding: 0.7rem 1.4rem; border-radius: 25px; cursor: pointer; font-size: 1rem; font-weight: 700; transition: all 0.2s ease; }
+    .pill-btn:hover { transform: scale(1.04); filter: brightness(1.08); }
+    .pill-btn.ghost { background: rgba(255,255,255,0.12); color: #fff; border: 1px solid rgba(255,255,255,0.3); }
+    .pill-btn:disabled { opacity: 0.4; cursor: default; transform: none; }
+    .controls { display: flex; gap: 0.8rem; margin-bottom: 1rem; flex-wrap: wrap; }
+    svg.plane { width: 100%; height: auto; background: rgba(255,255,255,0.03); border-radius: 10px; touch-action: none; }
+    .axis { stroke: rgba(255,255,255,0.25); stroke-width: 0.4; }
+    .axis-label { fill: rgba(255,255,255,0.6); font-size: 3px; }
+    .pt { transition: opacity 0.4s ease; }
+    .boundary { stroke: var(--accent-warm); stroke-width: 0.8; stroke-dasharray: 2 1.5; }
+    .legend { display: flex; gap: 1.2rem; margin-top: 0.6rem; font-size: 0.9rem; }
+    .legend span::before { content: '●'; margin-right: 6px; }
+    .phase-text { font-size: 1.02rem; line-height: 1.6; min-height: 5.5rem; }
+    .phase-text b { color: var(--accent-warm); }
+    .pred { margin-top: 1rem; font-size: 1.05rem; font-weight: 700; min-height: 1.6rem; }
+    .note { margin-top: 1rem; font-size: 0.92rem; color: rgba(255,255,255,0.7); }
+    .note strong { color: var(--accent); }
+</style>
+</head>
+<body>
+<div class="wrap">
+    <header>
+        <div>
+            <div class="kicker" data-i="kicker">Peldaño 3 · En vivo</div>
+            <h1 data-i="title">Machine Learning</h1>
+            <div class="sub" data-i="sub">No escribes la regla — le muestras ejemplos y la aprende sola.</div>
+        </div>
+        <div class="lang-toggle">
+            <button id="es" class="on" onclick="setLang('es')">ES</button>
+            <button id="en" onclick="setLang('en')">EN</button>
+        </div>
+    </header>
+
+    <div class="grid">
+        <div class="card">
+            <div class="controls">
+                <button class="pill-btn" id="step" onclick="advance()"></button>
+                <button class="pill-btn ghost" onclick="reset()" data-i="resetBtn">Reiniciar</button>
+            </div>
+            <svg class="plane" id="plane" viewBox="0 0 100 80" onclick="predict(event)">
+                <line class="axis" x1="8" y1="72" x2="96" y2="72"></line>
+                <line class="axis" x1="8" y1="72" x2="8" y2="6"></line>
+                <text class="axis-label" id="xlab" x="52" y="78" text-anchor="middle"></text>
+                <text class="axis-label" id="ylab" x="3" y="40" text-anchor="middle" transform="rotate(-90 3 40)"></text>
+                <line class="boundary" id="boundary" x1="8" y1="72" x2="8" y2="72" style="opacity:0"></line>
+                <g id="points"></g>
+                <g id="preds"></g>
+            </svg>
+            <div class="legend">
+                <span style="color:var(--green)" data-i="legStay">stayed</span>
+                <span style="color:var(--red)" data-i="legChurn">churned</span>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2 data-i="whatTitle">Qué está pasando</h2>
+            <div class="phase-text" id="phaseText"></div>
+            <div class="pred" id="pred"></div>
+            <div class="note"><strong data-i="noteHead">Solo es una frontera.</strong> <span data-i="note">Medible, testeable y, en casos simples, auditable. La mayoría de "proyectos de IA" son esto.</span></div>
+        </div>
+    </div>
+</div>
+
+<script>
+// data-space points (x = feature A, y = feature B), 0..100. churn when y > x.
+const CHURN = [[18,72],[25,80],[30,66],[15,60],[22,88],[35,75],[12,50],[28,58],[20,68],[33,90]];
+const STAY  = [[72,28],[80,20],[66,34],[85,40],[60,18],[75,30],[90,25],[58,22],[68,38],[82,15]];
+
+const i18n = {
+    es: {
+        kicker: 'Peldaño 3 · En vivo', title: 'Machine Learning',
+        sub: 'No escribes la regla — le muestras ejemplos y la aprende sola.',
+        resetBtn: 'Reiniciar', whatTitle: 'Qué está pasando',
+        legStay: 'se queda', legChurn: 'se va',
+        xlab: 'meses activo →', ylab: 'incidencias →',
+        noteHead: 'Solo es una frontera.', note: 'Medible, testeable y, en casos simples, auditable. La mayoría de "proyectos de IA" son esto.',
+        steps: ['1 · Mostrar ejemplos', '2 · Aprender la regla', '3 · Predecir (haz clic)', 'Listo'],
+        phases: [
+            'Objetivo: predecir si un cliente se irá — <b>sin escribir ni una regla</b>.',
+            'Aquí está el pasado: cada punto es un cliente. <b>Verde</b> = se quedó, <b>rojo</b> = se fue. El modelo solo ve estos ejemplos etiquetados.',
+            'Encontró <b>una línea</b> que los separa lo mejor posible — solo. Nadie escribió "si incidencias > meses, se va". Esa regla <b>emergió de los datos</b>.',
+            'Ahora predice: <b>haz clic en el gráfico</b> para soltar un cliente nuevo. El lado de la línea decide verde o rojo.'
+        ],
+        predStay: 'Predicción: se queda ✅', predChurn: 'Predicción: se va ⚠️'
+    },
+    en: {
+        kicker: 'Rung 3 · Live', title: 'Machine Learning',
+        sub: "You don't write the rule — you show it examples and it learns the rule itself.",
+        resetBtn: 'Reset', whatTitle: "What's happening",
+        legStay: 'stayed', legChurn: 'churned',
+        xlab: 'months active →', ylab: 'support tickets →',
+        noteHead: "It's just a boundary.", note: 'Measurable, testable and, in simple cases, auditable. Most "AI projects" are this.',
+        steps: ['1 · Show examples', '2 · Learn the rule', '3 · Predict (click)', 'Done'],
+        phases: [
+            'Goal: predict whether a customer will churn — <b>without writing a single rule</b>.',
+            "Here's the past: each dot is a customer. <b>Green</b> = stayed, <b>red</b> = churned. The model only sees these labelled examples.",
+            'It found <b>one line</b> that best separates them — by itself. Nobody wrote "if tickets > months, churn". That rule <b>emerged from the data</b>.',
+            'Now predict: <b>click on the chart</b> to drop a new customer. Its side of the line decides green or red.'
+        ],
+        predStay: 'Prediction: stays ✅', predChurn: 'Prediction: churns ⚠️'
+    }
+};
+
+let lang = new URLSearchParams(location.search).get('lang') === 'en' ? 'en' : 'es';
+let phase = 0;
+
+// data(0..100) -> svg. x: 8..96 ; y(0 bottom..100 top): 72..6
+const sx = x => 8 + x / 100 * 88;
+const sy = y => 72 - y / 100 * 66;
+
+function drawPoints(show) {
+    const g = document.getElementById('points');
+    g.innerHTML = '';
+    const add = (pts, color) => pts.forEach(([x, y]) => {
+        const c = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        c.setAttribute('class', 'pt');
+        c.setAttribute('cx', sx(x)); c.setAttribute('cy', sy(y)); c.setAttribute('r', 1.6);
+        c.setAttribute('fill', color); c.style.opacity = show ? 1 : 0;
+        g.appendChild(c);
+    });
+    add(STAY, '#81c784');
+    add(CHURN, '#ef9a9a');
+}
+
+function showBoundary() {
+    const b = document.getElementById('boundary');
+    // data line y = x : from (0,0) to (100,100)
+    b.setAttribute('x1', sx(0)); b.setAttribute('y1', sy(0));
+    b.setAttribute('x2', sx(100)); b.setAttribute('y2', sy(100));
+    b.style.transition = 'opacity 0.6s ease';
+    b.style.opacity = 1;
+}
+
+function render() {
+    document.documentElement.lang = lang;
+    document.getElementById('es').classList.toggle('on', lang === 'es');
+    document.getElementById('en').classList.toggle('on', lang === 'en');
+    document.querySelectorAll('[data-i]').forEach(el => { el.textContent = i18n[lang][el.dataset.i]; });
+    document.getElementById('xlab').textContent = i18n[lang].xlab;
+    document.getElementById('ylab').textContent = i18n[lang].ylab;
+    document.getElementById('step').textContent = i18n[lang].steps[Math.min(phase, 3)];
+    document.getElementById('phaseText').innerHTML = i18n[lang].phases[Math.min(phase, 3)];
+}
+
+function setLang(l) { lang = l; render(); }
+
+function advance() {
+    if (phase >= 3) return;
+    phase++;
+    if (phase === 1) drawPoints(true);
+    if (phase === 2) showBoundary();
+    if (phase === 3) document.getElementById('step').disabled = true;
+    render();
+}
+
+function predict(e) {
+    if (phase < 3) return;
+    const svg = document.getElementById('plane');
+    const p = svg.createSVGPoint();
+    p.x = e.clientX; p.y = e.clientY;
+    const loc = p.matrixTransform(svg.getScreenCTM().inverse());
+    if (loc.x < 8 || loc.x > 96 || loc.y < 6 || loc.y > 72) return;
+    const dx = (loc.x - 8) / 88 * 100;
+    const dy = (72 - loc.y) / 66 * 100;
+    const churn = dy > dx;
+    const preds = document.getElementById('preds');
+    const c = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+    c.setAttribute('cx', loc.x); c.setAttribute('cy', loc.y); c.setAttribute('r', 2.2);
+    c.setAttribute('fill', churn ? '#ef9a9a' : '#81c784');
+    c.setAttribute('stroke', '#fff'); c.setAttribute('stroke-width', 0.5);
+    preds.appendChild(c);
+    document.getElementById('pred').textContent = churn ? i18n[lang].predChurn : i18n[lang].predStay;
+    document.getElementById('pred').style.color = churn ? '#ef9a9a' : '#81c784';
+}
+
+function reset() {
+    phase = 0;
+    document.getElementById('step').disabled = false;
+    document.getElementById('boundary').style.opacity = 0;
+    document.getElementById('preds').innerHTML = '';
+    document.getElementById('pred').textContent = '';
+    drawPoints(false);
+    render();
+}
+
+drawPoints(false);
+render();
+</script>
+</body>
+</html>

@@ -15,3 +15,11 @@ live/
 
 # vscode settings
 .vscode/
+
+# slideshow_ai: presenter's own "hyped industry news" example screenshots
+# (kept private; slide 4 renders whatever exists locally at run time)
+slideshow_ai/assets/news/
+
+# slideshow_ai: third-party Mollick "otter" benchmark images (not redistributed)
+# slide 2 references assets/otters/otters.png and degrades to a hint if absent
+slideshow_ai/assets/otters/

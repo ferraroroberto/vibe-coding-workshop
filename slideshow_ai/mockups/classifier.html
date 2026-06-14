@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rung 2 — Clasificación NLP, en vivo</title>
+<style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root { --accent: #64b5f6; --accent-warm: #ffca28; --green: #81c784; --red: #ef9a9a; }
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        background: radial-gradient(circle at 30% 0%, #16233c 0%, #0e1726 60%, #060b14 100%);
+        color: #fff; min-height: 100vh; padding: clamp(1rem, 3vw, 2.5rem); position: relative;
+    }
+    /* the slide we came from, faint, so the demo feels like a continuation of the deck */
+    body::before {
+        content: ""; position: fixed; inset: 0; z-index: 0; pointer-events: none;
+        background: url("../assets/07_nlp.png") center / cover no-repeat; opacity: 0.5;
+    }
+    .wrap { max-width: 1050px; margin: 0 auto; position: relative; z-index: 1; }
+    header { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; margin-bottom: 1.4rem; }
+    .kicker { color: var(--accent); font-weight: 600; text-transform: uppercase; letter-spacing: 2px; font-size: 0.85rem; }
+    h1 { font-size: clamp(1.5rem, 3.2vw, 2.3rem); line-height: 1.15; }
+    .sub { color: rgba(255,255,255,0.7); margin-top: 0.4rem; font-size: clamp(0.95rem, 1.6vw, 1.15rem); }
+    .lang-toggle button {
+        background: rgba(255,255,255,0.12); color: #fff; border: 1px solid rgba(255,255,255,0.3);
+        border-radius: 20px; padding: 0.35rem 0.9rem; cursor: pointer; font-weight: 600; font-size: 0.85rem;
+    }
+    .lang-toggle button.on { background: var(--accent); color: #08121f; border-color: var(--accent); }
+    .card { background: rgba(0,0,0,0.45); border: 1px solid rgba(255,255,255,0.16); border-radius: 14px; padding: 1.3rem; backdrop-filter: blur(8px); }
+    .examples { display: flex; gap: 0.6rem; flex-wrap: wrap; margin-bottom: 0.9rem; }
+    .ex { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.25); color: #fff; border-radius: 18px; padding: 0.4rem 1rem; cursor: pointer; font-size: 0.88rem; }
+    .ex:hover { background: rgba(255,255,255,0.2); }
+    textarea {
+        width: 100%; min-height: 120px; background: rgba(0,0,0,0.4); color: #fff; border: 1px solid rgba(255,255,255,0.25);
+        border-radius: 10px; padding: 0.9rem; font-size: 1rem; font-family: inherit; line-height: 1.6; resize: vertical;
+    }
+    .pill-btn { display: inline-flex; align-items: center; gap: 8px; background: var(--accent); color: #08121f; border: none; padding: 0.7rem 1.6rem; border-radius: 25px; cursor: pointer; font-size: 1rem; font-weight: 700; margin-top: 0.9rem; transition: all 0.2s ease; }
+    .pill-btn:hover { transform: scale(1.04); filter: brightness(1.08); }
+    .out { margin-top: 1.2rem; }
+    .verdict { display: flex; align-items: center; gap: 0.8rem; font-size: 1.35rem; font-weight: 700; margin-bottom: 0.4rem; }
+    .badge { padding: 0.3rem 1rem; border-radius: 10px; font-size: 1.05rem; }
+    .why { color: rgba(255,255,255,0.8); font-size: 0.98rem; margin-bottom: 1rem; }
+    .why b { color: var(--accent-warm); }
+    .scores { display: grid; grid-template-columns: 160px 1fr 40px; gap: 0.4rem 0.8rem; align-items: center; }
+    .scores .lab { font-weight: 600; }
+    .bar { height: 14px; background: rgba(255,255,255,0.12); border-radius: 7px; overflow: hidden; }
+    .bar > span { display: block; height: 100%; border-radius: 7px; transition: width 0.5s ease; }
+    .hl { border-radius: 4px; padding: 0 2px; font-weight: 700; }
+    .rules { margin-top: 1.3rem; font-size: 0.9rem; color: rgba(255,255,255,0.65); }
+    .rules code { color: var(--accent); }
+    .note { margin-top: 1rem; font-size: 0.92rem; color: rgba(255,255,255,0.7); }
+    .note strong { color: var(--accent); }
+</style>
+</head>
+<body>
+<div class="wrap">
+    <header>
+        <div>
+            <div class="kicker" data-i="kicker">Peldaño 2 · En vivo</div>
+            <h1 data-i="title">Clasificación de texto (NLP)</h1>
+            <div class="sub" data-i="sub">Sin modelo, sin "IA". Solo reglas y patrones — y aun así es muy útil.</div>
+        </div>
+        <div class="lang-toggle">
+            <button id="es" class="on" onclick="setLang('es')">ES</button>
+            <button id="en" onclick="setLang('en')">EN</button>
+        </div>
+    </header>
+
+    <div class="card">
+        <div class="examples" id="examples"></div>
+        <textarea id="input"></textarea>
+        <button class="pill-btn" onclick="classify()">▶ <span data-i="btn">Clasificar</span></button>
+
+        <div class="out" id="out" style="display:none">
+            <div class="verdict"><span data-i="verdictLab">Categoría:</span> <span class="badge" id="badge"></span></div>
+            <div class="why" id="why"></div>
+            <div class="scores" id="scores"></div>
+        </div>
+
+        <div class="rules" id="rulesBox"></div>
+    </div>
+    <div class="note"><strong data-i="noteHead">Determinista.</strong> <span data-i="note">Puedes ver exactamente por qué decidió lo que decidió. Auditable, barato, explicable.</span></div>
+</div>
+
+<script>
+const cats = {
+    complaint: {
+        es: 'Reclamación', en: 'Complaint', color: '#ef9a9a',
+        kw: ['queja','reclamación','reclamacion','reclamo','reclamar','error','incorrecto','mal','problema','fraude','cobro indebido','devolución','devolver','tarde','retraso','complaint','wrong','error','issue','fraud','refund','delay','late']
+    },
+    invoice: {
+        es: 'Factura', en: 'Invoice', color: '#81c784',
+        kw: ['factura','importe','iva','total','vencimiento','pago','pagar','euros','€','nº factura','n.º factura','adjunto','invoice','amount','vat','due','payment','attached']
+    },
+    other: { es: 'Otro', en: 'Other', color: '#90a4ae', kw: [] }
+};
+
+const i18n = {
+    es: {
+        kicker: 'Peldaño 2 · En vivo', title: 'Clasificación de texto (NLP)',
+        sub: 'Sin modelo, sin "IA". Solo reglas y patrones — y aun así es muy útil.',
+        btn: 'Clasificar', verdictLab: 'Categoría:',
+        noteHead: 'Determinista.', note: 'Puedes ver exactamente por qué decidió lo que decidió. Auditable, barato, explicable.',
+        because: 'Clasificado como', becauseMid: 'porque contiene:', nothing: 'Ninguna palabra clave coincidió → cae en "Otro".',
+        rules: 'Reglas (lo único que hay debajo):',
+        examples: [
+            { t: 'Factura', x: 'Estimados, adjunto la factura nº 2026-0042 por un importe de 1.284,50 € con IVA incluido. El vencimiento es el 30/06.' },
+            { t: 'Reclamación', x: 'Llevo tres semanas esperando y el cobro ha sido incorrecto. Quiero presentar una reclamación formal por este error.' },
+            { t: 'Otro', x: '¿Podríais confirmarme el horario de la oficina de Gran Vía para el lunes? Gracias.' }
+        ]
+    },
+    en: {
+        kicker: 'Rung 2 · Live', title: 'Text classification (NLP)',
+        sub: 'No model, no "AI". Just rules and patterns — and still very useful.',
+        btn: 'Classify', verdictLab: 'Category:',
+        noteHead: 'Deterministic.', note: 'You can see exactly why it decided what it decided. Auditable, cheap, explainable.',
+        because: 'Classified as', becauseMid: 'because it contains:', nothing: 'No keyword matched → falls into "Other".',
+        rules: 'Rules (the whole thing underneath):',
+        examples: [
+            { t: 'Invoice', x: 'Dear team, attached is invoice no. 2026-0042 for an amount of 1,284.50 EUR, VAT included. Payment is due on 06/30.' },
+            { t: 'Complaint', x: 'I have been waiting three weeks and the charge was wrong. I want to file a formal complaint about this error.' },
+            { t: 'Other', x: 'Could you confirm the opening hours of the Main Street branch for Monday? Thanks.' }
+        ]
+    }
+};
+
+let lang = new URLSearchParams(location.search).get('lang') === 'en' ? 'en' : 'es';
+
+function render() {
+    document.documentElement.lang = lang;
+    document.getElementById('es').classList.toggle('on', lang === 'es');
+    document.getElementById('en').classList.toggle('on', lang === 'en');
+    document.querySelectorAll('[data-i]').forEach(el => { el.textContent = i18n[lang][el.dataset.i]; });
+    const ex = document.getElementById('examples');
+    ex.innerHTML = i18n[lang].examples.map((e, idx) =>
+        `<button class="ex" onclick="pick(${idx})">${e.t}</button>`).join('');
+    document.getElementById('input').value = i18n[lang].examples[0].x;
+    const r = document.getElementById('rulesBox');
+    r.innerHTML = '<b>' + i18n[lang].rules + '</b><br>' + Object.keys(cats).filter(k => k !== 'other').map(k =>
+        `<code>${cats[k][lang]}</code> → ${cats[k].kw.slice(0, 6).join(', ')}…`).join('<br>');
+    document.getElementById('out').style.display = 'none';
+}
+
+function setLang(l) { lang = l; render(); }
+function pick(i) { document.getElementById('input').value = i18n[lang].examples[i].x; classify(); }
+
+function classify() {
+    const raw = document.getElementById('input').value;
+    const lower = raw.toLowerCase();
+    const scores = {}; const matched = {};
+    for (const k of Object.keys(cats)) {
+        if (k === 'other') continue;
+        matched[k] = cats[k].kw.filter(w => lower.includes(w.toLowerCase()));
+        scores[k] = matched[k].length;
+    }
+    let best = 'other', bestScore = 0;
+    for (const k of Object.keys(scores)) { if (scores[k] > bestScore) { bestScore = scores[k]; best = k; } }
+
+    const out = document.getElementById('out');
+    out.style.display = 'block';
+    const badge = document.getElementById('badge');
+    badge.textContent = cats[best][lang];
+    badge.style.background = cats[best].color;
+    badge.style.color = '#08121f';
+
+    const why = document.getElementById('why');
+    if (best === 'other') {
+        why.textContent = i18n[lang].nothing;
+    } else {
+        const terms = [...new Set(matched[best])];
+        why.innerHTML = `${i18n[lang].because} <b>${cats[best][lang]}</b> ${i18n[lang].becauseMid} <b>${terms.join(', ')}</b>`;
+    }
+
+    const maxScore = Math.max(1, ...Object.values(scores));
+    const sc = document.getElementById('scores');
+    sc.innerHTML = Object.keys(cats).filter(k => k !== 'other').map(k =>
+        `<div class="lab" style="color:${cats[k].color}">${cats[k][lang]}</div>
+         <div class="bar"><span style="width:${(scores[k] / maxScore) * 100}%;background:${cats[k].color}"></span></div>
+         <div>${scores[k]}</div>`).join('');
+}
+
+render();
+</script>
+</body>
+</html>
