@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Not Everything Is AI — A Field Guide</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --accent: #64b5f6;
+            --accent-warm: #ffca28;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            overflow: hidden;
+            background: #000;
+        }
+
+        .slideshow-container { position: relative; width: 100vw; height: 100vh; }
+
+        .slide {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 0.7s ease-in-out;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            /* Fallback gradient so the deck is fully usable BEFORE images exist */
+            background-color: #0e1726;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .slide.active { opacity: 1; z-index: 1; }
+
+        /* Text block hidden by default; revealed on second click */
+        .slide .content {
+            opacity: 0;
+            transform: translateY(12px);
+            transition: opacity 0.45s ease, transform 0.45s ease;
+            pointer-events: none;
+        }
+        .slide.text-visible .content {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+
+        /* The dark glass card shared by every text slide */
+        .content {
+            background: rgba(0, 0, 0, 0.62);
+            padding: clamp(1.5rem, 4vw, 3rem);
+            border-radius: 14px;
+            max-width: 90%;
+            max-height: 86vh;
+            overflow-y: auto;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            color: white;
+        }
+
+        .kicker {
+            font-size: clamp(0.9rem, 1.6vw, 1.2rem);
+            color: var(--accent);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 0.6rem;
+        }
+
+        h1 {
+            font-size: clamp(2rem, 5vw, 4rem);
+            font-weight: 700;
+            line-height: 1.15;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+        }
+
+        h2 {
+            font-size: clamp(1.5rem, 3vw, 2.6rem);
+            margin-bottom: 1.2rem;
+            border-bottom: 2px solid rgba(255,255,255,0.25);
+            padding-bottom: 0.5rem;
+        }
+
+        h3 { font-size: clamp(1.1rem, 2.2vw, 1.6rem); color: var(--accent); margin: 1rem 0 0.6rem; }
+
+        p { font-size: clamp(1rem, 1.8vw, 1.3rem); line-height: 1.7; margin-bottom: 0.9rem; color: rgba(255,255,255,0.95); }
+
+        ul, ol { margin: 0 0 1rem 1.6rem; }
+        li { font-size: clamp(1rem, 1.7vw, 1.2rem); line-height: 1.7; margin-bottom: 0.5rem; }
+
+        strong { color: var(--accent); }
+        em { color: rgba(255,255,255,0.85); }
+
+        .subtitle { font-size: clamp(1.1rem, 2vw, 1.5rem); color: rgba(255,255,255,0.85); margin-top: 1rem; }
+
+        /* Link / action button (video, kahoot, quote source) — mirrors workshop deck */
+        .pill-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255,255,255,0.15);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.35);
+            padding: 0.7rem 1.4rem;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: clamp(0.9rem, 1.4vw, 1.1rem);
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.25s ease;
+            margin-top: 1.2rem;
+        }
+        .pill-btn:hover { background: rgba(255,255,255,0.28); transform: scale(1.04); }
+        .pill-btn.kahoot { background: var(--accent-warm); color: #1a1a1a; border-color: var(--accent-warm); }
+        .pill-btn.kahoot:hover { background: #ffd454; }
+
+        /* Embed drop-zone: where you paste the Mollick image series, a screenshot, etc. */
+        .embed-zone {
+            margin: 1rem 0;
+            min-height: 30vh;
+            border: 2px dashed rgba(255,255,255,0.35);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 1.5rem;
+            background: rgba(255,255,255,0.04);
+        }
+        .embed-zone .hint { color: rgba(255,255,255,0.6); font-size: 0.95rem; line-height: 1.5; }
+        .embed-zone img { max-width: 100%; max-height: 50vh; border-radius: 8px; }
+        .embed-row { display: flex; gap: 0.8rem; flex-wrap: wrap; justify-content: center; }
+        .embed-row .embed-zone { flex: 1 1 180px; min-height: 22vh; }
+
+        /* Big pull-quote */
+        blockquote {
+            font-size: clamp(1.4rem, 3.4vw, 2.6rem);
+            line-height: 1.35;
+            font-weight: 600;
+            border-left: 5px solid var(--accent);
+            padding-left: 1.4rem;
+            margin: 0.5rem 0;
+        }
+        blockquote .cite { display: block; font-size: clamp(0.9rem, 1.6vw, 1.2rem); font-weight: 400; color: var(--accent); margin-top: 1rem; }
+
+        /* Pipeline diagram (the demo slide — works with zero images) */
+        .pipeline { display: flex; align-items: stretch; gap: 0.5rem; flex-wrap: wrap; justify-content: center; margin: 1.2rem 0; }
+        .pstep {
+            flex: 1 1 130px;
+            min-width: 120px;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.25);
+            border-radius: 10px;
+            padding: 1rem 0.8rem;
+            text-align: center;
+        }
+        .pstep .ptag { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; color: rgba(255,255,255,0.6); }
+        .pstep .pname { font-size: clamp(1rem, 1.7vw, 1.25rem); font-weight: 700; margin: 0.3rem 0; }
+        .pstep .pwhat { font-size: 0.85rem; color: rgba(255,255,255,0.8); }
+        .pstep.classic { border-color: #81c784; }
+        .pstep.classic .pname { color: #81c784; }
+        .pstep.ml { border-color: var(--accent); }
+        .pstep.ml .pname { color: var(--accent); }
+        .pstep.llm { border-color: var(--accent-warm); box-shadow: 0 0 18px rgba(255,202,40,0.25); }
+        .pstep.llm .pname { color: var(--accent-warm); }
+        .parrow { display: flex; align-items: center; font-size: 1.6rem; color: rgba(255,255,255,0.5); }
+        .punchline { text-align: center; font-size: clamp(1.1rem, 2vw, 1.5rem); margin-top: 0.8rem; }
+        .punchline strong { color: var(--accent-warm); }
+
+        /* Navigation */
+        .nav-button {
+            position: fixed; top: 50%; transform: translateY(-50%);
+            background: rgba(255,255,255,0.9); border: none;
+            width: 50px; height: 50px; border-radius: 50%;
+            font-size: 1.5rem; cursor: pointer; z-index: 100;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            display: flex; align-items: center; justify-content: center;
+            transition: all 0.25s ease;
+        }
+        .nav-button:hover { background: #fff; transform: translateY(-50%) scale(1.1); }
+        .nav-button.prev { left: 20px; }
+        .nav-button.next { right: 20px; }
+
+        .slide-counter {
+            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+            background: rgba(0,0,0,0.7); color: white;
+            padding: 0.5rem 1.5rem; border-radius: 25px; font-size: 1rem;
+            z-index: 100; backdrop-filter: blur(10px);
+        }
+        .slide-title-tag {
+            position: fixed; bottom: 20px; left: 20px;
+            background: rgba(0,0,0,0.6); color: rgba(255,255,255,0.8);
+            padding: 0.4rem 1rem; border-radius: 20px; font-size: 0.85rem;
+            z-index: 100; backdrop-filter: blur(10px);
+        }
+    </style>
+</head>
+<body>
+    <div class="slideshow-container" id="slideshow"></div>
+
+    <button class="nav-button prev" onclick="changeSlide(-1)">‹</button>
+    <button class="nav-button next" onclick="changeSlide(1)">›</button>
+    <div class="slide-title-tag" id="title-tag"></div>
+    <div class="slide-counter" id="counter">1 / 1</div>
+
+    <script>
+        /* ============================================================
+           EDIT HERE. One object = one slide.
+           - image:  filename in assets/ (optional; gradient fallback if missing)
+           - type:   'title' | 'content' | 'quote' | 'embed' | 'pipeline' | 'kahoot'
+           - tag:    small label shown bottom-left (your speaker cue / timing)
+           Image prompts for every slide live in assets/image-prompts.md
+           ============================================================ */
+        const slides = [
+            {
+                type: 'title', image: 'assets/01_title.png', tag: '0:00 · Open',
+                html: `<div class="kicker">A practical AI keynote</div>
+<h1>Not Everything Is AI</h1>
+<p class="subtitle">A 60-minute field guide to what's real, what's hype, and when you actually need a machine that "thinks".</p>`
+            },
+            {
+                type: 'embed', image: 'assets/02_mollick.png', tag: '0:01 · Hook — how fast it moved',
+                html: `<h2>"Draw an author on a plane using the wifi"</h2>
+<p>Ethan Mollick ran the <em>same</em> prompt through the best AI image model, year after year. Watch how fast the ground moved.</p>
+<div class="embed-row">
+    <div class="embed-zone"><span class="hint">▢ 2022<br>drop image</span></div>
+    <div class="embed-zone"><span class="hint">▢ 2023<br>drop image</span></div>
+    <div class="embed-zone"><span class="hint">▢ 2024<br>drop image</span></div>
+    <div class="embed-zone"><span class="hint">▢ 2025<br>drop image</span></div>
+</div>
+<p><strong>The tension:</strong> dizzyingly fast — <em>and</em> drowning in hype. Today we separate the two.</p>`
+            },
+            {
+                type: 'content', image: 'assets/03_agenda.png', tag: '0:05 · What this is',
+                html: `<h2>What we're doing in this hour</h2>
+<p>A practical tour of what "AI" actually is. The goal isn't to put AI on everything — it's to point the <em>right tool</em> at the <em>right problem</em>.</p>
+<h3>The plan</h3>
+<ul>
+    <li><strong>The honest tour</strong> — from basic Python up to ChatGPT, and why "AI" is the top of a tall ladder</li>
+    <li><strong>Kahoot</strong> — see what stuck (and have some fun)</li>
+    <li><strong>Live demo</strong> — a real pipeline where the LLM is the <em>last 5%</em>, not the whole thing</li>
+</ul>
+<p><em>Team meeting, not a lecture. Interrupt me.</em></p>`
+            },
+            {
+                type: 'content', image: 'assets/04_allornothing.png', tag: '0:08 · The thesis',
+                html: `<h2>Is it all AI? Is it all hype?</h2>
+<p>Neither. The honest answer is a <strong>ladder</strong>. Most of the value in our work sits on the <em>lower rungs</em> — the boring, reliable, auditable ones.</p>
+<p>The mistake everyone is making right now: reaching for the top rung (an agent, an LLM) for a problem a 10-line script already solved.</p>
+<p><strong>All-or-nothing is a fallacy.</strong> Let's climb the ladder so you can tell the rungs apart.</p>`
+            },
+            {
+                type: 'content', image: 'assets/05_ladder.png', tag: '0:11 · The ladder',
+                html: `<h2>The ladder — five rungs</h2>
+<ol>
+    <li><strong>Classic automation</strong> — "if this, do that" (basic Python)</li>
+    <li><strong>NLP</strong> — find patterns in text</li>
+    <li><strong>Machine Learning</strong> — learn rules from examples</li>
+    <li><strong>The Transformer</strong> — the engine under modern AI</li>
+    <li><strong>ChatGPT</strong> — what happens when you feed it the internet</li>
+</ol>
+<p><em>One image, one idea per rung. You've already used most of these without knowing the name.</em></p>`
+            },
+            {
+                type: 'content', image: 'assets/06_python.png', tag: '0:13 · Rung 1 (~90s)',
+                html: `<h2>Rung 1 — Classic automation</h2>
+<p>A computer doing <strong>exactly what you told it</strong>, fast, forever, without complaining. No "intelligence" at all.</p>
+<ul>
+    <li>Rename 1,000 files · merge 12 Excels · send the email when the report lands</li>
+    <li>100% predictable · 100% auditable · costs nothing to run</li>
+</ul>
+<p><strong>This solves more of your day than any LLM will.</strong> It just doesn't trend on LinkedIn.</p>`
+            },
+            {
+                type: 'content', image: 'assets/07_nlp.png', tag: '0:15 · Rung 2 (~90s)',
+                html: `<h2>Rung 2 — NLP (language as data)</h2>
+<p>Teaching a computer to <strong>find structure in text</strong> — without it "understanding" anything.</p>
+<ul>
+    <li>Pull the total out of 500 invoices · flag emails that mention "complaint"</li>
+    <li>Classify a document as <em>contract</em> vs <em>invoice</em> vs <em>other</em></li>
+</ul>
+<p>Still mostly rules and patterns. Reliable, cheap, explainable.</p>`
+            },
+            {
+                type: 'content', image: 'assets/08_ml.png', tag: '0:18 · Rung 3 (~2min)',
+                html: `<h2>Rung 3 — Machine Learning</h2>
+<p>Instead of writing the rules, you <strong>show it examples</strong> and it learns the rule itself.</p>
+<ul>
+    <li>"Here are 10,000 customers who churned" → predict who's next</li>
+    <li>Propensity, scoring, fraud, forecasting — the <em>workhorse</em> of analytics</li>
+</ul>
+<p>Older than you'd think (the idea is from the 1950s). <strong>Most "AI projects" are really this</strong> — and that's good: it's measurable and auditable.</p>`
+            },
+            {
+                type: 'content', image: 'assets/09_transformer.png', tag: '0:20 · Rung 4 (~90s)',
+                html: `<h2>Rung 4 — The Transformer (2017)</h2>
+<p>One architecture change — "<strong>attention</strong>" — let models weigh which words matter to which. That's the engine under every modern LLM.</p>
+<p>You don't need the maths. You need one fact: this is the part that made the next rung possible — and it's only <em>eight years old</em>.</p>`
+            },
+            {
+                type: 'embed', image: 'assets/10_internet.png', tag: '0:22 · The ChatGPT arc',
+                html: `<h2>So how is ChatGPT built? (Karpathy's arc)</h2>
+<p><strong>Step 1 — Pre-training:</strong> read essentially <em>all the public text on the internet</em> and learn to predict the next word. You get an <strong>"internet simulator"</strong> — brilliant, but it just autocompletes anything.</p>
+<div class="embed-zone"><span class="hint">▢ Optional: diagram — "internet → next-word predictor"<br>drop image / keep gradient</span></div>`
+            },
+            {
+                type: 'content', image: 'assets/11_assistant.png', tag: '0:25 · Post-training',
+                html: `<h2>Step 2 — Post-training: make it an assistant</h2>
+<p>Show it thousands of examples of <em>helpful, well-behaved answers</em>. Now the internet-simulator stops rambling and starts <strong>acting like an assistant</strong>.</p>
+<p>It hasn't learned new facts — it's been <strong>biased toward being useful</strong>.</p>`
+            },
+            {
+                type: 'embed', image: 'assets/12_rlhf.png', tag: '0:27 · RLHF + Karpathy video',
+                html: `<h2>Step 3 — RLHF: turn it into a specialist</h2>
+<p>Humans rank answers good vs bad, and the model is rewarded for the good ones. <strong>Reinforcement Learning from Human Feedback</strong> sharpens the assistant into a specialist.</p>
+<p><em>read the internet → internet simulator → assistant → specialist.</em> That's the whole arc.</p>
+<a class="pill-btn" href="https://www.youtube.com/watch?v=7xTGNNLPyMI" target="_blank">▶ Karpathy — How ChatGPT works (backup clip)</a>`
+            },
+            {
+                type: 'content', image: 'assets/13_turn.png', tag: '0:30 · The turn',
+                html: `<h2>So — when do you actually need the top rung?</h2>
+<p><strong>Rarely.</strong> The LLM is a brilliant, expensive, occasionally-hallucinating generalist. Use it where nothing else works: open-ended language, judgement, messy edge cases.</p>
+<ul>
+    <li>Need a deterministic, auditable answer? → <strong>lower rung</strong></li>
+    <li>Need to handle the unpredictable 5%? → <strong>top rung, as a scalpel</strong></li>
+</ul>
+<p>Hold that thought — the demo is exactly this.</p>`
+            },
+            {
+                type: 'kahoot', image: 'assets/14_kahoot.png', tag: '0:33 · Kahoot (10 min)',
+                html: `<div class="kicker">Energy reset</div>
+<h1>Kahoot time 🎮</h1>
+<p class="subtitle">10 questions. Some real, some ridiculous. Phones out.</p>
+<a class="pill-btn kahoot" href="https://create.kahoot.it/" target="_blank">▶ Launch Kahoot</a>
+<p style="margin-top:1rem;font-size:0.95rem;opacity:0.7">Import <code>assets/kahoot.csv</code> into the Kahoot template first.</p>`
+            },
+            {
+                type: 'content', image: 'assets/15_demo_intro.png', tag: '0:43 · Demo intro',
+                html: `<h2>The demo: automated document triage</h2>
+<p>A real pipeline that reads incoming PDFs, classifies them, applies a set of rules, and <em>only at the very end</em> calls an LLM — as a judge, to catch false positives.</p>
+<p><strong>Watch which rung does the heavy lifting.</strong></p>`
+            },
+            {
+                type: 'pipeline', image: 'assets/16_pipeline.png', tag: '0:45 · The thesis, live (~12min)',
+                html: `<h2>One problem, four rungs — in order</h2>
+<div class="pipeline">
+    <div class="pstep classic"><div class="ptag">Rung 1</div><div class="pname">PDF → text</div><div class="pwhat">extract &amp; clean</div></div>
+    <div class="parrow">→</div>
+    <div class="pstep ml"><div class="ptag">Rung 2</div><div class="pname">NLP classify</div><div class="pwhat">what kind of doc?</div></div>
+    <div class="parrow">→</div>
+    <div class="pstep classic"><div class="ptag">Rung 1</div><div class="pname">Rules engine</div><div class="pwhat">deterministic · auditable</div></div>
+    <div class="parrow">→</div>
+    <div class="pstep llm"><div class="ptag">Rung 5</div><div class="pname">LLM as judge</div><div class="pwhat">false-positive check</div></div>
+</div>
+<p class="punchline">The LLM is the <strong>last 5%</strong> — not the whole pipeline.</p>
+<div class="embed-zone"><span class="hint">▢ Optional: live mockup screenshot / screen-share goes here</span></div>`
+            },
+            {
+                type: 'quote', image: 'assets/17_laundry.png', tag: '0:57 · Close — the point',
+                html: `<blockquote>"I want AI to do my laundry and dishes so that I can do my art and writing — not for AI to do my art and writing so that I can do my laundry and dishes."
+<span class="cite">— Joanna Maciejewska</span></blockquote>
+<p style="margin-top:1.5rem">Point the machine at the boring, valuable work. Keep the judgement for us.</p>`
+            },
+            {
+                type: 'content', image: 'assets/18_close.png', tag: '1:00 · Takeaway / Q&A',
+                html: `<h2>The takeaway</h2>
+<p><strong>Pick the right rung.</strong> Keep the boring automation un-hyped and reliable, reserve AI &amp; agents for where they genuinely earn their cost, and keep all of it auditable.</p>
+<h3>Right tool, right problem. Every time.</h3>
+<p style="margin-top:1rem"><em>Questions? Now's the time.</em></p>`
+            },
+        ];
+
+        /* ---------- renderer ---------- */
+        const slideshow = document.getElementById('slideshow');
+        const counter = document.getElementById('counter');
+        const titleTag = document.getElementById('title-tag');
+        let current = 0;
+
+        slides.forEach((s, i) => {
+            const el = document.createElement('div');
+            el.className = 'slide';
+            if (s.image) {
+                el.style.backgroundImage = `url('${s.image}')`;
+            }
+            el.innerHTML = (s.type === 'pipeline' || s.type === 'quote')
+                ? `<div class="content" style="max-width:1100px">${s.html}</div>`
+                : `<div class="content">${s.html}</div>`;
+            slideshow.appendChild(el);
+        });
+
+        const slideEls = slideshow.querySelectorAll('.slide');
+        function show(i, revealText = false) {
+            slideEls[current].classList.remove('active', 'text-visible');
+            current = (i + slideEls.length) % slideEls.length;
+            slideEls[current].classList.add('active');
+            if (revealText) slideEls[current].classList.add('text-visible');
+            counter.textContent = `${current + 1} / ${slideEls.length}`;
+            titleTag.textContent = slides[current].tag || '';
+        }
+        function changeSlide(d) {
+            if (d > 0) {
+                if (!slideEls[current].classList.contains('text-visible')) {
+                    slideEls[current].classList.add('text-visible');
+                } else {
+                    show(current + 1);
+                }
+            } else {
+                show(current - 1, true); // going back: show text immediately
+            }
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft' || e.key === 'PageUp') changeSlide(-1);
+            else if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') { e.preventDefault(); changeSlide(1); }
+            else if (e.key === 'Home') show(0);
+            else if (e.key === 'End') show(slideEls.length - 1, true);
+        });
+
+        slideshow.addEventListener('click', (e) => {
+            if (!e.target.closest('a') && !e.target.closest('button')) changeSlide(1);
+        });
+
+        // swipe
+        let tsx = 0;
+        slideshow.addEventListener('touchstart', e => tsx = e.changedTouches[0].screenX);
+        slideshow.addEventListener('touchend', e => {
+            const dx = e.changedTouches[0].screenX - tsx;
+            if (dx < -50) changeSlide(1);
+            if (dx > 50) changeSlide(-1);
+        });
+
+        show(0);
+    </script>
+</body>
+</html>

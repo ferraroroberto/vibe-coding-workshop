@@ -1,0 +1,11 @@
+Question - max 120 characters,Answer 1 - max 75 characters,Answer 2 - max 75 characters,Answer 3 - max 75 characters,Answer 4 - max 75 characters,Time limit (sec),Correct answer(s) (1-4)
+When did ChatGPT first launch to the public?,2018,2020,2022,It has always existed,20,3
+What does the "GPT" in ChatGPT actually stand for?,Generative Pre-trained Transformer,General Purpose Technology,Giant Plagiarism Tool,Good Pretty Talker,20,1
+When ChatGPT writes a sentence, what is it really doing?,Predicting the next most likely word,Looking up answers in a database,Thinking like a human,Googling very fast,20,1
+Which of these tasks does NOT need any AI?,Sorting a spreadsheet,Auto-emailing a file when it arrives,Renaming 1000 files,All of the above,20,4
+In AI, what is a "hallucination"?,The model confidently makes something up,The GPU overheats,The model is tired,A premium feature,20,1
+What is an AI "agent"?,An LLM that can use tools and take actions,A secret-service spy,Just a faster chatbot,James Bond,20,1
+RLHF - the step that makes models helpful - stands for...?,Reinforcement Learning from Human Feedback,Really Long Hours For-engineers,"Random Letters, Honestly Funny",Rapid Learning Hardly Functional,20,1
+Which idea is the OLDEST?,The "Machine Learning" concept (1950s),The Transformer (2017),The smartphone,Python,30,1
+Joanna Maciejewska wanted AI to do her ___ so she could do art.,Laundry and dishes,Taxes and email,Meetings and reports,Cooking and cleaning,20,1
+Roughly how much text did GPT read during training?,Basically all public text on the internet,One big encyclopedia,Wikipedia only,Your personal emails,20,1
