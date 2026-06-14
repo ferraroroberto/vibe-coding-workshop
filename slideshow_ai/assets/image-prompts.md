@@ -8,6 +8,9 @@ Paste each prompt into your image model. Save the result under `assets/` with th
 
 ---
 
+### `00_menti.jpg` — Menti warm-up (opening slide)
+A single small yellow goggle-eyed creature in blue denim overalls and round goggles, beaming with a wide toothy grin. In one open hand it holds up a glowing pink human brain hovering above its palm; in the other it carries a small red toolbox packed with a wrench and brass gears. Plain soft blue studio-gradient background, clean and uncluttered. Bright cheerful Pixar-quality 3D render, soft cinematic lighting, full-bleed 16:9. (Carries the "right tool for the brain-work" idea that opens the deck, beside the Mentimeter warm-up.)
+
 ### `01_title.png` — Title / open
 A large crowd of small yellow goggle-eyed creatures in blue denim overalls packed tightly inside a bright modern open-plan office with floor-to-ceiling windows. All of them look upward in awe and open-mouthed astonishment at a giant glowing question mark made of crackling blue and yellow electric light beams. One creature in the foreground holds a small hand-lettered sign reading "AI". Chaotic energy, mix of wide eyes and dropped jaws, warm office ambient light plus dramatic glow from the question mark. Pixar-quality 3D render, full-bleed 16:9.
 

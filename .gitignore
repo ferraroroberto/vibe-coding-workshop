@@ -26,3 +26,6 @@ slideshow_ai/assets/otters/
 
 # slideshow decks: exported PDFs are build artifacts, regenerated from the HTML
 slideshow*.pdf
+
+# slideshow_ai: presenter-local Kahoot working files (filled template + selected-question exports)
+slideshow_ai/kahoot/final/
