@@ -26,8 +26,6 @@ def run(df, filters, config):
     # Extract config
     source_path = config.get('source_path')
     source_spec = config.get('source_path_spec', {})
-    excel_spec = config.get('excel_interpreter_spec', {})
-    
     if not source_path:
         st.error("⚠️ No source_path configured in config.json")
         return
