@@ -1,67 +1,50 @@
 """
 Menu / Page Registry
 ====================
-Central registry of every demo page.  Each entry maps a human-readable
-label and short description to the module that implements the demo.
-
-Adding a new demo is as simple as:
-1. Create ``pages/my_demo.py`` with a ``render()`` function.
-2. Import it here and append an entry to ``PAGES``.
+Metadata registry used by the home page to display description cards for each
+demo.  Routing is handled entirely by Streamlit's multipage auto-discovery of
+the ``pages/`` directory — adding a new demo requires only creating
+``pages/my_demo.py``.  Adding an entry here is optional and controls only
+whether a card appears on the home page.
 """
 
 import streamlit as st
 
 # ---------------------------------------------------------------------------
-# Import every demo module (each exposes a ``render()`` callable)
-# ---------------------------------------------------------------------------
-from pages import (
-    crud_demo,
-    data_input,
-    file_upload,
-    process_runner,
-    state_management,
-    visualization,
-)
-
-# ---------------------------------------------------------------------------
-# Page registry – order here = order in the sidebar
+# Page registry – drives the home-page description cards only.
+# Order here = order of cards; sidebar order comes from Streamlit's
+# filename-based auto-discovery of the ``pages/`` directory.
 # ---------------------------------------------------------------------------
 PAGES: list[dict] = [
     {
         "label": "Data Input",
         "icon": "⌨",
         "description": "Text fields, sliders, selects, forms with submit buttons.",
-        "module": data_input,
     },
     {
         "label": "Visualization",
         "icon": "📊",
         "description": "Tables, editable dataframes, line/bar/scatter charts, KPI metrics.",
-        "module": visualization,
     },
     {
         "label": "CRUD Operations",
         "icon": "🗂",
         "description": "Create, read, update and delete records from an in-memory dataset.",
-        "module": crud_demo,
     },
     {
         "label": "File Handling",
         "icon": "📁",
         "description": "Upload CSV / TXT / JSON files and download generated files.",
-        "module": file_upload,
     },
     {
         "label": "Process Runner",
         "icon": "💻",
         "description": "Execute a long-running task with live logs, progress bars and status.",
-        "module": process_runner,
     },
     {
         "label": "State Management",
         "icon": "🧠",
         "description": "Demonstrate st.session_state and cross-module shared state.",
-        "module": state_management,
     },
 ]
 
