@@ -12,7 +12,6 @@ Usage:
 import csv
 import json
 import logging
-import os
 import random
 
 log = logging.getLogger(__name__)

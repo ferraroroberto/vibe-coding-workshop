@@ -27,8 +27,6 @@ def run(df, filters, config):
     # Extract config
     phase_two_path = config.get('phase_two_path')
     phase_two_spec = config.get('phase_two_spec', {})
-    excel_spec = config.get('excel_interpreter_spec', {})
-    
     if not phase_two_path:
         st.error("⚠️ No phase_two_path configured in config.json")
         return df
