@@ -23,3 +23,6 @@ slideshow_ai/assets/news/
 # slideshow_ai: third-party Mollick "otter" benchmark images (not redistributed)
 # slide 2 references assets/otters/otters.png and degrades to a hint if absent
 slideshow_ai/assets/otters/
+
+# slideshow decks: exported PDFs are build artifacts, regenerated from the HTML
+slideshow*.pdf

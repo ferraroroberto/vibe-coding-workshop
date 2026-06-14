@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Paso 1 — El tokenizador, en vivo</title>
+<style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root { --accent: #64b5f6; --accent-warm: #ffca28; }
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        background: radial-gradient(circle at 30% 0%, #16233c 0%, #0e1726 60%, #060b14 100%);
+        color: #fff; min-height: 100vh; padding: clamp(1rem, 3vw, 2.5rem); position: relative;
+    }
+    /* the slide we came from, faint, so the demo feels like a continuation of the deck */
+    body::before {
+        content: ""; position: fixed; inset: 0; z-index: 0; pointer-events: none;
+        background: url("../assets/11_tokenizer.png") center / cover no-repeat; opacity: 0.5;
+    }
+    .wrap { max-width: 1050px; margin: 0 auto; position: relative; z-index: 1; }
+    header { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; margin-bottom: 1.4rem; }
+    .kicker { color: var(--accent); font-weight: 600; text-transform: uppercase; letter-spacing: 2px; font-size: 0.85rem; }
+    h1 { font-size: clamp(1.5rem, 3.2vw, 2.3rem); line-height: 1.15; }
+    .sub { color: rgba(255,255,255,0.7); margin-top: 0.4rem; font-size: clamp(0.95rem, 1.6vw, 1.15rem); }
+    .lang-toggle button { background: rgba(255,255,255,0.12); color: #fff; border: 1px solid rgba(255,255,255,0.3); border-radius: 20px; padding: 0.35rem 0.9rem; cursor: pointer; font-weight: 600; font-size: 0.85rem; }
+    .lang-toggle button.on { background: var(--accent); color: #08121f; border-color: var(--accent); }
+    .card { background: rgba(0,0,0,0.45); border: 1px solid rgba(255,255,255,0.16); border-radius: 14px; padding: 1.5rem; backdrop-filter: blur(8px); position: relative; }
+    .how-btn { margin-left: auto; order: 99; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.3); color: #fff; border-radius: 18px; padding: 0.45rem 1.05rem; cursor: pointer; font-weight: 600; font-size: 0.82rem; }
+    .how-btn:hover { background: rgba(255,255,255,0.2); }
+    .how-btn.on { background: var(--accent); color: #08121f; border-color: var(--accent); }
+    .row { display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; margin-bottom: 0.9rem; }
+    .row .label { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; color: rgba(255,255,255,0.5); margin-right: 0.2rem; }
+    .chips button { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.25); color: #fff; border-radius: 18px; padding: 0.45rem 1.05rem; cursor: pointer; font-size: 0.9rem; }
+    .chips button:hover { background: rgba(255,255,255,0.2); }
+    textarea {
+        width: 100%; min-height: 4.5rem; resize: vertical; color: #fff;
+        background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.14);
+        border-left: 3px solid var(--accent); border-radius: 8px; padding: 0.7rem 0.95rem;
+        font-size: 1.05rem; font-family: inherit; margin-bottom: 0.9rem;
+    }
+    textarea:focus { outline: none; border-color: var(--accent); }
+    .seg { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 1.5px; color: rgba(255,255,255,0.45); margin-bottom: 0.4rem; }
+    .toggle { display: flex; gap: 0.4rem; margin-left: auto; }
+    .toggle button { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.25); color: #fff; border-radius: 14px; padding: 0.3rem 0.8rem; cursor: pointer; font-size: 0.82rem; }
+    .toggle button.on { background: var(--accent); color: #08121f; border-color: var(--accent); font-weight: 600; }
+    .tokens {
+        background: rgba(0,0,0,0.35); border: 1px solid rgba(255,255,255,0.12); border-radius: 10px;
+        padding: 0.9rem 1rem; min-height: 6rem; line-height: 2.1;
+        font-family: 'SF Mono', 'Consolas', monospace; font-size: 1rem;
+    }
+    .tok { border-radius: 4px; padding: 0.12em 0.05em; white-space: pre; }
+    .tok .sp { opacity: 0.35; }
+    .tokens.ids { line-height: 1.9; }
+    .id { display: inline-block; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.18); border-radius: 5px; padding: 0.05em 0.45em; margin: 0.12em 0.18em; font-size: 0.9rem; color: rgba(255,255,255,0.9); }
+    .counts { display: flex; gap: 1.4rem; margin-top: 0.9rem; flex-wrap: wrap; }
+    .count { display: flex; align-items: baseline; gap: 0.45rem; }
+    .count .n { font-size: 1.7rem; font-weight: 700; }
+    .count .n.tok { color: var(--accent-warm); }
+    .count .n.ch { color: var(--accent); }
+    .count .cl { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; color: rgba(255,255,255,0.55); }
+    .note { margin-top: 1.2rem; font-size: 0.92rem; color: rgba(255,255,255,0.7); }
+    .note strong { color: var(--accent); }
+    .how { margin-top: 1.2rem; display: none; }
+    .how.show { display: block; }
+    .how h3 { font-size: 1.05rem; color: var(--accent); margin-bottom: 0.7rem; }
+    .how ol { margin: 0 0 0 1.2rem; }
+    .how li { font-size: 0.96rem; line-height: 1.55; margin-bottom: 0.55rem; color: rgba(255,255,255,0.88); }
+    .how li b { color: var(--accent-warm); }
+    .how .foot { margin-top: 0.8rem; font-size: 0.95rem; color: rgba(255,255,255,0.8); }
+    .how .foot b { color: var(--accent-warm); }
+</style>
+</head>
+<body>
+<div class="wrap">
+    <header>
+        <div>
+            <div class="kicker" data-i="kicker">Paso 1 · En vivo</div>
+            <h1 data-i="title">El tokenizador</h1>
+            <div class="sub" data-i="sub">El modelo nunca ve palabras — solo trozos. Esto es lo primero que le pasa a tu texto.</div>
+        </div>
+        <div class="lang-toggle">
+            <button id="es" class="on" onclick="setLang('es')">ES</button>
+            <button id="en" onclick="setLang('en')">EN</button>
+        </div>
+    </header>
+
+    <div class="card">
+        <div class="row chips" id="chips"><span class="label" data-i="exLbl">Ejemplos</span><button class="how-btn" id="howBtn" onclick="toggleHow()">¿Cómo funciona?</button></div>
+        <textarea id="input" spellcheck="false"></textarea>
+
+        <div class="row">
+            <span class="seg" id="viewLbl" data-i="viewLbl">Vista</span>
+            <div class="toggle" id="toggle">
+                <button class="on" data-view="tok" onclick="setView('tok')" data-i="vTok">Tokens</button>
+                <button data-view="ids" onclick="setView('ids')" data-i="vIds">IDs</button>
+            </div>
+        </div>
+        <div class="tokens" id="tokens"></div>
+
+        <div class="counts">
+            <div class="count"><span class="n tok" id="cTok">0</span><span class="cl" data-i="tokLbl">tokens</span></div>
+            <div class="count"><span class="n ch" id="cCh">0</span><span class="cl" data-i="chLbl">caracteres</span></div>
+        </div>
+
+        <div class="note"><strong data-i="noteHead">Tokens, no palabras.</strong> <span data-i="note">Las palabras frecuentes son un solo token; las raras o largas se parten en varias piezas. Hasta los espacios cuentan.</span></div>
+    </div>
+
+    <div class="card how" id="how" style="margin-top:1.2rem"></div>
+</div>
+
+<script>
+// Same example prompts that flow through the rest of the deep-dive (base → assistant → specialist).
+const EXAMPLES = {
+    es: [
+        { chip: '¿Cuánto es 2+2?', text: '¿Cuánto es 2+2?' },
+        { chip: 'La capital de Francia es', text: 'La capital de Francia es' },
+        { chip: 'Email a mi jefe…', text: 'Escribe un email a mi jefe pidiendo un aumento' },
+        { chip: 'Palabra rara', text: 'electroencefalografista' }
+    ],
+    en: [
+        { chip: 'What is 2+2?', text: 'What is 2+2?' },
+        { chip: 'The capital of France is', text: 'The capital of France is' },
+        { chip: 'Email to my boss…', text: 'Write an email to my boss asking for a raise' },
+        { chip: 'A rare word', text: 'antidisestablishmentarianism' }
+    ]
+};
+
+const i18n = {
+    es: {
+        kicker: 'Paso 1 · En vivo', title: 'El tokenizador',
+        sub: 'El modelo nunca ve palabras — solo trozos. Esto es lo primero que le pasa a tu texto.',
+        exLbl: 'Ejemplos', viewLbl: 'Vista', vTok: 'Tokens', vIds: 'IDs', howBtn: '¿Cómo funciona?', howHide: 'Ocultar',
+        tokLbl: 'tokens', chLbl: 'caracteres',
+        noteHead: 'Tokens, no palabras.',
+        note: 'Las palabras frecuentes son un solo token; las raras o largas se parten en varias piezas. Hasta los espacios cuentan.',
+        howTitle: 'Qué está pasando por dentro',
+        howSteps: [
+            'El modelo no entiende ni letras ni palabras: trabaja con <b>tokens</b>, trozos frecuentes de texto aprendidos de los datos.',
+            'Las palabras comunes son <b>un solo token</b>; las raras o largas se parten en varias piezas. Hasta los <b>espacios</b> forman parte del token.',
+            'Cada token es en realidad un <b>número (ID)</b>. El modelo sólo ve esa secuencia de números — nunca el texto original.',
+            'Por eso el coste y el límite de contexto se miden <b>en tokens</b>, no en palabras, y una palabra rara puede costar varios tokens.'
+        ],
+        howFoot: 'Escribe lo que quieras arriba y mira cómo sube y baja el recuento. Esta secuencia de tokens es <b>la materia prima</b> que entra en el modelo base del paso siguiente.'
+    },
+    en: {
+        kicker: 'Step 1 · Live', title: 'The tokenizer',
+        sub: 'The model never sees words — only chunks. This is the first thing that happens to your text.',
+        exLbl: 'Examples', viewLbl: 'View', vTok: 'Tokens', vIds: 'IDs', howBtn: 'How it works?', howHide: 'Hide',
+        tokLbl: 'tokens', chLbl: 'characters',
+        noteHead: 'Tokens, not words.',
+        note: 'Frequent words are a single token; rare or long ones split into several pieces. Even spaces count.',
+        howTitle: 'What\'s happening under the hood',
+        howSteps: [
+            'The model understands neither letters nor words: it works with <b>tokens</b> — frequent chunks of text learned from the data.',
+            'Common words are <b>a single token</b>; rare or long ones split into several pieces. Even the <b>spaces</b> are part of the token.',
+            'Each token is really a <b>number (ID)</b>. The model only ever sees that sequence of numbers — never the original text.',
+            'That\'s why cost and the context limit are measured <b>in tokens</b>, not words, and a rare word can cost several tokens.'
+        ],
+        howFoot: 'Type anything above and watch the count rise and fall. This token sequence is <b>the raw material</b> that feeds into the base model in the next step.'
+    }
+};
+
+const COLORS = [
+    'rgba(100,181,246,0.40)', 'rgba(255,202,40,0.40)', 'rgba(129,199,132,0.40)',
+    'rgba(186,104,200,0.40)', 'rgba(255,138,101,0.40)'
+];
+
+let lang = new URLSearchParams(location.search).get('lang') === 'en' ? 'en' : 'es';
+let view = 'tok';
+let howOpen = false;
+
+// Approximate GPT-style (BPE) tokenization for the demo: a leading space binds to the
+// next word, punctuation stands alone, and long words break into sub-word pieces.
+function tokenize(text) {
+    const pieces = text.match(/\n| ?[\p{L}\p{N}]+| ?[^\s\p{L}\p{N}]/gu) || [];
+    const toks = [];
+    for (const p of pieces) {
+        if (p === '\n') { toks.push('\n'); continue; }
+        const lead = p.startsWith(' ') ? ' ' : '';
+        const core = lead ? p.slice(1) : p;
+        if (/^[\p{L}]+$/u.test(core) && core.length > 6) {
+            let first = true;
+            for (let i = 0; i < core.length; i += 4) {
+                toks.push((first ? lead : '') + core.slice(i, i + 4));
+                first = false;
+            }
+        } else {
+            toks.push(p);
+        }
+    }
+    return toks;
+}
+
+// Deterministic pseudo-ID per token string, so the same token always shows the same number.
+function tokenId(t) {
+    let h = 5381;
+    for (let i = 0; i < t.length; i++) h = ((h << 5) + h + t.charCodeAt(i)) >>> 0;
+    return h % 99000 + 1000;
+}
+
+function escapeHtml(s) { return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+
+function renderChips() {
+    const box = document.getElementById('chips');
+    box.querySelectorAll('button:not(#howBtn)').forEach(b => b.remove());
+    EXAMPLES[lang].forEach((e) => {
+        const b = document.createElement('button');
+        b.textContent = e.chip;
+        b.onclick = () => { document.getElementById('input').value = e.text; render(); };
+        box.appendChild(b);
+    });
+}
+
+function renderTokens() {
+    const text = document.getElementById('input').value;
+    const toks = tokenize(text);
+    const box = document.getElementById('tokens');
+    box.classList.toggle('ids', view === 'ids');
+
+    if (view === 'ids') {
+        box.innerHTML = toks.map(t => `<span class="id">${tokenId(t)}</span>`).join('');
+    } else {
+        box.innerHTML = toks.map((t, i) => {
+            const bg = COLORS[i % COLORS.length];
+            if (t === '\n') return `<span class="tok" style="background:${bg}">⏎\n</span>`;
+            const disp = escapeHtml(t).replace(/ /g, '<span class="sp">·</span>');
+            return `<span class="tok" style="background:${bg}">${disp}</span>`;
+        }).join('');
+    }
+    document.getElementById('cTok').textContent = toks.length;
+    document.getElementById('cCh').textContent = [...text].length;
+}
+
+function applyHow() {
+    const hb = document.getElementById('howBtn');
+    hb.textContent = howOpen ? i18n[lang].howHide : i18n[lang].howBtn;
+    hb.classList.toggle('on', howOpen);
+    document.getElementById('how').classList.toggle('show', howOpen);
+}
+function toggleHow() { howOpen = !howOpen; applyHow(); }
+
+function renderHow() {
+    const t = i18n[lang];
+    document.getElementById('how').innerHTML =
+        `<h3>${t.howTitle}</h3><ol>` +
+        t.howSteps.map(s => `<li>${s}</li>`).join('') +
+        `</ol><div class="foot">${t.howFoot}</div>`;
+}
+
+function render() {
+    document.documentElement.lang = lang;
+    document.getElementById('es').classList.toggle('on', lang === 'es');
+    document.getElementById('en').classList.toggle('on', lang === 'en');
+    document.querySelectorAll('[data-i]').forEach(el => { el.textContent = i18n[lang][el.dataset.i]; });
+    document.querySelectorAll('#toggle button').forEach(b => b.classList.toggle('on', b.dataset.view === view));
+    renderChips();
+    renderTokens();
+    renderHow();
+    applyHow();
+}
+
+function setLang(l) {
+    // keep an edited prompt; only swap the default example when the box still holds one
+    const cur = document.getElementById('input').value.trim();
+    const wasExample = EXAMPLES[lang].some(e => e.text === cur) || cur === '';
+    lang = l;
+    if (wasExample) document.getElementById('input').value = EXAMPLES[lang][0].text;
+    render();
+}
+function setView(v) { view = v; render(); }
+
+document.getElementById('input').addEventListener('input', renderTokens);
+document.getElementById('input').value = EXAMPLES[lang][0].text;
+document.addEventListener('keydown', (e) => {
+    if ((e.key === 'b' || e.key === 'B') && !/^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement.tagName)) toggleHow();
+});
+
+render();
+</script>
+</body>
+</html>

@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Paso 2 — El simulador de Internet (modelo base), en vivo</title>
+<style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root { --accent: #64b5f6; --accent-warm: #ffca28; }
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        background: radial-gradient(circle at 30% 0%, #16233c 0%, #0e1726 60%, #060b14 100%);
+        color: #fff; min-height: 100vh; padding: clamp(1rem, 3vw, 2.5rem); position: relative;
+    }
+    /* the slide we came from, faint, so the demo feels like a continuation of the deck */
+    body::before {
+        content: ""; position: fixed; inset: 0; z-index: 0; pointer-events: none;
+        background: url("../assets/12_internet.png") center / cover no-repeat; opacity: 0.5;
+    }
+    .wrap { max-width: 1050px; margin: 0 auto; position: relative; z-index: 1; }
+    header { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; margin-bottom: 1.4rem; }
+    .kicker { color: var(--accent); font-weight: 600; text-transform: uppercase; letter-spacing: 2px; font-size: 0.85rem; }
+    h1 { font-size: clamp(1.5rem, 3.2vw, 2.3rem); line-height: 1.15; }
+    .sub { color: rgba(255,255,255,0.7); margin-top: 0.4rem; font-size: clamp(0.95rem, 1.6vw, 1.15rem); }
+    .lang-toggle button { background: rgba(255,255,255,0.12); color: #fff; border: 1px solid rgba(255,255,255,0.3); border-radius: 20px; padding: 0.35rem 0.9rem; cursor: pointer; font-weight: 600; font-size: 0.85rem; }
+    .lang-toggle button.on { background: var(--accent); color: #08121f; border-color: var(--accent); }
+    .card { background: rgba(0,0,0,0.45); border: 1px solid rgba(255,255,255,0.16); border-radius: 14px; padding: 1.5rem; backdrop-filter: blur(8px); position: relative; }
+    .how-btn { margin-left: auto; order: 99; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.3); color: #fff; border-radius: 18px; padding: 0.45rem 1.05rem; cursor: pointer; font-weight: 600; font-size: 0.82rem; }
+    .how-btn:hover { background: rgba(255,255,255,0.2); }
+    .how-btn.on { background: var(--accent); color: #08121f; border-color: var(--accent); }
+    .row { display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; margin-bottom: 0.9rem; }
+    .row .label { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; color: rgba(255,255,255,0.5); margin-right: 0.2rem; }
+    .chips button { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.25); color: #fff; border-radius: 18px; padding: 0.45rem 1.05rem; cursor: pointer; font-size: 0.9rem; }
+    .chips button.on { background: rgba(255,255,255,0.92); color: #1a1a1a; border-color: #fff; font-weight: 600; }
+    .prompt-box { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.14); border-left: 3px solid var(--accent); border-radius: 8px; padding: 0.7rem 0.95rem; margin-bottom: 0.7rem; }
+    .prompt-box .tag { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 1.5px; color: rgba(255,255,255,0.45); display: block; margin-bottom: 0.2rem; }
+    .prompt-box .txt { font-size: 1.05rem; }
+    .out-tag { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 0.35rem; display: flex; align-items: center; gap: 0.5rem; }
+    .out-tag .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent-warm); }
+    .output {
+        white-space: pre-wrap; word-break: break-word; font-family: 'SF Mono', 'Consolas', monospace;
+        font-size: 0.98rem; line-height: 1.55; min-height: 11.5rem; background: rgba(0,0,0,0.35);
+        border: 1px solid rgba(255,255,255,0.12); border-radius: 10px; padding: 1rem 1.1rem;
+    }
+    .output .tok.just { background: rgba(255,202,40,0.45); border-radius: 3px; }
+    .cursor { display: inline-block; width: 0.6ch; background: var(--accent-warm); animation: blink 1s steps(1) infinite; }
+    @keyframes blink { 50% { opacity: 0; } }
+    .replay { margin-top: 0.9rem; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.25); color: #fff; border-radius: 18px; padding: 0.45rem 1.1rem; cursor: pointer; font-size: 0.88rem; }
+    .replay:hover { background: rgba(255,255,255,0.18); }
+    .note { margin-top: 1.2rem; font-size: 0.92rem; color: rgba(255,255,255,0.7); }
+    .note strong { color: var(--accent); }
+    .how { margin-top: 1.2rem; display: none; }
+    .how.show { display: block; }
+    .how h3 { font-size: 1.05rem; color: var(--accent); margin-bottom: 0.7rem; }
+    .how ol { margin: 0 0 0 1.2rem; }
+    .how li { font-size: 0.96rem; line-height: 1.55; margin-bottom: 0.55rem; color: rgba(255,255,255,0.88); }
+    .how li b { color: var(--accent-warm); }
+    .how .foot { margin-top: 0.8rem; font-size: 0.95rem; color: rgba(255,255,255,0.8); }
+    .how .foot b { color: var(--accent-warm); }
+</style>
+</head>
+<body>
+<div class="wrap">
+    <header>
+        <div>
+            <div class="kicker" data-i="kicker">Paso 2 · En vivo</div>
+            <h1 data-i="title">El simulador de Internet</h1>
+            <div class="sub" data-i="sub">El modelo base, recién salido del pre-entrenamiento. Aún no sabe "responder".</div>
+        </div>
+        <div class="lang-toggle">
+            <button id="es" class="on" onclick="setLang('es')">ES</button>
+            <button id="en" onclick="setLang('en')">EN</button>
+        </div>
+    </header>
+
+    <div class="card">
+        <div class="row chips" id="chips"><span class="label" data-i="promptLbl">Prompt</span><button class="how-btn" id="howBtn" onclick="toggleHow()">¿Cómo funciona?</button></div>
+
+        <div class="prompt-box">
+            <span class="tag" data-i="youTag">Tú escribes</span>
+            <span class="txt" id="promptTxt"></span>
+        </div>
+        <div class="out-tag" id="outTag"><span class="dot"></span><span id="outTagTxt"></span></div>
+        <div class="output" id="output"></div>
+        <button class="replay" onclick="run()" data-i="replay">↻ Volver a generar</button>
+
+        <div class="note"><strong data-i="noteHead">Predice el siguiente token. Eso es todo.</strong> <span data-i="note">El modelo base no "responde" — continúa el texto como lo haría una página web cualquiera. En el próximo paso lo convertimos en asistente.</span></div>
+    </div>
+
+    <div class="card how" id="how" style="margin-top:1.2rem"></div>
+</div>
+
+<script>
+// The base model has only ONE behaviour: continue the text like a web page.
+// Same prompts flow through every step of the deep-dive (tokens → base → assistant → specialist).
+const PROMPTS = {
+    es: [
+        {
+            id: 'math', chip: '¿Cuánto es 2+2?', prompt: '¿Cuánto es 2+2?',
+            base: '¿Cuánto es 2+2? - Foro de ayuda con los deberes\n\nPreguntado hace 3 años · Visto 41 mil veces\n\n12 ▲  Me lío siempre con esto, ¿alguien me lo explica? Mostrad el procedimiento, por favor.\n\n8 respuestas — Ordenadas por: mayor puntuación\n\nRelacionado:  ¿Cuánto es 2+3?  ·  ¿Cuánto es 2×2?  ·  ¿Cuánto es 2-2?\n\n¡Suscríbete a nuestro boletín de trucos de mates!'
+        },
+        {
+            id: 'capital', chip: 'La capital de Francia es', prompt: 'La capital de Francia es',
+            base: 'La capital de Francia es ________.\n\nEjercicio 4. Completa los espacios en blanco.\n  1. La capital de Francia es ______.\n  2. La capital de Alemania es ______.\n  3. La capital de España es ______.\n\n(Soluciones en la página 92.)'
+        },
+        {
+            id: 'email', chip: 'Escribe un email a mi jefe…', prompt: 'Escribe un email a mi jefe pidiendo un aumento',
+            base: 'Escribe un email a tu jefe pidiendo un aumento — 7 plantillas probadas (2024)\n\nInicio › Carrera › Salario\n\nEn este post aprenderás exactamente cómo pedir un aumento por email, con plantillas para copiar y pegar que sí funcionan. Índice:\n  1. Antes de empezar\n  2. Las 7 plantillas\n  3. Errores comunes que debes evitar\n\nEsta página puede contener enlaces de afiliados.'
+        }
+    ],
+    en: [
+        {
+            id: 'math', chip: 'What is 2+2?', prompt: 'What is 2+2?',
+            base: 'What is 2+2? - Homework Help Forum\n\nAsked 3 years ago · Viewed 41k times\n\n12 ▲  I keep getting confused by this, can someone explain? Please show your work.\n\n8 Answers — Sorted by: Highest score\n\nRelated:  What is 2+3?  ·  What is 2×2?  ·  What is 2-2?\n\nSubscribe to our newsletter for daily math tips!'
+        },
+        {
+            id: 'capital', chip: 'The capital of France is', prompt: 'The capital of France is',
+            base: 'The capital of France is ________.\n\nExercise 4. Fill in the blanks.\n  1. The capital of France is ______.\n  2. The capital of Germany is ______.\n  3. The capital of Spain is ______.\n\n(Answers on page 92.)'
+        },
+        {
+            id: 'email', chip: 'Write an email to my boss…', prompt: 'Write an email to my boss asking for a raise',
+            base: 'Write an email to my boss asking for a raise — 7 proven templates (2024)\n\nHome › Career › Salary\n\nIn this post you\'ll learn exactly how to ask for a raise over email, with copy-paste templates that actually work. Table of contents:\n  1. Before you start\n  2. The 7 templates\n  3. Common mistakes to avoid\n\nThis page may contain affiliate links.'
+        }
+    ]
+};
+
+const i18n = {
+    es: {
+        kicker: 'Paso 2 · En vivo', title: 'El simulador de Internet',
+        sub: 'El modelo base, recién salido del pre-entrenamiento. Aún no sabe "responder".',
+        promptLbl: 'Prompt', youTag: 'Tú escribes', replay: '↻ Volver a generar', howBtn: '¿Cómo funciona?', howHide: 'Ocultar',
+        outBase: 'Modelo base — continúa el texto',
+        noteHead: 'Predice el siguiente token. Eso es todo.',
+        note: 'El modelo base no "responde" — continúa el texto como lo haría una página web cualquiera. En el próximo paso lo convertimos en asistente.',
+        howTitle: 'Qué está pasando por dentro',
+        howSteps: [
+            '<b>Pre-entrenamiento:</b> el modelo leyó casi todo el texto público de Internet y aprendió una sola cosa — <b>predecir el siguiente token</b>. No memoriza respuestas; memoriza cómo continúa el texto.',
+            'Por eso un modelo base ante "¿Cuánto es 2+2?" no piensa "4": piensa "¿en qué tipo de página aparece esta frase?" — y reproduce un foro, un examen, un blog. Es <b>autocompletado con esteroides</b>.',
+            'No hay ninguna intención, ningún "asistente" dentro. Sólo la distribución de cómo sigue el texto en Internet.',
+            'Eso es exactamente lo que arregla el <b>siguiente paso</b> (post-entrenamiento): sin cambiar casi los pesos, sesgamos al mismo motor para que continúe como un asistente.'
+        ],
+        howFoot: 'Cambia de prompt arriba y verás siempre lo mismo: <b>continúa la página</b>, nunca responde. Esa es la materia prima sobre la que se construye todo lo demás.'
+    },
+    en: {
+        kicker: 'Step 2 · Live', title: 'The Internet simulator',
+        sub: 'The base model, fresh out of pre-training. It can\'t "answer" yet.',
+        promptLbl: 'Prompt', youTag: 'You type', replay: '↻ Generate again', howBtn: 'How it works?', howHide: 'Hide',
+        outBase: 'Base model — continues the text',
+        noteHead: 'It predicts the next token. That\'s all.',
+        note: 'The base model doesn\'t "answer" — it continues the text the way some random web page would. In the next step we turn it into an assistant.',
+        howTitle: 'What\'s happening under the hood',
+        howSteps: [
+            '<b>Pre-training:</b> the model read almost all the public text on the internet and learned exactly one thing — <b>predict the next token</b>. It doesn\'t memorize answers; it memorizes how text continues.',
+            'So a base model facing "What is 2+2?" doesn\'t think "4" — it thinks "what kind of page does this sentence appear on?" and reproduces a forum, a worksheet, a blog. It\'s <b>autocomplete on steroids</b>.',
+            'There is no intent, no "assistant" inside. Only the distribution of how text continues on the internet.',
+            'That is exactly what the <b>next step</b> (post-training) fixes: barely touching the weights, we bias the same engine to continue like an assistant.'
+        ],
+        howFoot: 'Switch prompts above and you\'ll always see the same thing: it <b>continues the page</b>, never answers. That raw material is what everything else is built on.'
+    }
+};
+
+let lang = new URLSearchParams(location.search).get('lang') === 'en' ? 'en' : 'es';
+let promptIdx = 0;
+let timer = null;
+let howOpen = false;
+
+function current() { return PROMPTS[lang][promptIdx]; }
+
+function renderChips() {
+    const box = document.getElementById('chips');
+    box.querySelectorAll('button:not(#howBtn)').forEach(b => b.remove());
+    PROMPTS[lang].forEach((p, i) => {
+        const b = document.createElement('button');
+        b.className = i === promptIdx ? 'on' : '';
+        b.textContent = p.chip;
+        b.onclick = () => { promptIdx = i; renderChips(); run(); };
+        box.appendChild(b);
+    });
+}
+
+function tokenize(text) {
+    // whitespace runs and non-whitespace runs become separate "tokens"
+    return text.match(/\s+|[^\s]+/g) || [];
+}
+
+function run() {
+    if (timer) { clearInterval(timer); timer = null; }
+    const p = current();
+    document.getElementById('promptTxt').textContent = p.prompt;
+
+    const out = document.getElementById('output');
+    out.innerHTML = '';
+    document.getElementById('outTagTxt').textContent = i18n[lang].outBase;
+
+    const toks = tokenize(p.base);
+    let i = 0;
+    let prevTok = null;
+    const cursor = document.createElement('span');
+    cursor.className = 'cursor';
+    cursor.textContent = ' ';
+    out.appendChild(cursor);
+
+    timer = setInterval(() => {
+        if (i >= toks.length) {
+            clearInterval(timer); timer = null;
+            if (prevTok) prevTok.classList.remove('just');
+            cursor.remove();
+            return;
+        }
+        const span = document.createElement('span');
+        span.className = 'tok';
+        span.textContent = toks[i];
+        if (/^\s+$/.test(toks[i])) span.classList.remove('just'); else span.classList.add('just');
+        if (prevTok) prevTok.classList.remove('just');
+        out.insertBefore(span, cursor);
+        if (!/^\s+$/.test(toks[i])) prevTok = span;
+        i++;
+    }, 55);
+}
+
+function applyHow() {
+    const hb = document.getElementById('howBtn');
+    hb.textContent = howOpen ? i18n[lang].howHide : i18n[lang].howBtn;
+    hb.classList.toggle('on', howOpen);
+    document.getElementById('how').classList.toggle('show', howOpen);
+}
+function toggleHow() { howOpen = !howOpen; applyHow(); }
+
+function renderHow() {
+    const t = i18n[lang];
+    document.getElementById('how').innerHTML =
+        `<h3>${t.howTitle}</h3><ol>` +
+        t.howSteps.map(s => `<li>${s}</li>`).join('') +
+        `</ol><div class="foot">${t.howFoot}</div>`;
+}
+
+function render() {
+    document.documentElement.lang = lang;
+    document.getElementById('es').classList.toggle('on', lang === 'es');
+    document.getElementById('en').classList.toggle('on', lang === 'en');
+    document.querySelectorAll('[data-i]').forEach(el => { el.textContent = i18n[lang][el.dataset.i]; });
+    renderChips();
+    renderHow();
+    applyHow();
+    run();
+}
+
+function setLang(l) { lang = l; render(); }
+
+document.addEventListener('keydown', (e) => {
+    if ((e.key === 'b' || e.key === 'B') && !/^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement.tagName)) toggleHow();
+});
+
+render();
+</script>
+</body>
+</html>
