@@ -83,108 +83,47 @@ st.sidebar.markdown("Data entry and visualization")
 # Filters
 filter_columns = ['nvl_excel', 'nvl_python', 'nvl_sas', 'nvl_sql', 'nvl_vba']
 filters = {}
-# Add company filter
-company_vals = sorted(df['company'].dropna().unique())
-company_options = ['All'] + company_vals
-company_selected = st.sidebar.multiselect(
-    "Filter by Company",
-    company_options,
-    default=['All'],
-    key="company_multiselect"
-)
-filters['company'] = company_vals if 'All' in company_selected else company_selected
-# Add place filter
-place_vals = sorted(df['place'].dropna().unique())
-place_options = ['All'] + place_vals
-place_selected = st.sidebar.multiselect(
-    "Filter by Place",
-    place_options,
-    default=['All'],
-    key="place_multiselect"
-)
+# Identity / phase-one / phase-two multiselect filters, described as data.
+# Each spec is (column, label, coerce_int); groups are rendered with a
+# sidebar divider between them, matching the original sidebar layout.
+# coerce_int=True maps the phase-2 ind_* values to int before sorting.
+sidebar_filter_groups = [
+    [
+        ('company', "Filter by Company", False),
+        ('place', "Filter by Place", False),
+    ],
+    [
+        ('ind_review', "Filter by Ind Review", False),
+        ('ind_select', "Filter by Ind Select", False),
+        ('ind_1to1', "Filter by Ind 1to1", False),
+    ],
+    [
+        ('ind_confirm', "Filter by Confirmed (Phase 2)", True),
+        ('ind_session', "Filter by Session Selected", True),
+        ('ind_waitlist', "Filter by Waitlist", True),
+        ('ind_review_phasetwo', "Filter by Review (Phase 2)", True),
+    ],
+]
 
-# Add phase one filters
-st.sidebar.markdown("---")
-
-
-filters['place'] = place_vals if 'All' in place_selected else place_selected
-# Add ind_review filter
-ind_review_vals = sorted(df['ind_review'].dropna().unique())
-ind_review_options = ['All'] + list(ind_review_vals)
-ind_review_selected = st.sidebar.multiselect(
-    "Filter by Ind Review",
-    ind_review_options,
-    default=['All'],
-    key="ind_review_multiselect"
-)
-filters['ind_review'] = list(ind_review_vals) if 'All' in ind_review_selected else ind_review_selected
-# Add ind_select filter
-ind_select_vals = sorted(df['ind_select'].dropna().unique())
-ind_select_options = ['All'] + list(ind_select_vals)
-ind_select_selected = st.sidebar.multiselect(
-    "Filter by Ind Select",
-    ind_select_options,
-    default=['All'],
-    key="ind_select_multiselect"
-)
-filters['ind_select'] = list(ind_select_vals) if 'All' in ind_select_selected else ind_select_selected
-# Add ind_1to1 filter
-ind_1to1_vals = sorted(df['ind_1to1'].dropna().unique())
-ind_1to1_options = ['All'] + list(ind_1to1_vals)
-ind_1to1_selected = st.sidebar.multiselect(
-    "Filter by Ind 1to1",
-    ind_1to1_options,
-    default=['All'],
-    key="ind_1to1_multiselect"
-)
-filters['ind_1to1'] = list(ind_1to1_vals) if 'All' in ind_1to1_selected else ind_1to1_selected
-
-# Add phase two filters
-st.sidebar.markdown("---")
-
-# Add ind_confirm filter (Phase 2 confirmation)
-ind_confirm_vals = sorted(set(int(x) for x in df['ind_confirm'].dropna().unique()))
-ind_confirm_options = ['All'] + ind_confirm_vals
-ind_confirm_selected = st.sidebar.multiselect(
-    "Filter by Confirmed (Phase 2)",
-    ind_confirm_options,
-    default=['All'],
-    key="ind_confirm_multiselect"
-)
-filters['ind_confirm'] = list(ind_confirm_vals) if 'All' in ind_confirm_selected else ind_confirm_selected
-
-# Add ind_session filter
-ind_session_vals = sorted(set(int(x) for x in df['ind_session'].dropna().unique()))
-ind_session_options = ['All'] + ind_session_vals
-ind_session_selected = st.sidebar.multiselect(
-    "Filter by Session Selected",
-    ind_session_options,
-    default=['All'],
-    key="ind_session_multiselect"
-)
-filters['ind_session'] = list(ind_session_vals) if 'All' in ind_session_selected else ind_session_selected
-
-# Add ind_waitlist filter
-ind_waitlist_vals = sorted(set(int(x) for x in df['ind_waitlist'].dropna().unique()))
-ind_waitlist_options = ['All'] + ind_waitlist_vals
-ind_waitlist_selected = st.sidebar.multiselect(
-    "Filter by Waitlist",
-    ind_waitlist_options,
-    default=['All'],
-    key="ind_waitlist_multiselect"
-)
-filters['ind_waitlist'] = list(ind_waitlist_vals) if 'All' in ind_waitlist_selected else ind_waitlist_selected
-
-# Add ind_review_phasetwo filter
-ind_review_phasetwo_vals = sorted(set(int(x) for x in df['ind_review_phasetwo'].dropna().unique()))
-ind_review_phasetwo_options = ['All'] + ind_review_phasetwo_vals
-ind_review_phasetwo_selected = st.sidebar.multiselect(
-    "Filter by Review (Phase 2)",
-    ind_review_phasetwo_options,
-    default=['All'],
-    key="ind_review_phasetwo_multiselect"
-)
-filters['ind_review_phasetwo'] = list(ind_review_phasetwo_vals) if 'All' in ind_review_phasetwo_selected else ind_review_phasetwo_selected
+for group_idx, group in enumerate(sidebar_filter_groups):
+    if group_idx > 0:
+        st.sidebar.markdown("---")
+    for col, label, coerce_int in group:
+        if coerce_int:
+            unique_vals = sorted(set(int(x) for x in df[col].dropna().unique()))
+        else:
+            unique_vals = sorted(df[col].dropna().unique())
+        options = ['All'] + unique_vals
+        selected = st.sidebar.multiselect(
+            label,
+            options,
+            default=['All'],
+            key=f"{col}_multiselect"
+        )
+        if 'All' in selected:
+            filters[col] = unique_vals
+        else:
+            filters[col] = selected
 
 st.sidebar.markdown("---")
 
