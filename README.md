@@ -88,7 +88,7 @@ See the slideshow for titles and goals; details live in each exercise folder und
 
 ## Requirements
 
-- Python 3.7+
+- Python 3.11+
 - See `requirements.txt` for packages (e.g. pandas, numpy, matplotlib, seaborn, openpyxl, python-docx, python-pptx, fpdf, and others used by specific exercises).
 
 ## License

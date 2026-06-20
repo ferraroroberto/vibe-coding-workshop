@@ -25,7 +25,7 @@ The Data Import feature enriches the survey data with organizational information
 ### Participation Analysis
 The Participation Analysis feature provides hierarchical insights into survey adoption:
 - **Data Sources**: Uses enriched survey data and full employee database
-- **Hierarchy Levels**: Analyzes participation across DAN (N+1), DG (N+2), DT (N+3), and RED levels
+- **Hierarchy Levels**: Analyzes participation across DAN (N+1), DG (N+2), and DT (N+3) levels
 - **Visualization**: Treemaps where box size represents total employees and color intensity shows participation rate
 - **Filtering**: Applies the same sidebar filters as other tabs, showing participation only for filtered survey responses
 - **Metrics**: Displays overall participation rates and top areas by participation rate and absolute numbers
