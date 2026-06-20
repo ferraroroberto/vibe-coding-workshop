@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import logging
 
-from excel_io import atomic_write_sheet, load_full_sheet
+from excel_io import atomic_write_sheet, build_column_index_to_id, load_full_sheet
 from sync_rules import apply_binary_checks, apply_replicate_rules
 
 logger = logging.getLogger(__name__)
@@ -170,8 +170,8 @@ def sync_data(df_main, df_new, config, source_columns):
         # Load full Excel with header
         full_df = load_full_sheet(config)
 
-        # Create column mapping: column_index -> column_id
-        column_id_map = {str(col['column']): col['column_id'] for col in excel_spec['columns'] if col['column_id'] != 'skip'}
+        # Create column mapping: column_index (str) -> column_id
+        column_id_map = {str(k): v for k, v in build_column_index_to_id(config).items()}
 
         # Prepare new rows to append
         new_rows = []

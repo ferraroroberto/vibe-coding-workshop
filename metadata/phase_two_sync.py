@@ -4,7 +4,7 @@ import logging
 from fuzzywuzzy import fuzz
 from fuzzywuzzy import process
 
-from excel_io import atomic_write_sheet, load_full_sheet
+from excel_io import atomic_write_sheet, find_id_column_name, load_full_sheet
 from sync_rules import apply_binary_checks, apply_replicate_rules
 
 logger = logging.getLogger(__name__)
@@ -298,13 +298,7 @@ def sync_phase2_data(df_master, matched_records, df_phase2, config):
         full_df = load_full_sheet(config)
 
         # Find the ID column in full_df
-        id_column_idx = None
-        for col_spec in excel_spec['columns']:
-            if col_spec['column_id'] == 'id':
-                id_column_idx = col_spec['column']
-                break
-
-        id_column_name = full_df.columns[id_column_idx] if id_column_idx is not None else full_df.columns[0]
+        id_column_name = find_id_column_name(full_df, config)
 
         # Get rules from Phase 2 spec
         replicate_rules = phase_two_spec.get('replicate', [])
