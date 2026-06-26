@@ -177,7 +177,7 @@ python scripts/generate_mock_data.py
 ## Adding a New Demo
 
 1. Create `pages/my_new_demo.py` with a `render()` function.
-2. Import it in `menu.py` and append an entry to the `PAGES` list.
+2. (Optional) Append a metadata entry to `PAGES` in `menu.py` for a home-page card — `menu.py` imports no page modules and `PAGES` drives only the home-page cards, not routing. The sidebar auto-discovers the new file regardless.
 3. Done — the sidebar picks it up automatically.
 
 ---
