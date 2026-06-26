@@ -194,7 +194,12 @@ def generate_treemap_data(df_total, df_participants, level):
 
 def display_treemap(treemap_data, level):
     """
-    Display treemap visualization with size=total employees and color=participation rate.
+    Display treemap visualization with size=total employees.
+
+    Color is categorical by area: the top-ranked area (highest participation
+    rate) gets accent blue (#1E88E5); the rest follow a light-to-dark grey ramp
+    from grey_ramp(). Coloring is bound to the 'area' column (not the numeric
+    'participation_rate') so Plotly honours the color_discrete_map.
     """
     # Map level to display label
     level_labels = {
@@ -219,11 +224,15 @@ def display_treemap(treemap_data, level):
     color_map = dict(zip(treemap_data_sorted['area'], grey_ramp(n_areas)))
     
     # Create treemap
+    # Color by 'area' (categorical) so color_discrete_map is honoured by Plotly.
+    # Using color='participation_rate' (numeric) makes Plotly treat it as a
+    # continuous scale and silently ignore color_discrete_map entirely, which
+    # is why the intended blue-top/grey-rest scheme never rendered.
     fig = px.treemap(
         treemap_data,
         path=['area'],
         values='total_employees',
-        color='participation_rate',
+        color='area',
         color_discrete_map=color_map,
         hover_data={
             'area': False,
