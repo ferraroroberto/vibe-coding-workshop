@@ -3,6 +3,8 @@
 ## Overview
 VibeCoding is a Streamlit-based dashboard for visualizing and analyzing survey data about skill levels, use cases, and organizational breakdowns. It is designed for non-technical users and runs as a Streamlit web app.
 
+The app spans two phases of a community selection workflow. **Phase 1** covers survey entry, data import, enrichment, exploration, and participation analysis. **Phase 2** adds candidate selection management: syncing Phase 2 form responses, editing per-person flags with a team-balance view, and managing bulk selection and waitlist decisions for the final cohort.
+
 ## Features
 - Interactive filters by company, place, and skill levels
 - Pie charts and bar charts for data breakdowns
@@ -11,6 +13,9 @@ VibeCoding is a Streamlit-based dashboard for visualizing and analyzing survey d
 - Data entry with calendar selector for timestamp fields (robust datetime handling)
 - **Data Import**: Enrich survey data with employee and work center information from CSV files
 - **Participation Analysis**: Visualize survey participation rates across organizational hierarchy using treemaps
+- **Phase 2 Sync**: Ingest Phase 2 form responses and fuzzy-match them to existing Phase 1 records, with preview and conflict detection before saving
+- **Phase 2 Entry**: Review and edit per-person Phase 2 flags (`ind_session`, `ind_waitlist`) alongside a live team-balance view and selection-decision table
+- **Selection Management**: Bulk review all Phase 2 candidates (`ind_confirm = 1`), mark selected or waitlisted, inspect team balance across hierarchy levels, and export the final selection report
 
 ## Data Import & Participation Analysis
 
