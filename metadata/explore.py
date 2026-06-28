@@ -5,14 +5,13 @@ import plotly.express as px
 from collections import Counter
 
 from charts import build_breakdown_pie, collapse_to_other, grey_ramp
+from filters import apply_filters
 
 def run(df, filters, config):
 
-    # Apply filters to df
-    filtered_df = df.copy()
-    for col, selected in filters.items():
-        if selected and col in filtered_df.columns:
-            filtered_df = filtered_df[filtered_df[col].isin(selected)]
+    # Apply filters. include_na=False drops blank rows so the dashboard's
+    # aggregate metrics only count records that match the selected value.
+    filtered_df = apply_filters(df, filters, include_na=False)
 
     # Title
     st.title("Survey Data Dashboard")

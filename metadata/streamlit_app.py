@@ -81,12 +81,13 @@ st.sidebar.title("📊 Survey Data Dashboard")
 st.sidebar.markdown("Data entry and visualization")
 
 # Filters
-filter_columns = ['nvl_excel', 'nvl_python', 'nvl_sas', 'nvl_sql', 'nvl_vba']
 filters = {}
-# Identity / phase-one / phase-two multiselect filters, described as data.
-# Each spec is (column, label, coerce_int); groups are rendered with a
-# sidebar divider between them, matching the original sidebar layout.
-# coerce_int=True maps the phase-2 ind_* values to int before sorting.
+# Every sidebar multiselect, described as data: each spec is
+# (column, label, coerce_int). Groups render with a sidebar divider between
+# them, matching the original layout. coerce_int=True maps the phase-2 ind_*
+# values to int before sorting. Labels that the old code derived from the
+# column name (the nvl_* skills and des_* hierarchy groups) are spelled out
+# here so the rendered text stays byte-identical.
 sidebar_filter_groups = [
     [
         ('company', "Filter by Company", False),
@@ -102,6 +103,20 @@ sidebar_filter_groups = [
         ('ind_session', "Filter by Session Selected", True),
         ('ind_waitlist', "Filter by Waitlist", True),
         ('ind_review_phasetwo', "Filter by Review (Phase 2)", True),
+    ],
+    [
+        ('nvl_excel', "Filter by Excel", False),
+        ('nvl_python', "Filter by Python", False),
+        ('nvl_sas', "Filter by Sas", False),
+        ('nvl_sql', "Filter by Sql", False),
+        ('nvl_vba', "Filter by Vba", False),
+    ],
+    [
+        ('des_red', "Filter by Des Red", False),
+        ('des_dt', "Filter by Des Dt", False),
+        ('des_dg', "Filter by Des Dg", False),
+        ('des_dan', "Filter by Des Dan", False),
+        ('des_centro_ges', "Filter by Des Centro Ges", False),
     ],
 ]
 
@@ -124,41 +139,6 @@ for group_idx, group in enumerate(sidebar_filter_groups):
             filters[col] = unique_vals
         else:
             filters[col] = selected
-
-st.sidebar.markdown("---")
-
-for col in filter_columns:
-    unique_vals = sorted(df[col].dropna().unique())
-    options = ['All'] + unique_vals
-    selected = st.sidebar.multiselect(
-        f"Filter by {col.replace('nvl_', '').replace('_', ' ').title()}",
-        options,
-        default=['All'],
-        key=f"{col}_multiselect"
-    )
-    if 'All' in selected:
-        filters[col] = unique_vals
-    else:
-        filters[col] = selected
-
-# Add hierarchy filters
-st.sidebar.markdown("---")
-
-# Additional filters
-additional_filter_columns = ['des_red', 'des_dt', 'des_dg', 'des_dan','des_centro_ges' ]
-for col in additional_filter_columns:
-    unique_vals = sorted(df[col].dropna().unique())
-    options = ['All'] + unique_vals
-    selected = st.sidebar.multiselect(
-        f"Filter by {col.replace('_', ' ').title()}",
-        options,
-        default=['All'],
-        key=f"{col}_multiselect"
-    )
-    if 'All' in selected:
-        filters[col] = unique_vals
-    else:
-        filters[col] = selected
 
 tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8 = st.tabs([
     "Data entry", "Explore", "Data Sync", "Data Import", "Participation Analysis",

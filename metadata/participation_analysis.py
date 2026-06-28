@@ -5,6 +5,7 @@ import logging
 import os
 
 from charts import grey_ramp
+from filters import apply_filters
 
 logger = logging.getLogger(__name__)
 
@@ -65,11 +66,9 @@ def run(df, filters, config):
         logger.error(f"Error loading source files: {e}")
         return
     
-    # Apply filters to survey data (participation)
-    filtered_df = df.copy()
-    for col, selected in filters.items():
-        if selected and col in filtered_df.columns:
-            filtered_df = filtered_df[filtered_df[col].isin(selected)]
+    # Apply filters to survey data (participation). include_na=False drops blank
+    # rows so participation metrics only count records that match the selection.
+    filtered_df = apply_filters(df, filters, include_na=False)
     
     # Pre-calculate aggregated metrics for overall display
     # We'll aggregate by each hierarchy level to get areas with participants (most aggregate to least)

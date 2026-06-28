@@ -58,29 +58,21 @@ def js_escape(content: str) -> str:
     return content.replace("\\", "\\\\").replace("`", "\\`").replace("${", "\\${")
 
 
-def build_exercise_js(exercises_data: list[dict], lang: str) -> str:
-    """Build JavaScript array string for exercises."""
-    lines = [
-        "        // Exercise data - matches the sequence from exercises_selection.md",
-        "        const exercises = [",
-    ]
-    for ex in exercises_data:
-        title = ex["title_" + lang] if f"title_{lang}" in ex else ex["title_en"]
-        content = ex["content_" + lang] if f"content_{lang}" in ex else ex["content_en"]
-        content_escaped = js_escape(content)
-        lines.append(f'            {{\n                number: "{ex["number"]}",')
-        lines.append(f'                title: "{title.replace(chr(34), chr(92)+chr(34))}",')
-        lines.append(f'                image: "{ex["image"]}",')
-        lines.append(f'                content: `{content_escaped}`')
-        lines.append("            },")
-    lines.append("        ];")
-    return "\n".join(lines)
+EXERCISES_HEADER = "        // Exercise data - matches the sequence from exercises_selection.md"
 
 
-def build_bonus_exercises_js(bonus_data: list[dict], lang: str) -> str:
-    """Build JavaScript array string for bonus exercises."""
-    lines = ["        const bonusExercises = ["]
-    for ex in bonus_data:
+def build_js_array(data: list[dict], lang: str, var_name: str, header_comment: str = "") -> str:
+    """Build a ``const <var_name> = [...]`` JavaScript array string for slides.
+
+    ``header_comment`` is emitted as a line above the declaration when given
+    (the main ``exercises`` array carries a provenance comment; the bonus array
+    does not).
+    """
+    lines = []
+    if header_comment:
+        lines.append(header_comment)
+    lines.append(f"        const {var_name} = [")
+    for ex in data:
         title = ex["title_" + lang] if f"title_{lang}" in ex else ex["title_en"]
         content = ex["content_" + lang] if f"content_{lang}" in ex else ex["content_en"]
         content_escaped = js_escape(content)
@@ -172,10 +164,10 @@ def main():
     html_en = SLIDESHOW_PATH.read_text(encoding="utf-8")
 
     # Build exercises JS - need to match the exact format (mainExercises = exercises, bonusExercises separate)
-    exercises_js_en = build_exercise_js(main_data, "en")
-    bonus_js_en = build_bonus_exercises_js(bonus_data, "en")
-    exercises_js_es = build_exercise_js(main_data, "es")
-    bonus_js_es = build_bonus_exercises_js(bonus_data, "es")
+    exercises_js_en = build_js_array(main_data, "en", "exercises", EXERCISES_HEADER)
+    bonus_js_en = build_js_array(bonus_data, "en", "bonusExercises")
+    exercises_js_es = build_js_array(main_data, "es", "exercises", EXERCISES_HEADER)
+    bonus_js_es = build_js_array(bonus_data, "es", "bonusExercises")
 
     # Replace in English version
     html_en = replace_exercises_array(html_en, exercises_js_en)

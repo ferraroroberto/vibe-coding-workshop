@@ -2,12 +2,8 @@ import streamlit as st
 import pandas as pd
 import logging
 
-from excel_io import (
-    atomic_write_sheet,
-    build_column_id_to_index,
-    find_id_column_name,
-    load_full_sheet,
-)
+from excel_io import update_columns_for_ids
+from filters import apply_filters
 from fuzzy_search import fuzzy_filter_by_name
 
 logger = logging.getLogger(__name__)
@@ -39,11 +35,9 @@ def run(df, filters, config):
         st.session_state.pop('phase2_selected_id', None)
         st.session_state['last_tab'] = 'phase_two_entry'
     
-    # Apply filters
-    filtered_df = df.copy()
-    for col, selected in filters.items():
-        if selected and col in filtered_df.columns:
-            filtered_df = filtered_df[filtered_df[col].isin(selected) | filtered_df[col].isna()]
+    # Apply filters. include_na=True keeps blank/new records (empty filter
+    # column) visible so they can be filled in on this editing tab.
+    filtered_df = apply_filters(df, filters, include_na=True)
     
     # Search bar
     search_term = st.text_input("Search by name (fuzzy)", "", key="phase2_search")
@@ -215,24 +209,10 @@ def save_phase2_changes(df, selected_row, selected_id, config):
                 new_value = int(1 if new_value else 0)
             df.at[idx, field] = new_value
 
-    # Save to Excel
-    full_df = load_full_sheet(config)
-    column_id_to_index = build_column_id_to_index(config)
-    id_column_name = find_id_column_name(full_df, config)
-
-    # Find row in full_df
-    full_df_mask = full_df[id_column_name] == selected_id
-    if full_df_mask.any():
-        full_df_idx = full_df[full_df_mask].index[0]
-
-        # Update columns
-        for field in all_fields:
-            if field in column_id_to_index and field in df.columns:
-                col_idx = column_id_to_index[field]
-                if col_idx < len(full_df.columns):
-                    full_df.at[full_df_idx, full_df.columns[col_idx]] = df.at[idx, field]
-
-        atomic_write_sheet(full_df, config)
+    # Save the edited cells back to Excel (column-map filtering is applied by
+    # the helper; only fields present in df are offered).
+    cell_values = {field: df.at[idx, field] for field in all_fields if field in df.columns}
+    update_columns_for_ids({selected_id: cell_values}, config)
 
     return df
 
