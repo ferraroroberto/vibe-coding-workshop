@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 
 from excel_io import save_dataframe_to_excel
+from filters import apply_filters
 from fuzzy_search import fuzzy_filter_by_name
 
 
@@ -67,12 +68,9 @@ def run(df, filters, config):
         st.session_state.pop('adding_new', None)
         st.session_state['last_tab'] = 'data_entry'
     
-    # Apply filters
-    filtered_df = df.copy()
-    for col, selected in filters.items():
-        if selected:
-            # Include NaN values to show new records with empty fields
-            filtered_df = filtered_df[filtered_df[col].isin(selected) | filtered_df[col].isna()]
+    # Apply filters. include_na=True keeps blank/new records (empty filter
+    # column) visible so they can be filled in on this editing tab.
+    filtered_df = apply_filters(df, filters, include_na=True)
 
     # Search bar and add button
     col_search, col_add = st.columns([3, 1])

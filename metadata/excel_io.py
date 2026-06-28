@@ -55,6 +55,33 @@ def atomic_write_sheet(full_df: pd.DataFrame, config: dict) -> None:
     os.replace(tmp_path, excel_path)
 
 
+def update_columns_for_ids(updates: dict, config: dict) -> None:
+    """Apply targeted per-id cell updates to the master sheet, atomically.
+
+    ``updates`` maps each row id (the value stored in the workbook's id column)
+    to a ``{column_id: value}`` mapping of the cells to overwrite for that row.
+    Only ``column_id``s present in the config's column map are written; ids not
+    found in the sheet are skipped. This is the partial-update counterpart to
+    :func:`save_dataframe_to_excel` (which rewrites whole rows), shared by every
+    tab that edits a handful of cells for known ids.
+    """
+    full_df = load_full_sheet(config)
+    column_map = build_column_id_to_index(config)
+    id_column = find_id_column_name(full_df, config)
+
+    for row_id, col_values in updates.items():
+        row_mask = full_df[id_column] == row_id
+        if not row_mask.any():
+            continue
+        full_idx = full_df[row_mask].index[0]
+        for col_id, value in col_values.items():
+            col_idx = column_map.get(col_id)
+            if col_idx is not None and col_idx < len(full_df.columns):
+                full_df.at[full_idx, full_df.columns[col_idx]] = value
+
+    atomic_write_sheet(full_df, config)
+
+
 def save_dataframe_to_excel(df: pd.DataFrame, config: dict) -> None:
     """Persist the working ``df`` (keyed by ``id``) back to the master workbook.
 

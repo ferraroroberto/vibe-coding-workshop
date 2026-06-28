@@ -2,12 +2,8 @@ import streamlit as st
 import pandas as pd
 import logging
 
-from excel_io import (
-    atomic_write_sheet,
-    build_column_id_to_index,
-    find_id_column_name,
-    load_full_sheet,
-)
+from excel_io import build_column_id_to_index, update_columns_for_ids
+from filters import apply_filters
 
 logger = logging.getLogger(__name__)
 
@@ -25,11 +21,9 @@ def run(df, filters, config):
     st.header("🎯 Selection Management")
     st.markdown("Manage Phase 2 candidate selections and waitlist")
     
-    # Apply filters
-    filtered_df = df.copy()
-    for col, selected in filters.items():
-        if selected and col in filtered_df.columns:
-            filtered_df = filtered_df[filtered_df[col].isin(selected) | filtered_df[col].isna()]
+    # Apply filters. include_na=True keeps blank/new records (empty filter
+    # column) visible so they can be selected/edited on this management tab.
+    filtered_df = apply_filters(df, filters, include_na=True)
     
     # Ensure ind_confirm is numeric with no NULLs
     if 'ind_confirm' in filtered_df.columns:
@@ -320,23 +314,13 @@ def bulk_update_status(df, ids, column, value, config, save=True):
     if not save:
         return df
 
-    # Save to Excel
-    full_df = load_full_sheet(config)
-    column_id_to_index = build_column_id_to_index(config)
-    id_column_name = find_id_column_name(full_df, config)
-
-    # Find target column
-    if column not in column_id_to_index:
+    # Guard: the target column must be mapped in the config, else skip the write.
+    if column not in build_column_id_to_index(config):
         logger.warning(f"Column {column} not found in config")
         return df
 
-    target_col_name = full_df.columns[column_id_to_index[column]]
-
-    # Update rows
-    mask = full_df[id_column_name].isin(ids)
-    full_df.loc[mask, target_col_name] = value
-
-    atomic_write_sheet(full_df, config)
+    # Save to Excel: set `column` = `value` for every supplied id.
+    update_columns_for_ids({row_id: {column: value} for row_id in ids}, config)
 
     logger.info(f"✅ Bulk updated {len(ids)} records: {column} = {value}")
     return df
