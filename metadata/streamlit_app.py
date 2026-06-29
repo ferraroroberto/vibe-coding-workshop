@@ -1,5 +1,4 @@
 import streamlit as st
-import pandas as pd
 import json
 import data_entry
 import explore
@@ -9,6 +8,8 @@ import participation_analysis
 import phase_two_sync
 import phase_two_entry
 import selection_management
+
+from excel_io import load_mapped_dataframe, ensure_phase2_columns
 
 # Page Config
 st.set_page_config(page_title="Survey Data Dashboard", layout="wide")
@@ -21,54 +22,21 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 
-def ensure_phase2_columns(df: pd.DataFrame) -> pd.DataFrame:
-    """Ensure Phase 2 columns exist with correct types. Idempotent."""
-    phase2_columns = ['ind_confirm', 'ide_python', 'ide_sql', 'txt_usecase_data',
-                      'txt_usecase_visual', 'txt_usecase_automate', 'ind_session',
-                      'ind_waitlist', 'ind_facilitate', 'ind_review_phasetwo']
-    for col in phase2_columns:
-        if col not in df.columns:
-            df[col] = 0 if col.startswith('ind_') else ''
-
-    default_zero_cols = ['ind_confirm', 'ind_facilitate', 'ind_session', 'ind_waitlist', 'ind_review_phasetwo']
-    for col in default_zero_cols:
-        if col in df.columns:
-            df[col] = pd.to_numeric(df[col], errors='coerce').fillna(0).astype(int)
-    return df
-
-
 # Load config
 with open('config.json') as f:
     config = json.load(f)
 
-excel_path = config['excel_path']
-sheet = config['excel_interpreter_spec']['sheet_name']
-
-# Load dataframe - preserve column order from config
-usecols = [col['column'] for col in config['excel_interpreter_spec']['columns']]
-
-# Load dataframe from session state or Excel
+# Load dataframe from session state or Excel (column order preserved by the
+# loader). Data logic lives in excel_io; this file only wires UI and feedback.
 if 'df' not in st.session_state:
     try:
-        df = pd.read_excel(excel_path, sheet_name=sheet, header=None, usecols=usecols, skiprows=1, engine='openpyxl')
-        df.columns = [str(i) for i in usecols]
+        df = load_mapped_dataframe(config)
     except FileNotFoundError:
-        st.error(f"Excel file not found at {excel_path}. Please check the path in config.json.")
+        st.error(f"Excel file not found at {config['excel_path']}. Please check the path in config.json.")
         st.stop()
     except Exception as e:
         st.error(f"Error loading Excel file: {e}")
         st.stop()
-
-    # Map columns based on config
-    for col_spec in config['excel_interpreter_spec']['columns']:
-        if col_spec['column_id'] != 'skip':
-            column_idx = str(col_spec['column'])
-            if column_idx in df.columns:
-                df[col_spec['column_id']] = df[column_idx]
-
-    # Keep only the mapped columns
-    mapped_columns = [col_spec['column_id'] for col_spec in config['excel_interpreter_spec']['columns'] if col_spec['column_id'] != 'skip']
-    df = df[mapped_columns]
 
     df = ensure_phase2_columns(df)
     st.session_state['df'] = df

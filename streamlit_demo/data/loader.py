@@ -4,13 +4,16 @@ Data Loader
 Centralised helper that loads mock data for every demo page.
 If the CSV / JSON files do not exist yet it triggers generation
 automatically so the app always starts cleanly.
+
+This is the **non-UI data layer**: it returns plain DataFrames and never
+imports ``streamlit``. Streamlit caching lives in the UI-side ``cached_data``
+module, which wraps these functions with ``@st.cache_data``.
 """
 
 import sys
 from pathlib import Path
 
 import pandas as pd
-import streamlit as st
 
 # ---------------------------------------------------------------------------
 # Paths (resolved relative to *this* file so imports work from anywhere)
@@ -35,14 +38,12 @@ def _ensure_mock_data() -> None:
     generate_all()
 
 
-@st.cache_data
 def load_employees() -> pd.DataFrame:
     """Return the employees dataset as a DataFrame."""
     _ensure_mock_data()
     return pd.read_csv(EMPLOYEES_CSV)
 
 
-@st.cache_data
 def load_sales() -> pd.DataFrame:
     """Return the sales dataset as a DataFrame."""
     _ensure_mock_data()

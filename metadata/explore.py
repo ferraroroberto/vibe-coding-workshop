@@ -136,7 +136,7 @@ def run(df, filters, config):
     import io
 
     output = io.BytesIO()
-    if st.button("Export filtered result to XLS"):
+    if st.button("Export filtered result to XLS", key="explore_export"):
         # Build filters summary from filters dict
         filters_summary = []
         for col in filters:
@@ -157,7 +157,8 @@ def run(df, filters, config):
             label="Download XLS file",
             data=output,
             file_name="filtered_result.xlsx",
-            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            key="explore_download"
         )
 
 

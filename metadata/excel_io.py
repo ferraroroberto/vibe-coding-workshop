@@ -20,6 +20,55 @@ def load_full_sheet(config: dict) -> pd.DataFrame:
     return pd.read_excel(excel_path, sheet_name=sheet, header=0, engine='openpyxl')
 
 
+# Phase 2 columns the dashboard expects to exist on the working frame.
+PHASE2_COLUMNS = ['ind_confirm', 'ide_python', 'ide_sql', 'txt_usecase_data',
+                  'txt_usecase_visual', 'txt_usecase_automate', 'ind_session',
+                  'ind_waitlist', 'ind_facilitate', 'ind_review_phasetwo']
+PHASE2_INT_COLUMNS = ['ind_confirm', 'ind_facilitate', 'ind_session',
+                      'ind_waitlist', 'ind_review_phasetwo']
+
+
+def load_mapped_dataframe(config: dict) -> pd.DataFrame:
+    """Load the dashboard's working frame from the master workbook.
+
+    Reads only the configured ``usecols`` (header-less, skipping the header
+    row), then maps each raw column index onto its ``column_id`` and keeps just
+    the mapped columns, preserving the config's column order. May raise
+    ``FileNotFoundError`` (missing workbook) or other read errors — the caller
+    owns surfacing those to the user.
+    """
+    excel_path = config['excel_path']
+    sheet = config['excel_interpreter_spec']['sheet_name']
+    columns = config['excel_interpreter_spec']['columns']
+
+    usecols = [col['column'] for col in columns]
+    df = pd.read_excel(excel_path, sheet_name=sheet, header=None, usecols=usecols,
+                       skiprows=1, engine='openpyxl')
+    df.columns = [str(i) for i in usecols]
+
+    # Map raw column indices onto their column_id.
+    for col_spec in columns:
+        if col_spec['column_id'] != 'skip':
+            column_idx = str(col_spec['column'])
+            if column_idx in df.columns:
+                df[col_spec['column_id']] = df[column_idx]
+
+    mapped_columns = [col_spec['column_id'] for col_spec in columns if col_spec['column_id'] != 'skip']
+    return df[mapped_columns]
+
+
+def ensure_phase2_columns(df: pd.DataFrame) -> pd.DataFrame:
+    """Ensure Phase 2 columns exist with correct types. Idempotent."""
+    for col in PHASE2_COLUMNS:
+        if col not in df.columns:
+            df[col] = 0 if col.startswith('ind_') else ''
+
+    for col in PHASE2_INT_COLUMNS:
+        if col in df.columns:
+            df[col] = pd.to_numeric(df[col], errors='coerce').fillna(0).astype(int)
+    return df
+
+
 def build_column_id_to_index(config: dict) -> dict:
     """Map each ``column_id`` to its column index, skipping ``skip`` columns."""
     columns = config['excel_interpreter_spec']['columns']

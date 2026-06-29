@@ -14,7 +14,7 @@ common use case for internal Streamlit apps.
 import streamlit as st
 import pandas as pd
 
-from data.loader import load_employees, load_sales
+from cached_data import load_employees, load_sales
 
 
 def render() -> None:

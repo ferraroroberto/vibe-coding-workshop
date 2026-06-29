@@ -30,7 +30,7 @@ ACTIVATION_JS = """
 """
 
 
-def export_slideshow(html_path, output_pdf):
+def export_slideshow(html_path: str, output_pdf: str) -> None:
     render_slideshow_pdf(html_path, output_pdf, styles=STYLES, activation_js=ACTIVATION_JS)
 
 
