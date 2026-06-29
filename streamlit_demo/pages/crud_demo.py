@@ -18,7 +18,7 @@ records that users need to manage.
 import streamlit as st
 import pandas as pd
 
-from data.loader import load_employees
+from cached_data import load_employees
 
 # Session-state key that holds the working copy of the dataset
 _STATE_KEY = "crud_employees"
@@ -61,16 +61,16 @@ def render() -> None:
         with st.form("crud_add_form", clear_on_submit=True):
             col1, col2 = st.columns(2)
             with col1:
-                first = st.text_input("First name")
-                last = st.text_input("Last name")
-                email = st.text_input("Email")
+                first = st.text_input("First name", key="crud_first")
+                last = st.text_input("Last name", key="crud_last")
+                email = st.text_input("Email", key="crud_email")
             with col2:
                 dept = st.selectbox(
                     "Department",
                     ["Engineering", "Marketing", "Sales", "HR", "Finance", "Support"],
                     key="crud_dept",
                 )
-                salary = st.number_input("Salary", min_value=0.0, value=50000.0, step=1000.0)
+                salary = st.number_input("Salary", min_value=0.0, value=50000.0, step=1000.0, key="crud_salary")
                 hire_date = st.date_input("Hire date", key="crud_hire")
 
             submitted = st.form_submit_button("Add Employee")

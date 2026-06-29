@@ -15,7 +15,7 @@ import json
 import pandas as pd
 import streamlit as st
 
-from data.loader import load_employees
+from cached_data import load_employees
 
 
 def render() -> None:

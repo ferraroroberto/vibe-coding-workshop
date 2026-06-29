@@ -35,11 +35,11 @@ def render() -> None:
 
         col1, col2 = st.columns(2)
         with col1:
-            name = st.text_input("Your name", placeholder="e.g. Alice")
-            bio = st.text_area("Short bio", height=100, placeholder="Tell us about yourself...")
+            name = st.text_input("Your name", placeholder="e.g. Alice", key="di_name")
+            bio = st.text_area("Short bio", height=100, placeholder="Tell us about yourself...", key="di_bio")
         with col2:
-            age = st.number_input("Age", min_value=0, max_value=150, value=30, step=1)
-            rating = st.slider("Satisfaction (1-10)", 1, 10, 7)
+            age = st.number_input("Age", min_value=0, max_value=150, value=30, step=1, key="di_age")
+            rating = st.slider("Satisfaction (1-10)", 1, 10, 7, key="di_rating")
 
         st.markdown("##### Current values")
         st.json({"name": name, "bio": bio, "age": age, "rating": rating})
@@ -53,15 +53,17 @@ def render() -> None:
             department = st.selectbox(
                 "Department",
                 ["Engineering", "Marketing", "Sales", "HR", "Finance"],
+                key="di_department",
             )
             skills = st.multiselect(
                 "Skills",
                 ["Python", "SQL", "JavaScript", "Go", "Rust", "Excel"],
                 default=["Python"],
+                key="di_skills",
             )
         with col2:
-            level = st.radio("Seniority", ["Junior", "Mid", "Senior", "Lead"])
-            agree = st.checkbox("I agree to the terms")
+            level = st.radio("Seniority", ["Junior", "Mid", "Senior", "Lead"], key="di_level")
+            agree = st.checkbox("I agree to the terms", key="di_agree")
 
         st.markdown("##### Current values")
         st.json(
@@ -79,9 +81,9 @@ def render() -> None:
 
         col1, col2 = st.columns(2)
         with col1:
-            start_date = st.date_input("Start date")
+            start_date = st.date_input("Start date", key="di_start_date")
         with col2:
-            start_time = st.time_input("Start time")
+            start_time = st.time_input("Start time", key="di_start_time")
 
         st.markdown("##### Current values")
         st.json({"start_date": str(start_date), "start_time": str(start_time)})
@@ -95,15 +97,15 @@ def render() -> None:
         )
 
         with st.form("demo_form"):
-            form_name = st.text_input("Full name")
-            form_email = st.text_input("Email")
+            form_name = st.text_input("Full name", key="di_form_name")
+            form_email = st.text_input("Email", key="di_form_email")
             form_dept = st.selectbox(
                 "Department",
                 ["Engineering", "Marketing", "Sales", "HR", "Finance"],
                 key="form_dept",
             )
             form_salary = st.number_input(
-                "Expected salary", min_value=0, value=50000, step=1000
+                "Expected salary", min_value=0, value=50000, step=1000, key="di_form_salary"
             )
             submitted = st.form_submit_button("Submit")
 

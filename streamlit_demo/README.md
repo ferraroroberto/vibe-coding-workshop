@@ -58,9 +58,10 @@ streamlit_demo/
 │   ├── file_upload.py        # File upload & download
 │   ├── process_runner.py     # Simulated long-running task with live logs
 │   └── state_management.py   # Session state patterns
+├── cached_data.py           # UI-side @st.cache_data wrappers around data/loader
 ├── data/
 │   ├── __init__.py
-│   ├── loader.py             # Centralised data-loading helper
+│   ├── loader.py             # Centralised data-loading helper (pure pandas, no streamlit)
 │   └── mock_data/            # Auto-generated CSV / JSON files
 ├── scripts/
 │   ├── __init__.py

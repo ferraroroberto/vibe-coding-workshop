@@ -75,10 +75,10 @@ def run(df, filters, config):
     # Search bar and add button
     col_search, col_add = st.columns([3, 1])
     with col_search:
-        search_term = st.text_input("Search by name (fuzzy)", "")
+        search_term = st.text_input("Search by name (fuzzy)", "", key="data_entry_search")
     with col_add:
         st.markdown("<div style='height:28px;'></div>", unsafe_allow_html=True)
-        if st.button("Add Manual Record", type="primary"):
+        if st.button("Add Manual Record", type="primary", key="data_entry_add_manual"):
             st.session_state['adding_new'] = True
             st.session_state.pop('selected_id', None)
             st.session_state.pop('confirm_delete', None)
@@ -102,13 +102,16 @@ def run(df, filters, config):
             display_df[col] = pd.to_numeric(display_df[col], errors='coerce').astype('Int64')
     
     column_config = {'name': st.column_config.Column(pinned=True)}
-    event = st.dataframe(display_df, column_config=column_config, height=178, on_select="rerun", selection_mode="single-row")
+    event = st.dataframe(display_df, column_config=column_config, height=178, on_select="rerun", selection_mode="single-row", key="data_entry_dataset")
     
     # Handle row selection
     if event.selection.rows:
         selected_row_idx = event.selection.rows[0]
-        selected_id = display_df.iloc[selected_row_idx]['id']
+        clicked_row = display_df.iloc[selected_row_idx]
+        selected_id = clicked_row['id']
         st.session_state['selected_id'] = selected_id
+        # Keep the keyed edit selectbox in sync with the clicked row.
+        st.session_state['data_entry_edit_select'] = f"{clicked_row['name']} (ID: {selected_id})"
         st.session_state.pop('adding_new', None)
 
     # Edit existing record
@@ -142,7 +145,14 @@ def render_edit_section(df, filtered_df, config, field_config, search_term):
     else:
         default_index = 0 if search_term else None
     
-    selected_record = st.selectbox("Select a record to edit", record_options, index=default_index)
+    # Drop a stale selection that no longer matches the current options so the
+    # keyed selectbox falls back to default_index instead of raising.
+    if st.session_state.get('data_entry_edit_select') not in record_options:
+        st.session_state.pop('data_entry_edit_select', None)
+    select_kwargs = {'key': 'data_entry_edit_select'}
+    if 'data_entry_edit_select' not in st.session_state:
+        select_kwargs['index'] = default_index
+    selected_record = st.selectbox("Select a record to edit", record_options, **select_kwargs)
     if not selected_record:
         return df
     
@@ -173,14 +183,14 @@ def render_edit_section(df, filtered_df, config, field_config, search_term):
             st.markdown(f"[open link]({url_value})")
 
     # Delete record button
-    if st.button("Delete Record", type="secondary"):
+    if st.button("Delete Record", type="secondary", key="data_entry_delete"):
         st.session_state['confirm_delete'] = True
     
     if st.session_state.get('confirm_delete'):
         st.error("Are you sure you want to delete this record?")
         col_conf, col_cancel = st.columns(2)
         with col_conf:
-            if st.button("Confirm Delete"):
+            if st.button("Confirm Delete", key="data_entry_confirm_delete"):
                 idx = df[df['id'] == selected_id].index[0]
                 df = df.drop(idx).reset_index(drop=True)
                 save_dataframe_to_excel(df, config)
@@ -190,14 +200,14 @@ def render_edit_section(df, filtered_df, config, field_config, search_term):
                 st.session_state['last_saved'] = True
                 st.rerun()
         with col_cancel:
-            if st.button("Cancel"):
+            if st.button("Cancel", key="data_entry_cancel_delete"):
                 st.session_state.pop('confirm_delete', None)
 
     # Check for changes and save
     if not st.session_state.get('confirm_delete'):
         has_changes = check_changes(selected_row, selected_id, field_config)
         if has_changes:
-            if st.button("Save Changes"):
+            if st.button("Save Changes", key="data_entry_save_changes"):
                 df = save_record_changes(df, selected_row, selected_id, field_config, config)
                 st.session_state['df'] = df
                 st.rerun()
@@ -218,14 +228,14 @@ def render_add_section(df, config, field_config):
             col = col1 if i % 2 == 0 else col2
             with col:
                 if field in field_config['indicators']:
-                    inputs[field] = st.checkbox(field)
+                    inputs[field] = st.checkbox(field, key=f"add_{field}")
                 elif df[field].dtype == 'datetime64[ns]':
-                    inputs[field] = st.date_input(field)
+                    inputs[field] = st.date_input(field, key=f"add_{field}")
                 elif field in field_config['dropdown']:
                     options = df[field].dropna().unique().tolist()
-                    inputs[field] = st.selectbox(field, options)
+                    inputs[field] = st.selectbox(field, options, key=f"add_{field}")
                 else:
-                    inputs[field] = st.text_input(field)
+                    inputs[field] = st.text_input(field, key=f"add_{field}")
         
         col_submit, col_cancel = st.columns(2)
         with col_submit:
