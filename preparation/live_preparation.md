@@ -340,6 +340,7 @@ Watch the first minute of this intro to Python:
 
 ### Before the Workshop
 
+- [ ] Build the `live/` bundle: `python scripts/copy_data_to_live.py` (rebuilds the numbered starter/data folders, then zip it as `live.zip` for the shared folder)
 - [ ] Test all exercises in the `live/` folder
 - [ ] Verify all data files are present
 - [ ] Check Python environment setup

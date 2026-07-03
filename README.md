@@ -52,6 +52,7 @@ A hands-on workshop for learning data manipulation, automation, and visualizatio
 | `slideshow_ai/mockups/` | Live bilingual HTML demos linked from the keynote (automation, NLP, ML, transformer; plus the LLM deep-dive: tokenizer, base model, assistant, RLHF). Each has a `How it works?` toggle (`b` key) |
 | `scripts/export_slideshow_ai_to_pdf.py` | Renders the keynote to `slideshow_ai_{en,es}.pdf` (one run per language); the PDFs are gitignored build artifacts |
 | `exercises/` | Exercise folders: starter/solution/setup/data per exercise |
+| `scripts/copy_data_to_live.py` | Facilitator tool: rebuilds the numbered `live/` bundle (starter + data per exercise, in slideshow order) that becomes the participant `live.zip` — see `preparation/live_preparation.md` |
 | `preparation/` | Docs for building and extending the slideshow and images |
 | `scripts/test_libraries.py` | Verifies installed libraries (including Streamlit) |
 | `streamlit_demo/` | Streamlit reference app: main_menu.py, pages/, data/, scripts/ |
