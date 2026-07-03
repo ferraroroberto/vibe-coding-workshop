@@ -19,5 +19,9 @@ xlsxwriter # used in exercises/auto_excel_polish
 # Requirements used in the Streamlit demo
 streamlit
 
+# Requirements used in the metadata app
+fuzzywuzzy # used in metadata/fuzzy_search.py, metadata/phase_two_sync.py for fuzzy name matching
+python-Levenshtein # speeds up fuzzywuzzy; avoids the slow pure-python SequenceMatcher warning
+
 # Requirements used in the slideshow export
 playwright
