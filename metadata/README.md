@@ -40,22 +40,30 @@ The Participation Analysis feature provides hierarchical insights into survey ad
 - Windows 10 or later
 - Python 3.11 or later
 - Streamlit and required Python packages (see root `requirements.txt`)
-- The following files must be present in the same folder as the script:
-   - `config.json` (configuration file)
-   - `python_community.xlsx` (Excel data file — must match `excel_path` in `config.json`)
-   - `DC_TD_EMPLEADOS_PH.csv` (employee data for Data Import - semicolon separated)
-   - `CTM_TM_CENTROS_JER.csv` (work center hierarchy for Data Import - comma separated)
+- `config.json` (configuration file, tracked in this repo — see "Private data inputs" below before running)
+- **Private data inputs — not included in this repo.** The workbook and CSVs below contain real survey/employee data and are never committed. You must obtain them separately from the data owner and tell `config.json` where they live (see "Private data inputs" below):
+   - `python_community.xlsx` (Excel data file — path configured via `excel_path` in `config.json`)
+   - `DC_TD_EMPLEADOS_PH.csv` (employee data for Data Import, semicolon separated — path via `source_path_employees` in `config.json`)
+   - `CTM_TM_CENTROS_JER.csv` (work center hierarchy for Data Import, comma separated — path via `source_path_workcenters` in `config.json`)
+   - The Phase 1 / Phase 2 form-response workbooks (`source_path`, `phase_two_path` in `config.json`)
+
+## Private data inputs
+
+`metadata/config.json` is tracked in the repo, but the committed copy reflects one maintainer's own machine: `excel_path`, `source_path`, `phase_two_path`, and the `source_path_employees` / `source_path_workcenters` paths are **absolute paths on that person's computer**, not portable defaults. A fresh clone cannot run the app until you point these at files you actually have — there is no bundled sample workbook and no automatic download step. Pick one of:
+
+1. **Place the files beside the app and use relative paths.** Copy your private workbook/CSVs into the `metadata/` folder (next to `streamlit_app.py`), then edit `config.json` so each path field is just the filename (e.g. `"excel_path": "python_community.xlsx"`) instead of an absolute path.
+2. **Keep the files wherever they already live and point `config.json` at them.** Edit the path fields in `config.json` to the files' real absolute location on your machine.
+
+Either way, `config.json`'s path fields are effectively a **local override** — they only need to be correct for *your* machine. Since the file is git-tracked, avoid committing your personal paths back: run `git update-index --skip-worktree metadata/config.json` after editing it so `git status`/commits ignore further local changes (undo with `--no-skip-worktree` if you need to commit an intentional config change later).
 
 ## Installation & Usage
-1. **Clone the repo** (all required files are in the `metadata/` folder — no separate download step needed):
-   - `metadata/streamlit_app.py` — main dashboard app
-   - `metadata/config.json` — column and path configuration
-   - `metadata/python_community.xlsx` — survey data file (filename must match `excel_path` in `config.json`)
+1. **Clone the repo.** `metadata/streamlit_app.py` and `metadata/config.json` are included; the private workbook/CSVs are not — see "Private data inputs" above.
 2. **Install dependencies** from the repo root:
    ```powershell
    pip install -r requirements.txt
    ```
-3. **Run the app with Streamlit** from the `metadata/` folder:
+3. **Point `config.json` at your private data files** as described above.
+4. **Run the app with Streamlit** from the `metadata/` folder:
    ```powershell
    streamlit run streamlit_app.py
    ```
@@ -76,8 +84,8 @@ If you want to run or modify the app:
 
 ### Tab modules
 - `streamlit_app.py` — Main dashboard app
-- `config.json` — Configuration for columns and Excel path (`excel_path` must match the actual workbook filename)
-- `python_community.xlsx` — Survey data workbook (filename set via `excel_path` in `config.json`)
+- `config.json` — Configuration for columns and Excel path (`excel_path` must match the actual workbook location — see "Private data inputs" above)
+- `python_community.xlsx` — Survey data workbook; **not tracked in this repo** (filename/location set via `excel_path` in `config.json`, see "Private data inputs" above)
 - `data_entry.py` — Data entry module with calendar selectors
 - `phase_two_entry.py` — Phase-two data entry
 - `explore.py` — Data exploration with charts and filters
@@ -88,6 +96,7 @@ If you want to run or modify the app:
 - `participation_analysis.py` — Participation analysis with treemap visualizations
 
 ## Notes
+- The workbook/CSV inputs are private and not tracked in this repo — see "Private data inputs" above for how to point `config.json` at your own copies.
 - The Excel file path in `config.json` must match the actual file location or be placed in the same folder as the script.
 - For best results, keep all files together when sharing.
 - **Configuration uses numeric column indexes**: The `config.json` file uses zero-based numeric indexes (0, 1, 2...) instead of Excel letter-based column references (A, B, C...) for improved clarity and consistency with standard programming conventions.
