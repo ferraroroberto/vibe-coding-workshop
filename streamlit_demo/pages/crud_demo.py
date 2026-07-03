@@ -73,7 +73,7 @@ def render() -> None:
                 salary = st.number_input("Salary", min_value=0.0, value=50000.0, step=1000.0, key="crud_salary")
                 hire_date = st.date_input("Hire date", key="crud_hire")
 
-            submitted = st.form_submit_button("Add Employee")
+            submitted = st.form_submit_button("Add Employee", key="crud_add_employee_submit")
 
         if submitted:
             if not first or not last:

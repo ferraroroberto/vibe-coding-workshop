@@ -1,5 +1,5 @@
 {
-    "source_path": "C:\\Users\\u0150867\\Grupo Caixabank\\27104 - 27014\\Proyectos\\P017 - generative AI\\consultas genAI\\127 - vibe coding guide\\files\\Te interesa aprender Python - form source phase 1.xlsx",
+    "source_path": "Te interesa aprender Python - form source phase 1.xlsx",
     "source_path_spec": {
         "sheet_name": "Sheet1",
         "columns": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17],
@@ -16,7 +16,7 @@
             {"column": 14, "destination": 26}
         ]
     },
-    "phase_two_path": "C:\\Users\\u0150867\\Grupo Caixabank\\27104 - 27014\\Proyectos\\P017 - generative AI\\consultas genAI\\127 - vibe coding guide\\files\\Te interesa aprender Python - form source phase 2.xlsx",
+    "phase_two_path": "Te interesa aprender Python - form source phase 2.xlsx",
     "phase_two_spec": {
         "sheet_name": "Sheet1",
         "columns": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
@@ -35,7 +35,7 @@
             {"column": 5, "destination": 38, "column_id": "ind_confirm"}
         ]
     },
-    "excel_path": "C:\\Users\\u0150867\\Grupo Caixabank\\27104 - 27014\\Proyectos\\P017 - generative AI\\consultas genAI\\127 - vibe coding guide\\python_community.xlsx",
+    "excel_path": "python_community.xlsx",
     "excel_interpreter_spec": {
         "sheet_name": "Sheet1",
         "columns": [
@@ -86,7 +86,7 @@
         ]
     },
     "source_path_employees": {
-        "path": "C:\\Users\\u0150867\\Grupo Caixabank\\27104 - 27014\\Proyectos\\P017 - generative AI\\consultas genAI\\127 - vibe coding guide\\files",
+        "path": ".",
         "file": "DC_TD_EMPLEADOS_PH.csv",
         "keep": [
             "FK_CENTRO",
@@ -101,7 +101,7 @@
         ]
     },
     "source_path_workcenters": {
-        "path": "C:\\Users\\u0150867\\Grupo Caixabank\\27104 - 27014\\Proyectos\\P017 - generative AI\\consultas genAI\\127 - vibe coding guide\\files",
+        "path": ".",
         "file": "CTM_TM_CENTROS_JER.csv",
         "keep": [
             "PK_CENTRO",
@@ -119,4 +119,3 @@
         ]
     }
 }
-

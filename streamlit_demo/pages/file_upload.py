@@ -55,7 +55,7 @@ def render() -> None:
 
             elif ext == "txt":
                 text = uploaded.read().decode("utf-8", errors="replace")
-                st.text_area("File contents", text, height=300)
+                st.text_area("File contents", text, height=300, key="file_upload_txt_preview")
 
     # ==================== DOWNLOAD ====================
     with tab_download:

@@ -48,7 +48,7 @@ def run(df, filters, config):
     st.info(f"ℹ️ **ID column**: {id_column}")
     
     # Button to load and compare
-    if st.button("🔍 Load and Compare Data"):
+    if st.button("🔍 Load and Compare Data", key="data_sync_load"):
         with st.spinner("Loading source data..."):
             try:
                 # Read source Excel - use numeric column indexes directly
@@ -134,7 +134,7 @@ def run(df, filters, config):
         
         col1, col2 = st.columns([1, 4])
         with col1:
-            if st.button("✅ Confirm & Sync", type="primary"):
+            if st.button("✅ Confirm & Sync", type="primary", key="data_sync_confirm"):
                 with st.spinner("Syncing data..."):
                     success = sync_data(df, df_new, config, source_columns)
                     if success:
@@ -146,7 +146,7 @@ def run(df, filters, config):
                         st.balloons()
                         st.rerun()
         with col2:
-            if st.button("❌ Cancel"):
+            if st.button("❌ Cancel", key="data_sync_cancel"):
                 # Clear session state
                 del st.session_state['df_new']
                 del st.session_state['new_ids']

@@ -239,9 +239,9 @@ def render_add_section(df, config, field_config):
         
         col_submit, col_cancel = st.columns(2)
         with col_submit:
-            submitted = st.form_submit_button("Add Record", type="primary")
+            submitted = st.form_submit_button("Add Record", type="primary", key="data_entry_add_submit")
         with col_cancel:
-            cancelled = st.form_submit_button("Cancel", type="secondary")
+            cancelled = st.form_submit_button("Cancel", type="secondary", key="data_entry_add_cancel")
         
         if cancelled:
             st.session_state.pop('adding_new', None)

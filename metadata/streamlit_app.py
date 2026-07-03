@@ -1,5 +1,6 @@
 import streamlit as st
 import json
+import os
 import data_entry
 import explore
 import data_sync
@@ -22,8 +23,12 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 
-# Load config
-with open('config.json') as f:
+# Load config. `config.json` is the per-machine override (gitignored, holds
+# real data-file paths); it falls back to the tracked `config.sample.json`
+# template so a fresh clone runs without editing committed files. Paths in the
+# sample are portable relative defaults (files placed beside this app).
+_config_file = 'config.json' if os.path.exists('config.json') else 'config.sample.json'
+with open(_config_file) as f:
     config = json.load(f)
 
 # Load dataframe from session state or Excel (column order preserved by the
