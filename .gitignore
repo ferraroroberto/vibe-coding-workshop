@@ -29,3 +29,7 @@ slideshow*.pdf
 
 # slideshow_ai: presenter-local Kahoot working files (filled template + selected-question exports)
 slideshow_ai/kahoot/final/
+
+# metadata dashboard: per-machine config with real data-file paths.
+# Tracked template is config.sample.json; copy it to config.json and edit locally.
+metadata/config.json

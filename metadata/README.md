@@ -40,7 +40,7 @@ The Participation Analysis feature provides hierarchical insights into survey ad
 - Windows 10 or later
 - Python 3.11 or later
 - Streamlit and required Python packages (see root `requirements.txt`)
-- `config.json` (configuration file, tracked in this repo — see "Private data inputs" below before running)
+- `config.sample.json` (tracked config template) — copy it to `config.json` (gitignored, per-machine) and set your data-file paths before running; see "Private data inputs" below
 - **Private data inputs — not included in this repo.** The workbook and CSVs below contain real survey/employee data and are never committed. You must obtain them separately from the data owner and tell `config.json` where they live (see "Private data inputs" below):
    - `python_community.xlsx` (Excel data file — path configured via `excel_path` in `config.json`)
    - `DC_TD_EMPLEADOS_PH.csv` (employee data for Data Import, semicolon separated — path via `source_path_employees` in `config.json`)
@@ -49,20 +49,28 @@ The Participation Analysis feature provides hierarchical insights into survey ad
 
 ## Private data inputs
 
-`metadata/config.json` is tracked in the repo, but the committed copy reflects one maintainer's own machine: `excel_path`, `source_path`, `phase_two_path`, and the `source_path_employees` / `source_path_workcenters` paths are **absolute paths on that person's computer**, not portable defaults. A fresh clone cannot run the app until you point these at files you actually have — there is no bundled sample workbook and no automatic download step. Pick one of:
+The repo tracks **`config.sample.json`** — a portable template whose `excel_path`, `source_path`, `phase_two_path`, and `source_path_employees` / `source_path_workcenters` paths are **relative defaults** (bare filenames / `.`, i.e. "files sit next to the app"), never anyone's absolute machine path. The app resolves its config at runtime as: use `config.json` if it exists, otherwise fall back to `config.sample.json`.
 
-1. **Place the files beside the app and use relative paths.** Copy your private workbook/CSVs into the `metadata/` folder (next to `streamlit_app.py`), then edit `config.json` so each path field is just the filename (e.g. `"excel_path": "python_community.xlsx"`) instead of an absolute path.
-2. **Keep the files wherever they already live and point `config.json` at them.** Edit the path fields in `config.json` to the files' real absolute location on your machine.
+**`config.json` is your per-machine override and is gitignored** — it never gets committed, so your personal paths can't leak back into the repo (and schema/column changes still live in the tracked `config.sample.json`). To run against your own data, copy the template and edit it:
 
-Either way, `config.json`'s path fields are effectively a **local override** — they only need to be correct for *your* machine. Since the file is git-tracked, avoid committing your personal paths back: run `git update-index --skip-worktree metadata/config.json` after editing it so `git status`/commits ignore further local changes (undo with `--no-skip-worktree` if you need to commit an intentional config change later).
+```powershell
+copy config.sample.json config.json
+```
+
+Then set the path fields in `config.json` one of two ways:
+
+1. **Place the files beside the app and keep the relative filenames.** Copy your private workbook/CSVs into the `metadata/` folder (next to `streamlit_app.py`); the sample's default filenames then already resolve, so no edit is needed.
+2. **Keep the files wherever they already live.** Edit the path fields in `config.json` to the files' real absolute location on your machine.
+
+A fresh clone still runs with no `config.json` at all (it falls back to `config.sample.json`) — it just needs the private data files placed beside the app to load anything real.
 
 ## Installation & Usage
-1. **Clone the repo.** `metadata/streamlit_app.py` and `metadata/config.json` are included; the private workbook/CSVs are not — see "Private data inputs" above.
+1. **Clone the repo.** `metadata/streamlit_app.py` and `metadata/config.sample.json` are included; `config.json` (your per-machine copy) and the private workbook/CSVs are not — see "Private data inputs" above.
 2. **Install dependencies** from the repo root:
    ```powershell
    pip install -r requirements.txt
    ```
-3. **Point `config.json` at your private data files** as described above.
+3. **Copy `config.sample.json` to `config.json` and point it at your private data files** as described above.
 4. **Run the app with Streamlit** from the `metadata/` folder:
    ```powershell
    streamlit run streamlit_app.py
@@ -84,7 +92,7 @@ If you want to run or modify the app:
 
 ### Tab modules
 - `streamlit_app.py` — Main dashboard app
-- `config.json` — Configuration for columns and Excel path (`excel_path` must match the actual workbook location — see "Private data inputs" above)
+- `config.sample.json` — Tracked config template (columns + portable relative default paths); copy to `config.json` (gitignored per-machine override) and set `excel_path` etc. to your actual file locations — see "Private data inputs" above
 - `python_community.xlsx` — Survey data workbook; **not tracked in this repo** (filename/location set via `excel_path` in `config.json`, see "Private data inputs" above)
 - `data_entry.py` — Data entry module with calendar selectors
 - `phase_two_entry.py` — Phase-two data entry

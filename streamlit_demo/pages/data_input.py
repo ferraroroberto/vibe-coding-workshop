@@ -107,7 +107,7 @@ def render() -> None:
             form_salary = st.number_input(
                 "Expected salary", min_value=0, value=50000, step=1000, key="di_form_salary"
             )
-            submitted = st.form_submit_button("Submit")
+            submitted = st.form_submit_button("Submit", key="data_input_form_submit")
 
         if submitted:
             st.success("Form submitted successfully!")

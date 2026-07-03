@@ -372,5 +372,6 @@ def export_selection_report(candidates_df):
         label="📥 Download Report",
         data=output,
         file_name="selection_report.xlsx",
-        mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        key="selection_download_report"
     )

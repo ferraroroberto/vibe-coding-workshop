@@ -63,7 +63,7 @@ def run(df, filters, config):
         st.success("✅ No null values found. All records already enriched.")
     
     # Button to load and process
-    if st.button("🔍 Load and Enrich Data"):
+    if st.button("🔍 Load and Enrich Data", key="data_import_load"):
         with st.spinner("Loading employee and work center data..."):
             try:
                 # Load employee data (semicolon separator)
@@ -272,7 +272,7 @@ def run(df, filters, config):
         
         col1, col2 = st.columns([1, 4])
         with col1:
-            if st.button("✅ Confirm & Save", type="primary"):
+            if st.button("✅ Confirm & Save", type="primary", key="data_import_confirm_save"):
                 with st.spinner("Saving enriched data..."):
                     success = save_enriched_data(df_enriched, config)
                     if success:
@@ -290,7 +290,7 @@ def run(df, filters, config):
                         st.balloons()
                         st.rerun()
         with col2:
-            if st.button("❌ Cancel"):
+            if st.button("❌ Cancel", key="data_import_cancel"):
                 # Clear session state
                 del st.session_state['df_enriched']
                 del st.session_state['records_updated']

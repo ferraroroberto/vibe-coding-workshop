@@ -68,7 +68,7 @@ def run(df, filters, config):
     st.markdown(f"**Records with Phase 2 data**: {has_phase2_data}")
     
     # Button to load and compare
-    if st.button("🔍 Load Phase 2 Data"):
+    if st.button("🔍 Load Phase 2 Data", key="phase_two_sync_load"):
         with st.spinner("Loading Phase 2 data..."):
             try:
                 # First, get total rows in Excel
