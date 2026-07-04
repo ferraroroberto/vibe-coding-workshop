@@ -1,0 +1,58 @@
+%% docs/architecture.mmd — this repo's own internal structure.
+%% Hand-authored, not generated (there is no crawler for a repo's own semantic
+%% shape, same reason a `.fleet.toml` `description` is hand-written). Update
+%% this diagram in the same PR as any material structural change (an exercise
+%% category added/removed, a build script relocated, a new standalone app
+%% folder). See fleet-config#256 for the general fleet-wide convention.
+
+flowchart TB
+  subgraph content["Content authoring"]
+    EXERCISES["exercises/&lt;name&gt;/\nexercise_starter.md (EN+ES) · exercise_solution.{md,py} ·\nexercise_setup_data.py · data/ (gitignored, generated)"]
+    PREP["preparation/\nmetaprompt.md · slideshow_part0{1,2,3}_*.md ·\nlive_preparation.md · how_images_were_created.md"]
+  end
+
+  subgraph build["scripts/ — build & facilitator tooling"]
+    BUILDSHOW["build_slideshow.py\nreads slideshow_config.json,\nparses exercise_starter.md EN/ES sections"]
+    COPYLIVE["copy_data_to_live.py\nreads exercise order from slideshow_es.html,\nwipes+rebuilds live/ bundle"]
+    VALIDATE["validate_exercises.py\nruns exercise_setup_data.py then\nexercise_solution.py per exercise"]
+    TESTLIB["test_libraries.py\npost-install smoke check"]
+    OTHERSCRIPTS["move_solutions.py · sync_slideshow_to_starters.py ·\nexport_slideshow_to_pdf.py · export_slideshow_ai_to_pdf.py ·\n_slideshow_pdf.py (Playwright) · pip_ini_finder.py · key_listener.py"]
+  end
+
+  EXERCISES --> BUILDSHOW
+  EXERCISES --> VALIDATE
+  EXERCISES --> COPYLIVE
+
+  subgraph slideshow["slideshow/ — workshop presentation (generated)"]
+    CONFIG["slideshow_config.json\nmain + bonus exercise order"]
+    SHTML["slideshow.html / slideshow_es.html\n(built, not hand-edited)"]
+    ASSETS["assets/ — per-exercise images"]
+  end
+  CONFIG --> BUILDSHOW
+  BUILDSHOW --> SHTML
+  SHTML --> ASSETS
+  SHTML --> COPYLIVE
+  OTHERSCRIPTS -->|export to PDF via Playwright| SHTML
+
+  LIVE["live/\nnumbered 00_.._16_.. bundle: starter + data,\nzipped as live.zip for participants"]
+  COPYLIVE --> LIVE
+
+  subgraph standalone["Standalone, self-contained presentations (no build step)"]
+    TIPS["tips/\nindex.html + styles.css + script.js\ndocs/vibe-coding-tips.md · examples/*.md"]
+    SLIDESHOWAI["slideshow_ai/\nslideshow_ai.html (bilingual EN/ES toggle)\nmockups/ (live automation/NLP/ML/transformer demos)\nkahoot/"]
+  end
+
+  subgraph apps["Standalone Streamlit apps (independent of the slideshow)"]
+    DEMO["streamlit_demo/\nmain_menu.py -> menu.py (page registry)\npages/*.py (multipage auto-discovery:\ndata_input, file_upload, crud_demo,\nprocess_runner, state_management, visualization)\ncached_data.py · data/ · run_app.bat"]
+    METADATA["metadata/ — Survey Data Dashboard\nstreamlit_app.py (page config + tab wiring) imports:\ndata_entry, explore, data_sync, data_import,\nparticipation_analysis, phase_two_sync,\nphase_two_entry, selection_management\n(UI) -> excel_io.py, fuzzy_search.py, sync_rules.py,\ncharts.py (data/IO logic)\nconfig.json (gitignored, per-machine) falls back to\nconfig.sample.json (tracked template)"]
+  end
+
+  REQ["requirements.txt\npandas/numpy/matplotlib/seaborn/openpyxl/\nfpdf2/duckdb/pyarrow/plotly/folium (exercises) ·\nstreamlit (demo + metadata) ·\nfuzzywuzzy/python-Levenshtein (metadata) ·\nplaywright (slideshow PDF export) · faker (etl_survey setup)"]
+  REQ --> EXERCISES
+  REQ --> DEMO
+  REQ --> METADATA
+  REQ --> OTHERSCRIPTS
+
+  ROOTDOCS["CLAUDE.md / AGENTS.md / README.md\nStreamlit conventions + repo map"]
+  ROOTDOCS -.->|conventions apply to| DEMO
+  ROOTDOCS -.->|conventions apply to| METADATA
