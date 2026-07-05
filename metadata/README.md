@@ -86,6 +86,7 @@ If you want to run or modify the app:
 
 ### Shared helpers (introduced in dedup refactor)
 - `excel_io.py` — Atomic Excel write helper (`save_dataframe_to_excel`): owns column-mapping, id-column lookup, and safe temp-file replace; all tab modules import from here
+- `csv_io.py` — Shared employee/work-center CSV loader (`load_employee_and_workcenter_data`, `resolve_employee_and_workcenter_paths`): owns path-building, separator handling, and `keep`-column subsetting for the two private CSV sources; used by data-import and participation-analysis tabs
 - `fuzzy_search.py` — Shared fuzzy-name filter (`fuzzy_filter_by_name`) using `fuzzywuzzy.process`; used by data-entry and phase-two-entry tabs
 - `charts.py` — Reusable chart builders (`build_breakdown_pie`, `grey_ramp`); used by explore and participation-analysis tabs
 - `sync_rules.py` — Shared sync-rule transformations (`apply_replicate_rules`, `apply_binary_checks`); used by data-sync and phase-two-sync tabs

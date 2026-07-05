@@ -1,8 +1,8 @@
 import streamlit as st
 import pandas as pd
 import logging
-import os
 
+from csv_io import load_employee_and_workcenter_data, resolve_employee_and_workcenter_paths
 from excel_io import atomic_write_sheet, build_column_id_to_index, load_full_sheet
 
 logger = logging.getLogger(__name__)
@@ -34,9 +34,8 @@ def run(df, filters, config):
         return
     
     # Build file paths
-    emp_path = os.path.join(emp_config.get('path', ''), emp_config.get('file', ''))
-    wc_path = os.path.join(wc_config.get('path', ''), wc_config.get('file', ''))
-    
+    emp_path, wc_path = resolve_employee_and_workcenter_paths(config)
+
     st.info(f"ℹ️ **Employee Source**: `{emp_path}`")
     st.info(f"ℹ️ **Work Center Source**: `{wc_path}`")
     
@@ -66,20 +65,13 @@ def run(df, filters, config):
     if st.button("🔍 Load and Enrich Data", key="data_import_load"):
         with st.spinner("Loading employee and work center data..."):
             try:
-                # Load employee data (semicolon separator)
-                df_emp = pd.read_csv(emp_path, sep=';', encoding='utf-8')
-                emp_keep_cols = emp_config.get('keep', [])
-                df_emp = df_emp[emp_keep_cols]
-                
+                # Load employee and work center data (shared helper handles
+                # separators and column subsetting for both sources).
+                df_emp, df_wc = load_employee_and_workcenter_data(config)
+
                 st.success(f"✅ Loaded {len(df_emp)} employee records")
-                
-                # Load work center data (comma separator)
-                df_wc = pd.read_csv(wc_path, sep=',', encoding='utf-8')
-                wc_keep_cols = wc_config.get('keep', [])
-                df_wc = df_wc[wc_keep_cols]
-                
                 st.success(f"✅ Loaded {len(df_wc)} work center records")
-                
+
             except FileNotFoundError as e:
                 st.error(f"❌ File not found: {e}")
                 return

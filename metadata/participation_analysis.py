@@ -2,9 +2,9 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 import logging
-import os
 
 from charts import grey_ramp
+from csv_io import load_employee_and_workcenter_data
 from filters import apply_filters
 
 logger = logging.getLogger(__name__)
@@ -32,22 +32,11 @@ def run(df, filters, config):
         st.error("⚠️ Employee or work center configuration missing in config.json")
         return
     
-    # Build file paths
-    emp_path = os.path.join(emp_config.get('path', ''), emp_config.get('file', ''))
-    wc_path = os.path.join(wc_config.get('path', ''), wc_config.get('file', ''))
-    
-    # Load unfiltered data (total population)
+    # Load unfiltered data (total population). Shared helper handles path
+    # building, separators, and column subsetting for both sources.
     try:
-        # Load employee data (semicolon separator)
-        df_emp = pd.read_csv(emp_path, sep=';', encoding='utf-8')
-        emp_keep_cols = emp_config.get('keep', [])
-        df_emp = df_emp[emp_keep_cols]
-        
-        # Load work center data (comma separator)
-        df_wc = pd.read_csv(wc_path, sep=',', encoding='utf-8')
-        wc_keep_cols = wc_config.get('keep', [])
-        df_wc = df_wc[wc_keep_cols]
-        
+        df_emp, df_wc = load_employee_and_workcenter_data(config)
+
         # Join employee with work center to get hierarchy
         df_total = df_emp.merge(
             df_wc,
