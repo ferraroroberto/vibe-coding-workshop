@@ -56,6 +56,7 @@ def run_script(exercise_path: Path, script_name: str) -> tuple[bool, str]:
             capture_output=True,
             text=True,
             timeout=120,
+            creationflags=subprocess.CREATE_NO_WINDOW if sys.platform == "win32" else 0,
         )
         output = result.stdout + result.stderr
         if result.returncode != 0:
