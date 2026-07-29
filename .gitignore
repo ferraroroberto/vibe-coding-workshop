@@ -33,3 +33,5 @@ slideshow_ai/kahoot/final/
 # metadata dashboard: per-machine config with real data-file paths.
 # Tracked template is config.sample.json; copy it to config.json and edit locally.
 metadata/config.json
+# Launcher scratch (ephemeral images/logs written by the tray launcher)
+.launcher-tmp/
