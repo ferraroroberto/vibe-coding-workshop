@@ -21,3 +21,6 @@ See `README.md` for setup, layout, and usage.
 ## Internal architecture
 
 [`docs/architecture.mmd`](docs/architecture.mmd) is a hand-authored Mermaid diagram of this repo's own internal structure (exercise content, the `scripts/` build/facilitator tooling, the generated `slideshow/` + `live/` bundle, the standalone `tips/` / `slideshow_ai/` presentations, and the independent `streamlit_demo/` + `metadata/` apps). Update it in the same PR as any material structural change (an exercise category added/removed, a build script relocated, a new standalone app folder) — same anti-staleness contract as a `.fleet.toml` `description` field. It is not auto-generated and not covered by any test suite.
+
+## UX surface
+- design spec applies: no        # no web app: a workshop slide deck (tips/), Streamlit demos and exercises, not a FastAPI + static-PWA UI
