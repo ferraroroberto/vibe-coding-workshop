@@ -60,6 +60,8 @@ A hands-on workshop for learning data manipulation, automation, and visualizatio
 | `requirements.txt` | Python dependencies |
 | `metadata/` | Survey data dashboard: Streamlit app, config, and helper modules — see `metadata/README.md` |
 
+The annotated repo tree and where new code goes: [docs/layout.md](docs/layout.md). The structural diagram is [docs/architecture.mmd](docs/architecture.mmd).
+
 ### Preparation docs
 
 - `preparation/slideshow_part01_exercises.md` – How the basic slideshow was built

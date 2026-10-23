@@ -22,5 +22,9 @@ See `README.md` for setup, layout, and usage.
 
 [`docs/architecture.mmd`](docs/architecture.mmd) is a hand-authored Mermaid diagram of this repo's own internal structure (exercise content, the `scripts/` build/facilitator tooling, the generated `slideshow/` + `live/` bundle, the standalone `tips/` / `slideshow_ai/` presentations, and the independent `streamlit_demo/` + `metadata/` apps). Update it in the same PR as any material structural change (an exercise category added/removed, a build script relocated, a new standalone app folder) — same anti-staleness contract as a `.fleet.toml` `description` field. It is not auto-generated and not covered by any test suite.
 
+## Structure ratchet
+
+- **Structure ratchet.** `scripts/verify-before-ship.ps1` runs `scripts/structure_ratchet.py`, which fails on a new file over 1,000 lines, a new function over 100 lines or a directory past 40 modules, and on any baselined offender that grows past its size in `.structure-ratchet-baseline.json`; exit 3 (git unusable, a file that does not parse) is a failure, never a pass. The script is the scaffold's, vendored byte-for-byte (`.fleet.toml` `[vendored]`, `[structure_ratchet]`): re-vendor with `/propagate-vendored structure_ratchet`, never edit. `exercises/**` is excluded (solutions are teaching material, written long on purpose) and no `shape` is declared. Shrink the baseline with `--update-baseline`; `--update-baseline --allow-additions` is the only way to add an entry and shows in review. Where code goes: [`docs/layout.md`](docs/layout.md).
+
 ## UX surface
 - design spec applies: no        # no web app: a workshop slide deck (tips/), Streamlit demos and exercises, not a FastAPI + static-PWA UI

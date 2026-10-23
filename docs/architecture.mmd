@@ -16,7 +16,7 @@ flowchart TB
     COPYLIVE["copy_data_to_live.py\nreads exercise order from slideshow_es.html,\nwipes+rebuilds live/ bundle"]
     VALIDATE["validate_exercises.py\nruns exercise_setup_data.py then\nexercise_solution.py per exercise"]
     TESTLIB["test_libraries.py\npost-install smoke check"]
-    OTHERSCRIPTS["move_solutions.py · sync_slideshow_to_starters.py ·\nexport_slideshow_to_pdf.py · export_slideshow_ai_to_pdf.py ·\n_slideshow_pdf.py (Playwright) · pip_ini_finder.py · key_listener.py"]
+    OTHERSCRIPTS["move_solutions.py · sync_slideshow_to_starters.py ·\nexport_slideshow_to_pdf.py · export_slideshow_ai_to_pdf.py ·\n_slideshow_pdf.py (Playwright) · pip_ini_finder.py · key_listener.py ·\nstructure_ratchet.py (vendored) · verify-before-ship.ps1"]
   end
 
   EXERCISES --> BUILDSHOW

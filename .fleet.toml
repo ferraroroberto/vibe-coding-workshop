@@ -5,3 +5,22 @@
 layer       = "working-web"
 icon        = "🎓"
 description = "Python workshop + exercises."
+
+# [vendored] -- components copied byte-for-byte from project-scaffolding, with the
+# scaffold commit each came from. Re-vendor through /propagate-vendored, never by hand.
+[vendored]
+structure_ratchet = { src = "scripts/structure_ratchet.py", sha = "84d2b12ab416551762e4a615e4a706df91cea69f", dest = "scripts/structure_ratchet.py" }
+
+# [structure_ratchet] -- the scaffold's baseline-and-ratchet layout stage.
+# scripts/verify-before-ship.ps1 runs scripts/structure_ratchet.py, which fails when a
+# new file passes 1,000 lines, a new function 100 lines or a flat directory 40 modules,
+# and when a baselined offender grows past its size in .structure-ratchet-baseline.json.
+# Existing offenders are baselined at today's size, never excluded. Exit 3 (git unusable,
+# an unparseable file) fails the gate. No `shape` is declared: the workshop content
+# (slides, exercises, demos) fits no preset, so the root layout check reports not applicable.
+# Procedure: project-scaffolding docs/structure-ratchet.md.
+[structure_ratchet]
+enabled  = true
+baseline = ".structure-ratchet-baseline.json"
+# Exercise solutions are teaching material, written long on purpose.
+exclude  = ["exercises/**"]
