@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "entries": [
+    {"key": "fn:metadata/data_import.py:run", "lines": 285},
+    {"key": "fn:metadata/data_sync.py:run", "lines": 145},
+    {"key": "fn:metadata/explore.py:render_phase2_metrics", "lines": 105},
+    {"key": "fn:metadata/explore.py:run", "lines": 153},
+    {"key": "fn:metadata/phase_two_sync.py:run", "lines": 213},
+    {"key": "fn:scripts/test_libraries.py:main", "lines": 216},
+    {"key": "fn:streamlit_demo/pages/crud_demo.py:render", "lines": 103},
+    {"key": "fn:streamlit_demo/pages/data_input.py:render", "lines": 104},
+    {"key": "size:slideshow/slideshow.html", "lines": 1432},
+    {"key": "size:slideshow/slideshow_es.html", "lines": 1520}
+  ]
+}
