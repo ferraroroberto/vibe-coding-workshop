@@ -26,5 +26,9 @@ See `README.md` for setup, layout, and usage.
 
 - **Structure ratchet.** `scripts/verify-before-ship.ps1` runs `scripts/structure_ratchet.py`, which fails on a new file over 1,000 lines, a new function over 100 lines or a directory past 40 modules, and on any baselined offender that grows past its size in `.structure-ratchet-baseline.json`; exit 3 (git unusable, a file that does not parse) is a failure, never a pass. The script is the scaffold's, vendored byte-for-byte (`.fleet.toml` `[vendored]`, `[structure_ratchet]`): re-vendor with `/propagate-vendored structure_ratchet`, never edit. `exercises/**` is excluded (solutions are teaching material, written long on purpose) and no `shape` is declared. Shrink the baseline with `--update-baseline`; `--update-baseline --allow-additions` is the only way to add an entry and shows in review. Where code goes: [`docs/layout.md`](docs/layout.md).
 
+## Instruction ratchet
+
+- **Instruction ratchet.** `scripts/verify-before-ship.ps1` also runs `scripts/instruction_ratchet.py`, which lints `CLAUDE.md` and `AGENTS.md` against the weekly prompt audit's deterministic rules and fails when a rule-hit count rises above `.instruction-ratchet-baseline.json` (empty today) or a file passes its size cap; exit 3 is a failure, never a pass. Vendored byte-for-byte like the structure ratchet (`.fleet.toml` `[vendored]`, `[instruction_ratchet]`): re-vendor with `/propagate-vendored instruction_ratchet`, never edit.
+
 ## UX surface
 - design spec applies: no        # no web app: a workshop slide deck (tips/), Streamlit demos and exercises, not a FastAPI + static-PWA UI
