@@ -15,7 +15,7 @@ vibe-coding-workshop/
 │   ├── docs/         # the written tips
 │   └── examples/     # one worked example per tip
 ├── preparation/      # how the deck, the images and the live bundle are built and extended
-├── scripts/          # build and facilitator tooling, run from the repo root; also the vendored structure and instruction ratchets and the gate
+├── scripts/          # build and facilitator tooling, run from the repo root; also the vendored structure, instruction and doc-refs ratchets and the gate
 ├── streamlit_demo/   # Streamlit reference app
 │   ├── pages/        # one file per demo page
 │   ├── data/         # data loader for the demos

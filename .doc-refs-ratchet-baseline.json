@@ -1,0 +1,6 @@
+{
+  "version": 1,
+  "entries": [
+    {"key": "README.md", "refs": ["docs/vibe-coding-tips.md"]}
+  ]
+}
