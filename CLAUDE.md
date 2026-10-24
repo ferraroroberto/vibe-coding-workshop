@@ -30,5 +30,9 @@ See `README.md` for setup, layout, and usage.
 
 - **Instruction ratchet.** `scripts/verify-before-ship.ps1` also runs `scripts/instruction_ratchet.py`, which lints `CLAUDE.md` and `AGENTS.md` against the weekly prompt audit's deterministic rules and fails when a rule-hit count rises above `.instruction-ratchet-baseline.json` (empty today) or a file passes its size cap; exit 3 is a failure, never a pass. Vendored byte-for-byte like the structure ratchet (`.fleet.toml` `[vendored]`, `[instruction_ratchet]`): re-vendor with `/propagate-vendored instruction_ratchet`, never edit.
 
+## Doc refs ratchet
+
+- **Doc refs ratchet.** `scripts/verify-before-ship.ps1` also runs `scripts/doc_refs_ratchet.py`, which fails when `README.md`, `CLAUDE.md` or `docs/` names a repo path, module, relative link or loopback port that does not exist, beyond the shrink-only `.doc-refs-ratchet-baseline.json` (one README path today); exit 3 is a failure, never a pass. Vendored byte-for-byte like the other ratchets (`.fleet.toml` `[vendored]`, `[doc_refs_ratchet]`): re-vendor with `/propagate-vendored doc_refs_ratchet`, never edit.
+
 ## UX surface
 - design spec applies: no        # no web app: a workshop slide deck (tips/), Streamlit demos and exercises, not a FastAPI + static-PWA UI
