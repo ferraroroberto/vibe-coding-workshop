@@ -34,5 +34,9 @@ See `README.md` for setup, layout, and usage.
 
 - **Doc refs ratchet.** `scripts/verify-before-ship.ps1` also runs `scripts/doc_refs_ratchet.py`, which fails when `README.md`, `CLAUDE.md` or `docs/` names a repo path, module, relative link or loopback port that does not exist, beyond the shrink-only `.doc-refs-ratchet-baseline.json` (one README path today); exit 3 is a failure, never a pass. Vendored byte-for-byte like the other ratchets (`.fleet.toml` `[vendored]`, `[doc_refs_ratchet]`): re-vendor with `/propagate-vendored doc_refs_ratchet`, never edit.
 
+## Dead code ratchet
+
+- **Dead code ratchet.** `scripts/verify-before-ship.ps1` also runs `scripts/dead_code_ratchet.py`, which fails when a new Python function, class or method appears that nothing in the repo refers to, beyond the shrink-only `.dead-code-ratchet-baseline.json`; exit 3 is a failure, never a pass. Vendored byte-for-byte like the other ratchets (`.fleet.toml` `[vendored]`, `[dead_code_ratchet]`): re-vendor with `/propagate-vendored dead_code_ratchet`, never edit.
+
 ## UX surface
 - design spec applies: no        # no web app: a workshop slide deck (tips/), Streamlit demos and exercises, not a FastAPI + static-PWA UI
