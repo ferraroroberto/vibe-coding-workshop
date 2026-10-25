@@ -4,7 +4,7 @@
     Pre-ship verification gate for vibe-coding-workshop.
 
 .DESCRIPTION
-    The repo has no test suite, so the gate is five ratchets. The structure ratchet,
+    The repo has no test suite, so the gate is six ratchets. The structure ratchet,
     scripts/structure_ratchet.py, fails when a new file passes 1,000 lines, a new
     function 100 lines or a flat directory 40 modules, and when a baselined
     offender grows past its size in .structure-ratchet-baseline.json. The
@@ -17,7 +17,9 @@
     appears that nothing in the repo refers to, beyond .dead-code-ratchet-baseline.json.
     The static ratchet, scripts/static_ratchet.py, fails on a new duplicated block (jscpd
     through npx), unused import or variable, or likely-bug and security finding (ruff)
-    beyond .static-ratchet-baseline.json. Each is opt-in via its .fleet.toml table. Exit 3 means
+    beyond .static-ratchet-baseline.json. The docs ratchet, scripts/docs_ratchet.py, fails when
+    the root README.md passes its size budget or README.md and docs/ gain issue references,
+    dated headings or changelog headings beyond .docs-ratchet-baseline.json. Each is opt-in via its .fleet.toml table. Exit 3 means
     "not confirmed" (git unusable, an unparseable file) and fails the gate, never
     passes it.
 
@@ -92,6 +94,18 @@ if ($code -ne 0) {
         Write-Host "[FAIL] static ratchet: NOT CONFIRMED (exit 3) - counts as a failure" -ForegroundColor Red
     } else {
         Write-Host "[FAIL] static ratchet failed (exit $code)" -ForegroundColor Red
+    }
+    exit $code
+}
+
+Write-Host "==> docs ratchet" -ForegroundColor Cyan
+& $py "scripts/docs_ratchet.py"
+$code = $LASTEXITCODE
+if ($code -ne 0) {
+    if ($code -eq 3) {
+        Write-Host "[FAIL] docs ratchet: NOT CONFIRMED (exit 3) - counts as a failure" -ForegroundColor Red
+    } else {
+        Write-Host "[FAIL] docs ratchet failed (exit $code)" -ForegroundColor Red
     }
     exit $code
 }
