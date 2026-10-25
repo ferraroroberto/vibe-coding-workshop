@@ -46,5 +46,9 @@ See `README.md` for setup, layout, and usage.
 
 - **Docs ratchet.** `scripts/verify-before-ship.ps1` also runs `scripts/docs_ratchet.py`, which fails when the root `README.md` passes its size budget (40 KiB) or `README.md` and `docs/**/*.md` gain a history marker (an issue reference, a dated heading or a changelog heading) beyond the shrink-only `.docs-ratchet-baseline.json` (empty today); exit 3 is a failure, never a pass. State the present-tense why in words, and keep history in the issue and `git log`. Vendored byte-for-byte like the other ratchets (`.fleet.toml` `[vendored]`, `[docs_ratchet]`): re-vendor with `/propagate-vendored docs_ratchet`, never edit.
 
+## Comment ratchet
+
+- **Comment ratchet.** `scripts/verify-before-ship.ps1` also runs `scripts/comment_ratchet.py`, which fails when a file gains an issue reference (`#NNN`) inside a Python, JS, CSS or PowerShell comment beyond the shrink-only `.comment-ratchet-baseline.json` (empty today); exit 3 is a failure, never a pass. A comment states the present-tense why, and history lives in the issue and `git log`. Vendored byte-for-byte like the other ratchets (`.fleet.toml` `[vendored]`, `[comment_ratchet]`): re-vendor with `/propagate-vendored comment_ratchet`, never edit.
+
 ## UX surface
 - design spec applies: no        # no web app: a workshop slide deck (tips/), Streamlit demos and exercises, not a FastAPI + static-PWA UI
