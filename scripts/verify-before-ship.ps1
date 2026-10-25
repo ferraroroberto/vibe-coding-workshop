@@ -4,7 +4,7 @@
     Pre-ship verification gate for vibe-coding-workshop.
 
 .DESCRIPTION
-    The repo has no test suite, so the gate is seven ratchets. The structure ratchet,
+    The repo has no test suite, so the gate is eight ratchets. The structure ratchet,
     scripts/structure_ratchet.py, fails when a new file passes 1,000 lines, a new
     function 100 lines or a flat directory 40 modules, and when a baselined
     offender grows past its size in .structure-ratchet-baseline.json. The
@@ -21,7 +21,10 @@
     the root README.md passes its size budget or README.md and docs/ gain issue references,
     dated headings or changelog headings beyond .docs-ratchet-baseline.json. The comment ratchet, scripts/comment_ratchet.py, fails
     when a file gains issue references (#NNN) in its Python, JS, CSS or PowerShell comments
-    beyond .comment-ratchet-baseline.json. Each is opt-in via its .fleet.toml table. Exit 3 means
+    beyond .comment-ratchet-baseline.json. The conventions ratchet,
+    scripts/conventions_ratchet.py, fails when a Python file gains a spawn without
+    creationflags (no-window) or a hardcoded drive path (no-drive-path) beyond
+    .conventions-ratchet-baseline.json. Each is opt-in via its .fleet.toml table. Exit 3 means
     "not confirmed" (git unusable, an unparseable file) and fails the gate, never
     passes it.
 
@@ -120,6 +123,18 @@ if ($code -ne 0) {
         Write-Host "[FAIL] comment ratchet: NOT CONFIRMED (exit 3) - counts as a failure" -ForegroundColor Red
     } else {
         Write-Host "[FAIL] comment ratchet failed (exit $code)" -ForegroundColor Red
+    }
+    exit $code
+}
+
+Write-Host "==> conventions ratchet" -ForegroundColor Cyan
+& $py "scripts/conventions_ratchet.py"
+$code = $LASTEXITCODE
+if ($code -ne 0) {
+    if ($code -eq 3) {
+        Write-Host "[FAIL] conventions ratchet: NOT CONFIRMED (exit 3) - counts as a failure" -ForegroundColor Red
+    } else {
+        Write-Host "[FAIL] conventions ratchet failed (exit $code)" -ForegroundColor Red
     }
     exit $code
 }
