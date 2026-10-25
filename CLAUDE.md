@@ -42,5 +42,9 @@ See `README.md` for setup, layout, and usage.
 
 - **Static ratchet.** `scripts/verify-before-ship.ps1` also runs `scripts/static_ratchet.py`, which fails when a new duplicated block (jscpd, run through `npx`), unused import or variable, or likely-bug and security finding (ruff, so Node and `ruff` from `requirements.txt` must be present) appears beyond the shrink-only `.static-ratchet-baseline.json` (empty today); exit 3 is a failure, never a pass. Vendored byte-for-byte like the other ratchets (`.fleet.toml` `[vendored]`, `[static_ratchet]`): re-vendor with `/propagate-vendored static_ratchet`, never edit.
 
+## Docs ratchet
+
+- **Docs ratchet.** `scripts/verify-before-ship.ps1` also runs `scripts/docs_ratchet.py`, which fails when the root `README.md` passes its size budget (40 KiB) or `README.md` and `docs/**/*.md` gain a history marker (an issue reference, a dated heading or a changelog heading) beyond the shrink-only `.docs-ratchet-baseline.json` (empty today); exit 3 is a failure, never a pass. State the present-tense why in words, and keep history in the issue and `git log`. Vendored byte-for-byte like the other ratchets (`.fleet.toml` `[vendored]`, `[docs_ratchet]`): re-vendor with `/propagate-vendored docs_ratchet`, never edit.
+
 ## UX surface
 - design spec applies: no        # no web app: a workshop slide deck (tips/), Streamlit demos and exercises, not a FastAPI + static-PWA UI
