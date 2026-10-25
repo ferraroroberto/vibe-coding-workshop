@@ -25,3 +25,6 @@ python-Levenshtein # speeds up fuzzywuzzy; avoids the slow pure-python SequenceM
 
 # Requirements used in the slideshow export
 playwright
+
+# Requirements used by the ship gate (scripts/static_ratchet.py runs ruff from this venv)
+ruff

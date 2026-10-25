@@ -15,7 +15,6 @@ Run from the project root. Requires a Python environment with project dependenci
 """
 
 import logging
-import os
 import subprocess
 import sys
 from pathlib import Path
@@ -82,7 +81,6 @@ def main():
         sys.exit(1)
 
     results = []
-    all_passed = True
 
     for exercise_path in exercises:
         name = exercise_path.name
@@ -94,7 +92,6 @@ def main():
             if len(setup_out) > 500:
                 log.error("  ... (truncated)")
             results.append((name, "setup", False))
-            all_passed = False
             continue
         log.info("  Setup: %s%s", setup_out[:80], '...' if len(setup_out) > 80 else '')
 
@@ -104,7 +101,6 @@ def main():
             if len(solution_out) > 500:
                 log.error("  ... (truncated)")
             results.append((name, "solution", False))
-            all_passed = False
             continue
         log.info("  Solution: %s%s", solution_out[:80], '...' if len(solution_out) > 80 else '')
 

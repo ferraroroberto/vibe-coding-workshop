@@ -13,6 +13,7 @@ structure_ratchet = { src = "scripts/structure_ratchet.py", sha = "84d2b12ab4165
 instruction_ratchet = { src = "scripts/instruction_ratchet.py", sha = "60fdd0350f18d28838428b2e773f7868f6381fbf", dest = "scripts/instruction_ratchet.py" }
 doc_refs_ratchet = { src = "scripts/doc_refs_ratchet.py", sha = "23dbefa46635c952d3c871bda4e80b740e7f2859", dest = "scripts/doc_refs_ratchet.py" }
 dead_code_ratchet = { src = "scripts/dead_code_ratchet.py", sha = "0eb0da42298e391fc614b3fe550bd6cf2d07c693", dest = "scripts/dead_code_ratchet.py" }
+static_ratchet = { src = "scripts/static_ratchet.py", sha = "9f5ba3bdfb62265908d2b6c1c5436da792f981b3", dest = "scripts/static_ratchet.py" }
 
 # [structure_ratchet] -- the scaffold's baseline-and-ratchet layout stage.
 # scripts/verify-before-ship.ps1 runs scripts/structure_ratchet.py, which fails when a
@@ -61,3 +62,14 @@ baseline = ".dead-code-ratchet-baseline.json"
 # baselined: a tracked baseline names the function in a .json file, which the ratchet reads
 # as a reference, so the entry would mask itself.
 allow    = ["exercises/viz_d3_bar_chart/exercise_solution.py:collect_products"]
+
+# [static_ratchet] -- the scaffold's baseline-and-ratchet stage for duplicated and unused code.
+# scripts/verify-before-ship.ps1 runs scripts/static_ratchet.py, which fails on a new
+# duplicated block (jscpd, through npx), unused import or variable, or likely-bug and
+# security finding (ruff) beyond the shrink-only .static-ratchet-baseline.json. Existing
+# findings are baselined, never excluded. Exit 3 (no npx, no ruff, unparseable output) fails
+# the gate as NOT CONFIRMED. Vendored scripts are left out automatically.
+# Procedure: project-scaffolding docs/static-ratchet.md.
+[static_ratchet]
+enabled  = true
+baseline = ".static-ratchet-baseline.json"

@@ -1,5 +1,4 @@
 import pandas as pd
-import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
 from matplotlib.ticker import FuncFormatter
@@ -52,7 +51,7 @@ def main():
 
     fig, ax = plt.subplots(figsize=(14, 9))
 
-    scatter = sns.scatterplot(
+    sns.scatterplot(
         data=df,
         x="Unit_Price",
         y="Revenue",
