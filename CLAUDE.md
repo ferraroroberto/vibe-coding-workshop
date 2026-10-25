@@ -50,5 +50,9 @@ See `README.md` for setup, layout, and usage.
 
 - **Comment ratchet.** `scripts/verify-before-ship.ps1` also runs `scripts/comment_ratchet.py`, which fails when a file gains an issue reference (`#NNN`) inside a Python, JS, CSS or PowerShell comment beyond the shrink-only `.comment-ratchet-baseline.json` (empty today); exit 3 is a failure, never a pass. A comment states the present-tense why, and history lives in the issue and `git log`. Vendored byte-for-byte like the other ratchets (`.fleet.toml` `[vendored]`, `[comment_ratchet]`): re-vendor with `/propagate-vendored comment_ratchet`, never edit.
 
+## Conventions ratchet
+
+- **Conventions ratchet.** `scripts/verify-before-ship.ps1` also runs `scripts/conventions_ratchet.py`, which fails when a tracked Python file gains a `no-window` hit (a subprocess spawn without `creationflags`) or a `no-drive-path` hit (a string literal starting with a drive letter) beyond the shrink-only `.conventions-ratchet-baseline.json` (empty today); exit 3 is a failure, never a pass. The other rules are off on purpose: `logging-not-print` scans `app/` and `src/`, which this repo does not have, and `secret-compare` and `git-wrapper` need a helper this repo does not have. A call that must break a rule carries a reasoned `# <rule>-exempt: <why>` marker. Vendored byte-for-byte like the other ratchets (`.fleet.toml` `[vendored]`, `[conventions_ratchet]`): re-vendor with `/propagate-vendored conventions_ratchet`, never edit.
+
 ## UX surface
 - design spec applies: no        # no web app: a workshop slide deck (tips/), Streamlit demos and exercises, not a FastAPI + static-PWA UI
