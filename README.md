@@ -44,7 +44,7 @@ A hands-on workshop for learning data manipulation, automation, and visualizatio
 
 | Path | Description |
 |------|-------------|
-| `tips/` | Vibe Coding Tips presentation: `index.html` (slides), `styles.css`, `script.js`, `docs/vibe-coding-tips.md`, `examples/*.md` (12 tip examples) |
+| `tips/` | Vibe Coding Tips presentation: `index.html` (slides), `styles.css`, `script.js`, `tips/docs/vibe-coding-tips.md`, `examples/*.md` (12 tip examples) |
 | `slideshow/slideshow.html` | Workshop slideshow (English): welcome, menu, main/bonus exercises, break, survey, congratulations |
 | `slideshow/slideshow_es.html` | Spanish version of the slideshow |
 | `slideshow/assets/` | Images for slideshow (one per exercise + welcome, menu, break, survey, etc.) |
