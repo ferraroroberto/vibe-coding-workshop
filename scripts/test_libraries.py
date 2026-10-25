@@ -15,16 +15,7 @@ def check(msg, success):
         log.info("\033[91m✘\033[0m %s", msg)
 
 
-def main():
-    logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
-    log.info("=" * 55)
-    log.info("  Workshop Library Test Suite")
-    log.info("=" * 55)
-    log.info("  Python: %s", sys.version.split()[0])
-    log.info("  CWD:    %s", os.getcwd())
-    log.info("=" * 55)
-
-    # --- Faker ---
+def _check_faker():
     log.info("--- Faker ---")
     try:
         import faker
@@ -36,7 +27,8 @@ def main():
     except Exception as e:
         check(f"Faker test failed: {e}", False)
 
-    # --- DuckDB ---
+
+def _check_duckdb():
     log.info("--- DuckDB ---")
     try:
         import duckdb
@@ -49,7 +41,8 @@ def main():
     except Exception as e:
         check(f"DuckDB test failed: {e}", False)
 
-    # --- Pandas ---
+
+def _check_pandas():
     log.info("--- Pandas ---")
     try:
         import pandas as pd
@@ -61,7 +54,8 @@ def main():
     except Exception as e:
         check(f"Pandas test failed: {e}", False)
 
-    # --- NumPy ---
+
+def _check_numpy():
     log.info("--- NumPy ---")
     try:
         import numpy as np
@@ -72,7 +66,8 @@ def main():
     except Exception as e:
         check(f"NumPy test failed: {e}", False)
 
-    # --- Matplotlib ---
+
+def _check_matplotlib():
     log.info("--- Matplotlib ---")
     try:
         import matplotlib
@@ -88,9 +83,12 @@ def main():
     except Exception as e:
         check(f"Matplotlib test failed: {e}", False)
 
-    # --- Seaborn ---
+
+def _check_seaborn():
     log.info("--- Seaborn ---")
     try:
+        import matplotlib.pyplot as plt
+        import pandas as pd
         import seaborn as sns
         log.info("  Version: %s", sns.__version__)
         # Test a basic seaborn theme set and plot
@@ -108,7 +106,8 @@ def main():
     except Exception as e:
         check(f"Seaborn test failed: {e}", False)
 
-    # --- Plotly ---
+
+def _check_plotly():
     log.info("--- Plotly ---")
     try:
         import plotly
@@ -127,7 +126,8 @@ def main():
     except Exception as e:
         check(f"Plotly test failed: {e}", False)
 
-    # --- Folium ---
+
+def _check_folium():
     log.info("--- Folium ---")
     try:
         import folium
@@ -143,7 +143,8 @@ def main():
     except Exception as e:
         check(f"Folium test failed: {e}", False)
 
-    # --- FPDF2 ---
+
+def _check_fpdf2():
     log.info("--- FPDF2 ---")
     try:
         from fpdf import FPDF
@@ -160,7 +161,8 @@ def main():
     except Exception as e:
         check(f"FPDF2 test failed: {e}", False)
 
-    # --- Openpyxl ---
+
+def _check_openpyxl():
     log.info("--- Openpyxl ---")
     try:
         import openpyxl
@@ -174,7 +176,8 @@ def main():
     except Exception as e:
         check(f"Openpyxl test failed: {e}", False)
 
-    # --- PyArrow ---
+
+def _check_pyarrow():
     log.info("--- PyArrow ---")
     try:
         import pyarrow as pa
@@ -185,7 +188,8 @@ def main():
     except Exception as e:
         check(f"PyArrow test failed: {e}", False)
 
-    # --- XlsxWriter ---
+
+def _check_xlsxwriter():
     log.info("--- XlsxWriter ---")
     try:
         import xlsxwriter
@@ -205,7 +209,8 @@ def main():
         if os.path.exists(temp_path):
             os.remove(temp_path)
 
-    # --- Streamlit ---
+
+def _check_streamlit():
     log.info("--- Streamlit ---")
     try:
         import streamlit as st
@@ -218,7 +223,8 @@ def main():
     except Exception as e:
         check(f"Streamlit test failed: {e}", False)
 
-    # --- os (built-in) ---
+
+def _check_os_built_in():
     log.info("--- os (built-in) ---")
     try:
         log.info("  CWD: %s", os.getcwd())
@@ -226,6 +232,31 @@ def main():
         check("os test", True)
     except Exception as e:
         check(f"os test failed: {e}", False)
+
+
+def main():
+    logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
+    log.info("=" * 55)
+    log.info("  Workshop Library Test Suite")
+    log.info("=" * 55)
+    log.info("  Python: %s", sys.version.split()[0])
+    log.info("  CWD:    %s", os.getcwd())
+    log.info("=" * 55)
+
+    _check_faker()
+    _check_duckdb()
+    _check_pandas()
+    _check_numpy()
+    _check_matplotlib()
+    _check_seaborn()
+    _check_plotly()
+    _check_folium()
+    _check_fpdf2()
+    _check_openpyxl()
+    _check_pyarrow()
+    _check_xlsxwriter()
+    _check_streamlit()
+    _check_os_built_in()
 
     # --- Summary ---
     log.info("=" * 55)
