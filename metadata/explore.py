@@ -1,6 +1,5 @@
 import streamlit as st
 import pandas as pd
-import json
 import plotly.express as px
 from collections import Counter
 
@@ -114,7 +113,6 @@ def run(df, filters, config):
         return f'background-color: rgb({r},{g},{b}); color: white' if val > 0 else ''
 
     def style_heatmap(df):
-        styled = df.copy()
         min_max = {col: (df[col].min(), df[col].max()) for col in df.columns}
         def style_func(val, col):
             min_val, max_val = min_max[col]

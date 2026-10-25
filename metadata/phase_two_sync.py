@@ -291,7 +291,6 @@ def sync_phase2_data(df_master, matched_records, df_phase2, config):
         Updated master dataframe
     """
     try:
-        excel_spec = config['excel_interpreter_spec']
         phase_two_spec = config['phase_two_spec']
 
         # Load full Excel with header

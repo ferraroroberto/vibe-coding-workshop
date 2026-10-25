@@ -26,8 +26,6 @@ def run(df, filters, config):
     # Extract config
     emp_config = config.get('source_path_employees', {})
     wc_config = config.get('source_path_workcenters', {})
-    excel_path = config.get('excel_path')
-    excel_spec = config.get('excel_interpreter_spec', {})
     
     if not emp_config or not wc_config:
         st.error("⚠️ Employee or work center configuration missing in config.json")

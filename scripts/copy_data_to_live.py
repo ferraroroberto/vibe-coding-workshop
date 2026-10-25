@@ -13,7 +13,6 @@ import — call `main()` (or run the file) to do the work.
 """
 
 import logging
-import os
 import re
 import shutil
 from pathlib import Path

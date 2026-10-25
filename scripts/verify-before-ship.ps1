@@ -4,7 +4,7 @@
     Pre-ship verification gate for vibe-coding-workshop.
 
 .DESCRIPTION
-    The repo has no test suite, so the gate is four ratchets. The structure ratchet,
+    The repo has no test suite, so the gate is five ratchets. The structure ratchet,
     scripts/structure_ratchet.py, fails when a new file passes 1,000 lines, a new
     function 100 lines or a flat directory 40 modules, and when a baselined
     offender grows past its size in .structure-ratchet-baseline.json. The
@@ -15,7 +15,9 @@
     exist beyond .doc-refs-ratchet-baseline.json. The dead-code ratchet,
     scripts/dead_code_ratchet.py, fails when a new Python function, class or method
     appears that nothing in the repo refers to, beyond .dead-code-ratchet-baseline.json.
-    Each is opt-in via its .fleet.toml table. Exit 3 means
+    The static ratchet, scripts/static_ratchet.py, fails on a new duplicated block (jscpd
+    through npx), unused import or variable, or likely-bug and security finding (ruff)
+    beyond .static-ratchet-baseline.json. Each is opt-in via its .fleet.toml table. Exit 3 means
     "not confirmed" (git unusable, an unparseable file) and fails the gate, never
     passes it.
 
@@ -78,6 +80,18 @@ if ($code -ne 0) {
         Write-Host "[FAIL] dead code ratchet: NOT CONFIRMED (exit 3) - counts as a failure" -ForegroundColor Red
     } else {
         Write-Host "[FAIL] dead code ratchet failed (exit $code)" -ForegroundColor Red
+    }
+    exit $code
+}
+
+Write-Host "==> static ratchet" -ForegroundColor Cyan
+& $py "scripts/static_ratchet.py"
+$code = $LASTEXITCODE
+if ($code -ne 0) {
+    if ($code -eq 3) {
+        Write-Host "[FAIL] static ratchet: NOT CONFIRMED (exit 3) - counts as a failure" -ForegroundColor Red
+    } else {
+        Write-Host "[FAIL] static ratchet failed (exit $code)" -ForegroundColor Red
     }
     exit $code
 }

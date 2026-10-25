@@ -38,5 +38,9 @@ See `README.md` for setup, layout, and usage.
 
 - **Dead code ratchet.** `scripts/verify-before-ship.ps1` also runs `scripts/dead_code_ratchet.py`, which fails when a new Python function, class or method appears that nothing in the repo refers to, beyond the shrink-only `.dead-code-ratchet-baseline.json`; exit 3 is a failure, never a pass. Vendored byte-for-byte like the other ratchets (`.fleet.toml` `[vendored]`, `[dead_code_ratchet]`): re-vendor with `/propagate-vendored dead_code_ratchet`, never edit.
 
+## Static ratchet
+
+- **Static ratchet.** `scripts/verify-before-ship.ps1` also runs `scripts/static_ratchet.py`, which fails when a new duplicated block (jscpd, run through `npx`), unused import or variable, or likely-bug and security finding (ruff, so Node and `ruff` from `requirements.txt` must be present) appears beyond the shrink-only `.static-ratchet-baseline.json` (empty today); exit 3 is a failure, never a pass. Vendored byte-for-byte like the other ratchets (`.fleet.toml` `[vendored]`, `[static_ratchet]`): re-vendor with `/propagate-vendored static_ratchet`, never edit.
+
 ## UX surface
 - design spec applies: no        # no web app: a workshop slide deck (tips/), Streamlit demos and exercises, not a FastAPI + static-PWA UI
