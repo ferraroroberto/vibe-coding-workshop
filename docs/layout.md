@@ -5,7 +5,7 @@ This is workshop content, not an application: slides, exercises and demos. There
 ```
 vibe-coding-workshop/
 ├── exercises/        # one folder per exercise: bilingual starter, solution, setup-data script, requirements (data/ is generated)
-├── slideshow/        # the workshop deck: slideshow_config.json drives the generated slideshow.html / slideshow_es.html
+├── slideshow/        # the workshop deck: slideshow_config.json drives the generated slideshow_data_{en,es}.js; each language is an HTML shell + stylesheet + data script
 │   └── assets/       # one image per exercise plus welcome, menu, break and survey images
 ├── slideshow_ai/     # the standalone bilingual "Not Everything Is AI" keynote, one hand-edited HTML file (no build)
 │   ├── assets/       # keynote images
@@ -37,4 +37,3 @@ vibe-coding-workshop/
 
 - **`exercises/**` is excluded from the structure ratchet.** Exercise solutions are teaching material, written long on purpose; splitting them would hide the point of the exercise.
 - **No `shape`.** No preset fits workshop content, so the root-layout check is skipped rather than bent to match.
-- **Baselined offenders** are the two slideshow HTML files over 1,000 lines. They are build output of `scripts/build_slideshow.py`, read as one file by the live bundle and the PDF exports, so they are held at today's size and may not grow rather than split.

@@ -5,7 +5,7 @@ A hands-on workshop for learning data manipulation, automation, and visualizatio
 ## Features
 
 - **Vibe Coding Tips**: HTML slide presentation (`tips/index.html`) — playful, keyboard-navigable slides on practical LLM workflow tips (model selection, auto-approve, agents, markdown logging, validation, etc.) with full docs in `tips/docs/` and examples in `tips/examples/`
-- **Slideshow**: Single-file HTML presentation (`slideshow/slideshow.html`, `slideshow/slideshow_es.html` for Spanish) with exercise menu, bonus section, and navigation (open in a browser)
+- **Slideshow**: HTML presentation (`slideshow/slideshow.html`, `slideshow/slideshow_es.html` for Spanish) with exercise menu, bonus section, and navigation; each deck loads its sibling stylesheet and exercise data script, so open it straight from the file system (no server needed)
 - **"Not Everything Is AI" keynote**: Standalone bilingual talk deck (`slideshow_ai/slideshow_ai.html`) — self-contained, no build step, in-page ES/EN toggle (or `?lang=en|es`), arrow/space navigation plus `B` to open a slide's link (presentation clicker), with live HTML demos in `slideshow_ai/mockups/`
 - **Main exercises**: Intro, ETL (merge, clean, survey), Viz (charts, reports), Auto (Excel polish, file organizer), plus Bonus “Big Data Stress Test”
 - **Bonus exercises**: PDF report, API pipeline, D3 bar/force viz, geo heatmap, interactive dashboard, Seaborn scatter/statistical
@@ -45,8 +45,10 @@ A hands-on workshop for learning data manipulation, automation, and visualizatio
 | Path | Description |
 |------|-------------|
 | `tips/` | Vibe Coding Tips presentation: `index.html` (slides), `styles.css`, `script.js`, `tips/docs/vibe-coding-tips.md`, `examples/*.md` (12 tip examples) |
-| `slideshow/slideshow.html` | Workshop slideshow (English): welcome, menu, main/bonus exercises, break, survey, congratulations |
-| `slideshow/slideshow_es.html` | Spanish version of the slideshow |
+| `slideshow/slideshow.html` | Workshop slideshow shell (English): welcome, menu, main/bonus exercises, break, survey, congratulations; hand-edited |
+| `slideshow/slideshow_es.html` | Spanish shell, derived from the English one by `scripts/build_slideshow.py` |
+| `slideshow/slideshow.css`, `slideshow/slideshow_es.css` | Hand-edited stylesheet of each deck |
+| `slideshow/slideshow_data_en.js`, `slideshow/slideshow_data_es.js` | Exercise content of each deck, generated from the `exercise_starter.md` files (edit those, not these) |
 | `slideshow/assets/` | Images for slideshow (one per exercise + welcome, menu, break, survey, etc.) |
 | `slideshow_ai/slideshow_ai.html` | Standalone bilingual keynote "Not Everything Is AI / No Todo Es IA" (ES/EN toggle, `?lang=`); self-contained, edited directly (no config/build) |
 | `slideshow_ai/mockups/` | Live bilingual HTML demos linked from the keynote (automation, NLP, ML, transformer; plus the LLM deep-dive: tokenizer, base model, assistant, RLHF). Each has a `How it works?` toggle (`b` key) |
@@ -67,7 +69,7 @@ The annotated repo tree and where new code goes: [docs/layout.md](docs/layout.md
 - `preparation/slideshow_part01_exercises.md` – How the basic slideshow was built
 - `preparation/slideshow_part02_sequence.md` – Sequence, menu, and navigation
 - `preparation/slideshow_part03_bonus.md` – Bonus section (menu, 8 exercises, navigation)
-- `slideshow/slideshow_config.json` – Main and bonus exercise order; used by `scripts/build_slideshow.py` to generate slideshows
+- `slideshow/slideshow_config.json` – Main and bonus exercise order; used by `scripts/build_slideshow.py` to generate the exercise data scripts and the Spanish shell
 - `preparation/how_images_were_created.md` – How workshop images were made (Part 1: main set; Part 2: bonus images prompt for Gemini)
 
 ## Exercises
@@ -86,7 +88,7 @@ See the slideshow for titles and goals; details live in each exercise folder und
 
 ## Contributing
 
-- **New exercise**: Follow `preparation/metaprompt.md`; add a folder under `exercises/` with starter (bilingual: `## English` and `## Español` sections), solution, setup, and data; add the exercise to `slideshow/slideshow_config.json` (main or bonus list) and run `python3 scripts/build_slideshow.py` to regenerate `slideshow/slideshow.html` and `slideshow/slideshow_es.html`; add an image to `slideshow/assets/` if needed.
+- **New exercise**: Follow `preparation/metaprompt.md`; add a folder under `exercises/` with starter (bilingual: `## English` and `## Español` sections), solution, setup, and data; add the exercise to `slideshow/slideshow_config.json` (main or bonus list) and run `python3 scripts/build_slideshow.py` to regenerate `slideshow/slideshow_data_en.js`, `slideshow/slideshow_data_es.js` and `slideshow/slideshow_es.html`; add an image to `slideshow/assets/` if needed.
 - **New bonus image**: Use the table and instructions in `preparation/how_images_were_created.md` Part 2, generate images (e.g. with Gemini), save as the listed `bonus_*.jpg` names in `slideshow/assets/`.
 
 ## Requirements

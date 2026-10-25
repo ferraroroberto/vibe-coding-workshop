@@ -13,7 +13,7 @@ flowchart TB
 
   subgraph build["scripts/ — build & facilitator tooling"]
     BUILDSHOW["build_slideshow.py\nreads slideshow_config.json,\nparses exercise_starter.md EN/ES sections"]
-    COPYLIVE["copy_data_to_live.py\nreads exercise order from slideshow_es.html,\nwipes+rebuilds live/ bundle"]
+    COPYLIVE["copy_data_to_live.py\nreads exercise order from slideshow_data_es.js,\nwipes+rebuilds live/ bundle"]
     VALIDATE["validate_exercises.py\nruns exercise_setup_data.py then\nexercise_solution.py per exercise"]
     TESTLIB["test_libraries.py\npost-install smoke check"]
     OTHERSCRIPTS["move_solutions.py · sync_slideshow_to_starters.py ·\nexport_slideshow_to_pdf.py · export_slideshow_ai_to_pdf.py ·\n_slideshow_pdf.py (Playwright) · pip_ini_finder.py · key_listener.py ·\nstructure_ratchet.py (vendored) · verify-before-ship.ps1"]
@@ -23,15 +23,18 @@ flowchart TB
   EXERCISES --> VALIDATE
   EXERCISES --> COPYLIVE
 
-  subgraph slideshow["slideshow/ — workshop presentation (generated)"]
+  subgraph slideshow["slideshow/ — workshop presentation"]
     CONFIG["slideshow_config.json\nmain + bonus exercise order"]
-    SHTML["slideshow.html / slideshow_es.html\n(built, not hand-edited)"]
+    SHTML["slideshow.html / slideshow_es.html\n(shell; ES derived from EN) +\nslideshow.css / slideshow_es.css"]
+    SDATA["slideshow_data_en.js / slideshow_data_es.js\n(generated exercise content)"]
     ASSETS["assets/ — per-exercise images"]
   end
   CONFIG --> BUILDSHOW
-  BUILDSHOW --> SHTML
+  BUILDSHOW --> SDATA
+  BUILDSHOW -->|derives ES shell| SHTML
+  SHTML -->|loads| SDATA
   SHTML --> ASSETS
-  SHTML --> COPYLIVE
+  SDATA --> COPYLIVE
   OTHERSCRIPTS -->|export to PDF via Playwright| SHTML
 
   LIVE["live/\nnumbered 00_.._16_.. bundle: starter + data,\nzipped as live.zip for participants"]

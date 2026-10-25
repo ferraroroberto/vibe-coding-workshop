@@ -6,7 +6,7 @@ This guide explains how to create a dynamic, responsive HTML slideshow that disp
 
 ## What Was Created
 
-A single, self-contained HTML file (`slideshow/slideshow.html`) that:
+An HTML page (`slideshow/slideshow.html`, with its sibling `slideshow.css` and `slideshow_data_en.js`, all opened straight from the file system) that:
 - Displays exercises in sequence from `exercises_selection.md`
 - Uses images from the `slideshow/assets/` directory (one per exercise)
 - Shows title slides with full background images
