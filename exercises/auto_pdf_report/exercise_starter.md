@@ -24,4 +24,4 @@ La CFO no usa Excel. No abre archivos HTML. Quiere un **PDF** — limpio, con ma
 Construir un script en Python que genere automáticamente un reporte PDF de múltiples páginas: una **portada** con título y marca, una **sección de resumen KPI**, **gráficos de barras y circular incrustados** (Ingresos por Categoría), una **tabla de datos formateada** (top 10 transacciones) y **pies de página** con números de página.
 
 ## Resultado esperado
-Un `quarterly_report.pdf` pulido que se ve diseñado profesionalmente — pero generado completamente por Python en segundos. Ejecútalo una vez y funcionará cada trimestre con datos frescos.
+Un `quarterly_report.pdf` pulido que se ve diseñado profesionalmente — con marca, gráficos y tablas — pero generado completamente por Python en segundos. Ejecútalo una vez y funcionará cada trimestre con datos frescos.

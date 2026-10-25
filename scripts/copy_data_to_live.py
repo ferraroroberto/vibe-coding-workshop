@@ -22,7 +22,7 @@ log = logging.getLogger(__name__)
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 EXERCISES_DIR = PROJECT_ROOT / "exercises"
 LIVE_DIR = PROJECT_ROOT / "live"
-SLIDESHOW_FILE = PROJECT_ROOT / "slideshow" / "slideshow_es.html"
+SLIDESHOW_FILE = PROJECT_ROOT / "slideshow" / "slideshow_data_es.js"
 
 # Display names for specific folder names (keys are FOLDER names).
 DISPLAY_NAMES = {
@@ -47,7 +47,7 @@ DISPLAY_NAMES = {
 
 
 def read_exercise_order(slideshow_file: Path) -> list[str]:
-    """Return exercise folder names in slideshow order, parsed from its images."""
+    """Return exercise folder names in slideshow order, parsed from the data script's images."""
     content = slideshow_file.read_text(encoding="utf-8")
     order = []
     for match in re.findall(r'image: "assets/([^"]+)\.jpg"', content):
