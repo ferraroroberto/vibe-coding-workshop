@@ -1,3 +1,4 @@
+import io
 import streamlit as st
 import pandas as pd
 import plotly.express as px
@@ -5,6 +6,36 @@ from collections import Counter
 
 from charts import build_breakdown_pie, collapse_to_other, grey_ramp
 from filters import apply_filters
+
+# Company/place use a 1% "Other" cutoff; the hierarchy breakdowns use 3% and
+# lower-case their labels.
+PIE_SPECS = [
+    {'column': 'company', 'threshold': 0.01, 'title': 'Breakdown by Company', 'lowercase': False},
+    {'column': 'place', 'threshold': 0.01, 'title': 'Breakdown by Place', 'lowercase': False},
+    {'column': 'des_dt', 'threshold': 0.03, 'title': 'Breakdown by N+3(dt)', 'lowercase': True},
+    {'column': 'des_dg', 'threshold': 0.03, 'title': 'Breakdown by N+2(dg)', 'lowercase': True},
+    {'column': 'des_dan', 'threshold': 0.03, 'title': 'Breakdown by N+1(dan)', 'lowercase': True},
+    {'column': 'des_centro_ges', 'threshold': 0.03, 'title': 'Breakdown by center', 'lowercase': True},
+]
+
+SKILL_FIELDS = ['nvl_excel', 'nvl_python', 'nvl_sas', 'nvl_sql', 'nvl_vba']
+SKILL_LABELS = [
+    "nunca lo he utilizado",
+    "alguna base",
+    "usuario habitual",
+    "usuario experto",
+    "usuario avanzado"
+]
+SKILL_FRIENDLY_NAMES = {
+    'nvl_excel': 'Excel skill',
+    'nvl_python': 'Python skill',
+    'nvl_sas': 'SAS skill',
+    'nvl_sql': 'SQL skill',
+    'nvl_vba': 'VBA skill'
+}
+
+INDICATOR_COLS = ['ind_confirm', 'ind_session', 'ind_waitlist']
+
 
 def run(df, filters, config):
 
@@ -31,95 +62,16 @@ def run(df, filters, config):
 
     with col3:
         st.metric("Unique Places", unique_places)
-    
+
     # Phase 2 Metrics
     st.markdown("### 🎯 Phase 2 Overview")
     render_phase2_metrics(filtered_df)
-    
+
     st.markdown("---")
 
-    # Breakdown pie charts, two per row. Company/place use a 1% "Other" cutoff;
-    # the hierarchy breakdowns use 3% and lower-case their labels.
-    pie_specs = [
-        {'column': 'company', 'threshold': 0.01, 'title': 'Breakdown by Company', 'lowercase': False},
-        {'column': 'place', 'threshold': 0.01, 'title': 'Breakdown by Place', 'lowercase': False},
-        {'column': 'des_dt', 'threshold': 0.03, 'title': 'Breakdown by N+3(dt)', 'lowercase': True},
-        {'column': 'des_dg', 'threshold': 0.03, 'title': 'Breakdown by N+2(dg)', 'lowercase': True},
-        {'column': 'des_dan', 'threshold': 0.03, 'title': 'Breakdown by N+1(dan)', 'lowercase': True},
-        {'column': 'des_centro_ges', 'threshold': 0.03, 'title': 'Breakdown by center', 'lowercase': True},
-    ]
-
-    for row_start in range(0, len(pie_specs), 2):
-        cols = st.columns(2)
-        for col, spec in zip(cols, pie_specs[row_start:row_start + 2]):
-            with col:
-                fig = build_breakdown_pie(
-                    filtered_df,
-                    spec['column'],
-                    spec['threshold'],
-                    spec['title'],
-                    lowercase=spec['lowercase'],
-                )
-                st.plotly_chart(fig, width='stretch')
-
-    # Process use_cases: split by ';'
-    use_cases_all = []
-    for uc in filtered_df['use_cases'].dropna():
-        use_cases_all.extend([item.strip() for item in uc.split(';') if item.strip()])
-
-    use_cases_counts = Counter(use_cases_all)
-
-    # Vertical bar chart for use_cases
-    use_cases_df = pd.DataFrame(list(use_cases_counts.items()), columns=['use_case', 'count'])
-    use_cases_df = collapse_to_other(use_cases_df, 'use_case', 0.01)
-    use_color_map = dict(zip(use_cases_df['use_case'], grey_ramp(len(use_cases_df))))
-    fig3 = px.bar(use_cases_df, x='count', y='use_case', title='Use Cases Breakdown', color='use_case', color_discrete_map=use_color_map, orientation='h', labels={'use_case': ''})
-    st.plotly_chart(fig3, width='stretch')
-
-    # Distribution of nvl_ fields
-    st.subheader("Distribution of Skill Levels")
-    nvl_fields = ['nvl_excel', 'nvl_python', 'nvl_sas', 'nvl_sql', 'nvl_vba']
-    labels = [
-        "nunca lo he utilizado",
-        "alguna base",
-        "usuario habitual",
-        "usuario experto",
-        "usuario avanzado"
-    ]
-    distribution = pd.DataFrame(index=labels, columns=nvl_fields)
-    for field in nvl_fields:
-        counts = filtered_df[field].value_counts()
-        for label in labels:
-            distribution.loc[label, field] = counts.get(label, 0)
-    # Friendly column names for visualization
-    friendly_names = {
-        'nvl_excel': 'Excel skill',
-        'nvl_python': 'Python skill',
-        'nvl_sas': 'SAS skill',
-        'nvl_sql': 'SQL skill',
-        'nvl_vba': 'VBA skill'
-    }
-    distribution_display = distribution.rename(columns=friendly_names)
-    # Heatmap styling: black to accent blue (#1E88E5)
-    def blue_heatmap(val, min_val, max_val):
-        if pd.isna(val):
-            return ''
-        # Normalize value between 0 and 1
-        norm = 0 if max_val == min_val else (val - min_val) / (max_val - min_val)
-        # Interpolate between black and blue
-        r = int(30 * norm)
-        g = int(136 * norm)
-        b = int(229 * norm)
-        return f'background-color: rgb({r},{g},{b}); color: white' if val > 0 else ''
-
-    def style_heatmap(df):
-        min_max = {col: (df[col].min(), df[col].max()) for col in df.columns}
-        def style_func(val, col):
-            min_val, max_val = min_max[col]
-            return blue_heatmap(val, min_val, max_val)
-        return df.style.apply(lambda col: [style_func(v, col.name) for v in col], axis=0)
-
-    st.dataframe(style_heatmap(distribution_display))
+    _render_breakdown_pies(filtered_df)
+    _render_use_cases(filtered_df)
+    _render_skill_distribution(filtered_df)
 
     # Full dataset table
     st.subheader(f"Filtered Dataset ({len(filtered_df)} records)")
@@ -130,9 +82,78 @@ def run(df, filters, config):
         'name': st.column_config.Column(pinned=True)
     }
     st.dataframe(filtered_df_display, column_config=column_config, width='stretch')
-    # Export filtered result to XLS
-    import io
 
+    _render_export(df, filters, filtered_df)
+
+
+def _render_breakdown_pies(filtered_df):
+    """Breakdown pie charts, two per row."""
+    for row_start in range(0, len(PIE_SPECS), 2):
+        cols = st.columns(2)
+        for col, spec in zip(cols, PIE_SPECS[row_start:row_start + 2]):
+            with col:
+                fig = build_breakdown_pie(
+                    filtered_df,
+                    spec['column'],
+                    spec['threshold'],
+                    spec['title'],
+                    lowercase=spec['lowercase'],
+                )
+                st.plotly_chart(fig, width='stretch')
+
+
+def _render_use_cases(filtered_df):
+    """Horizontal bar chart of the ';'-separated use_cases answers."""
+    use_cases_all = []
+    for uc in filtered_df['use_cases'].dropna():
+        use_cases_all.extend([item.strip() for item in uc.split(';') if item.strip()])
+
+    use_cases_counts = Counter(use_cases_all)
+
+    use_cases_df = pd.DataFrame(list(use_cases_counts.items()), columns=['use_case', 'count'])
+    use_cases_df = collapse_to_other(use_cases_df, 'use_case', 0.01)
+    use_color_map = dict(zip(use_cases_df['use_case'], grey_ramp(len(use_cases_df))))
+    fig3 = px.bar(use_cases_df, x='count', y='use_case', title='Use Cases Breakdown', color='use_case', color_discrete_map=use_color_map, orientation='h', labels={'use_case': ''})
+    st.plotly_chart(fig3, width='stretch')
+
+
+def _blue_heatmap(val, min_val, max_val):
+    """Heatmap styling: black to accent blue (#1E88E5)."""
+    if pd.isna(val):
+        return ''
+    # Normalize value between 0 and 1
+    norm = 0 if max_val == min_val else (val - min_val) / (max_val - min_val)
+    # Interpolate between black and blue
+    r = int(30 * norm)
+    g = int(136 * norm)
+    b = int(229 * norm)
+    return f'background-color: rgb({r},{g},{b}); color: white' if val > 0 else ''
+
+
+def _style_heatmap(df):
+    min_max = {col: (df[col].min(), df[col].max()) for col in df.columns}
+    def style_func(val, col):
+        min_val, max_val = min_max[col]
+        return _blue_heatmap(val, min_val, max_val)
+    return df.style.apply(lambda col: [style_func(v, col.name) for v in col], axis=0)
+
+
+def _render_skill_distribution(filtered_df):
+    """Heatmap of the nvl_ skill-level answers per tool."""
+    st.subheader("Distribution of Skill Levels")
+    distribution = pd.DataFrame(index=SKILL_LABELS, columns=SKILL_FIELDS)
+    for field in SKILL_FIELDS:
+        counts = filtered_df[field].value_counts()
+        for label in SKILL_LABELS:
+            distribution.loc[label, field] = counts.get(label, 0)
+    # Friendly column names for visualization
+    distribution_display = distribution.rename(columns=SKILL_FRIENDLY_NAMES)
+
+    st.dataframe(_style_heatmap(distribution_display))
+
+
+def _render_export(df, filters, filtered_df):
+    """Export the filtered result (plus a summary of the applied filters) to XLS."""
     output = io.BytesIO()
     if st.button("Export filtered result to XLS", key="explore_export"):
         # Build filters summary from filters dict
@@ -160,35 +181,36 @@ def run(df, filters, config):
         )
 
 
+def _to_int_indicator(frame, column):
+    """Coerce an indicator column to int with NULLs as 0; no-op when absent."""
+    if column in frame.columns:
+        frame[column] = pd.to_numeric(frame[column], errors='coerce').fillna(0).astype(int)
+
+
 def render_phase2_metrics(filtered_df):
     """Render Phase 2 selection metrics and summary."""
     # Check if Phase 2 columns exist
-    phase2_cols = ['ind_confirm', 'ind_session', 'ind_waitlist']
-    has_phase2 = all(col in filtered_df.columns for col in phase2_cols)
-    
+    has_phase2 = all(col in filtered_df.columns for col in INDICATOR_COLS)
+
     if not has_phase2:
         st.info("ℹ️ Phase 2 data not available. Use 'Phase 2 Sync' tab to import data.")
         return
-    
-    # Ensure ind_confirm is numeric with no NULLs
+
+    # Ensure indicators are numeric with no NULLs
     filtered_df_clean = filtered_df.copy()
-    if 'ind_confirm' in filtered_df_clean.columns:
-        filtered_df_clean['ind_confirm'] = pd.to_numeric(filtered_df_clean['ind_confirm'], errors='coerce').fillna(0).astype(int)
-    if 'ind_session' in filtered_df_clean.columns:
-        filtered_df_clean['ind_session'] = pd.to_numeric(filtered_df_clean['ind_session'], errors='coerce').fillna(0).astype(int)
-    if 'ind_waitlist' in filtered_df_clean.columns:
-        filtered_df_clean['ind_waitlist'] = pd.to_numeric(filtered_df_clean['ind_waitlist'], errors='coerce').fillna(0).astype(int)
-    
+    for column in INDICATOR_COLS:
+        _to_int_indicator(filtered_df_clean, column)
+
     # Calculate metrics
     total = len(filtered_df_clean)
     confirmed = (filtered_df_clean['ind_confirm'] == 1).sum()
     selected = (filtered_df_clean['ind_session'] == 1).sum()
     waitlist = (filtered_df_clean['ind_waitlist'] == 1).sum()
     pending = confirmed - selected - waitlist
-    
+
     # Display metrics
     col1, col2, col3, col4, col5 = st.columns(5)
-    
+
     with col1:
         st.metric(
             "Phase 2 Confirmed",
@@ -196,7 +218,7 @@ def render_phase2_metrics(filtered_df):
             delta=f"{confirmed/total*100:.1f}% of total" if total > 0 else None,
             delta_color="off"
         )
-    
+
     with col2:
         st.metric(
             "Selected for Session",
@@ -204,7 +226,7 @@ def render_phase2_metrics(filtered_df):
             delta=f"{selected/confirmed*100:.1f}% of confirmed" if confirmed > 0 else None,
             delta_color="off"
         )
-    
+
     with col3:
         st.metric(
             "Waitlist",
@@ -212,7 +234,7 @@ def render_phase2_metrics(filtered_df):
             delta=f"{waitlist/confirmed*100:.1f}% of confirmed" if confirmed > 0 else None,
             delta_color="off"
         )
-    
+
     with col4:
         st.metric(
             "Pending Decision",
@@ -220,7 +242,7 @@ def render_phase2_metrics(filtered_df):
             delta="awaiting selection" if pending > 0 else None,
             delta_color="off"
         )
-    
+
     with col5:
         conversion = selected / total * 100 if total > 0 else 0
         st.metric(
@@ -229,39 +251,43 @@ def render_phase2_metrics(filtered_df):
             delta="Phase 1 → Selected",
             delta_color="off"
         )
-    
+
     # Selection breakdown by hierarchy (if we have confirmed records)
     if confirmed > 0:
         with st.expander("📊 Selection Breakdown by Hierarchy", expanded=False):
-            # Ensure ind_confirm is numeric with no NULLs
-            filtered_df_hier = filtered_df.copy()
-            if 'ind_confirm' in filtered_df_hier.columns:
-                filtered_df_hier['ind_confirm'] = pd.to_numeric(filtered_df_hier['ind_confirm'], errors='coerce').fillna(0).astype(int)
-            confirmed_df = filtered_df_hier[filtered_df_hier['ind_confirm'] == 1].copy()
-            
-            hierarchy_cols = [
-                ('des_dt', 'N+3 (DT)'),
-                ('des_dg', 'N+2 (DG)'),
-                ('des_dan', 'N+1 (DAN)')
-            ]
-            
-            for col_name, display_name in hierarchy_cols:
-                if col_name not in confirmed_df.columns:
-                    continue
-                
-                st.markdown(f"**{display_name}**")
-                
-                grouped = confirmed_df.groupby(col_name).agg({
-                    'id': 'count',
-                    'ind_session': lambda x: (x == 1).sum(),
-                    'ind_waitlist': lambda x: (x == 1).sum()
-                }).reset_index()
-                
-                grouped.columns = [display_name, 'Confirmed', 'Selected', 'Waitlist']
-                grouped['Pending'] = grouped['Confirmed'] - grouped['Selected'] - grouped['Waitlist']
-                grouped['Selection %'] = (grouped['Selected'] / grouped['Confirmed'] * 100).round(1)
-                
-                # Sort by confirmed count
-                grouped = grouped.sort_values('Confirmed', ascending=False).head(10)
-                
-                st.dataframe(grouped, hide_index=True, width='stretch')
+            _render_hierarchy_breakdown(filtered_df)
+
+
+def _render_hierarchy_breakdown(filtered_df):
+    """Confirmed / selected / waitlist counts per hierarchy level (top 10 each)."""
+    # Ensure ind_confirm is numeric with no NULLs
+    filtered_df_hier = filtered_df.copy()
+    _to_int_indicator(filtered_df_hier, 'ind_confirm')
+    confirmed_df = filtered_df_hier[filtered_df_hier['ind_confirm'] == 1].copy()
+
+    hierarchy_cols = [
+        ('des_dt', 'N+3 (DT)'),
+        ('des_dg', 'N+2 (DG)'),
+        ('des_dan', 'N+1 (DAN)')
+    ]
+
+    for col_name, display_name in hierarchy_cols:
+        if col_name not in confirmed_df.columns:
+            continue
+
+        st.markdown(f"**{display_name}**")
+
+        grouped = confirmed_df.groupby(col_name).agg({
+            'id': 'count',
+            'ind_session': lambda x: (x == 1).sum(),
+            'ind_waitlist': lambda x: (x == 1).sum()
+        }).reset_index()
+
+        grouped.columns = [display_name, 'Confirmed', 'Selected', 'Waitlist']
+        grouped['Pending'] = grouped['Confirmed'] - grouped['Selected'] - grouped['Waitlist']
+        grouped['Selection %'] = (grouped['Selected'] / grouped['Confirmed'] * 100).round(1)
+
+        # Sort by confirmed count
+        grouped = grouped.sort_values('Confirmed', ascending=False).head(10)
+
+        st.dataframe(grouped, hide_index=True, width='stretch')

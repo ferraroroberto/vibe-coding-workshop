@@ -93,66 +93,72 @@ def run(df, filters, config):
     
     # Display preview and confirmation
     if 'df_new' in st.session_state:
-        df_new = st.session_state['df_new']
-        new_ids = st.session_state['new_ids']
-        source_columns = st.session_state['source_columns']
-        
-        st.subheader(f"📋 Preview: {len(df_new)} New Records")
-        st.markdown("**These records will be added to the main Excel:**")
-        
-        # Show preview table
-        st.dataframe(df_new, height=300)
-        
-        # Show summary
-        st.markdown("### Summary of Changes")
-        st.markdown(f"- **Records to add**: {len(df_new)}")
-        st.markdown(f"- **IDs**: {', '.join(sorted(new_ids))}")
-        st.markdown(f"- **Columns to insert**: {', '.join(map(str, source_columns))}")
-        
-        # Show replicate rules
-        replicate_rules = source_spec.get('replicate', [])
-        if replicate_rules:
-            st.markdown("### Replication Rules")
-            for rule in replicate_rules:
-                origin = rule.get('origin')
-                destination = rule.get('destination')
-                column_id = rule.get('column_id')
-                st.markdown(f"- Copy column **{origin}** → **{destination}** (`{column_id}`)")
-        
-        # Show binary_check rules
-        binary_check_rules = source_spec.get('binary_check', [])
-        if binary_check_rules:
-            st.markdown("### Binary Check Conversions")
-            st.markdown("Convert 'Sí' to 1, otherwise 0:")
-            for rule in binary_check_rules:
-                source_col = rule.get('column')
-                dest_col = rule.get('destination')
-                st.markdown(f"- Column **{source_col}** → **{dest_col}** (Sí=1, other=0)")
-        
-        # Confirmation
-        st.warning("⚠️ **This action will modify the main Excel file. Please confirm to proceed.**")
-        
-        col1, col2 = st.columns([1, 4])
-        with col1:
-            if st.button("✅ Confirm & Sync", type="primary", key="data_sync_confirm"):
-                with st.spinner("Syncing data..."):
-                    success = sync_data(df, df_new, config, source_columns)
-                    if success:
-                        st.success(f"✅ Successfully synced {len(df_new)} new records!")
-                        # Clear session state
-                        del st.session_state['df_new']
-                        del st.session_state['new_ids']
-                        del st.session_state['source_columns']
-                        st.balloons()
-                        st.rerun()
-        with col2:
-            if st.button("❌ Cancel", key="data_sync_cancel"):
-                # Clear session state
-                del st.session_state['df_new']
-                del st.session_state['new_ids']
-                del st.session_state['source_columns']
-                st.info("Sync cancelled")
-                st.rerun()
+        _render_preview_and_confirmation(df, source_spec, config)
+
+
+def _render_preview_and_confirmation(df, source_spec, config):
+    """Preview the pending new records and offer the confirm/cancel buttons."""
+    df_new = st.session_state['df_new']
+    new_ids = st.session_state['new_ids']
+    source_columns = st.session_state['source_columns']
+    
+    st.subheader(f"📋 Preview: {len(df_new)} New Records")
+    st.markdown("**These records will be added to the main Excel:**")
+    
+    # Show preview table
+    st.dataframe(df_new, height=300)
+    
+    # Show summary
+    st.markdown("### Summary of Changes")
+    st.markdown(f"- **Records to add**: {len(df_new)}")
+    st.markdown(f"- **IDs**: {', '.join(sorted(new_ids))}")
+    st.markdown(f"- **Columns to insert**: {', '.join(map(str, source_columns))}")
+    
+    # Show replicate rules
+    replicate_rules = source_spec.get('replicate', [])
+    if replicate_rules:
+        st.markdown("### Replication Rules")
+        for rule in replicate_rules:
+            origin = rule.get('origin')
+            destination = rule.get('destination')
+            column_id = rule.get('column_id')
+            st.markdown(f"- Copy column **{origin}** → **{destination}** (`{column_id}`)")
+    
+    # Show binary_check rules
+    binary_check_rules = source_spec.get('binary_check', [])
+    if binary_check_rules:
+        st.markdown("### Binary Check Conversions")
+        st.markdown("Convert 'Sí' to 1, otherwise 0:")
+        for rule in binary_check_rules:
+            source_col = rule.get('column')
+            dest_col = rule.get('destination')
+            st.markdown(f"- Column **{source_col}** → **{dest_col}** (Sí=1, other=0)")
+    
+    # Confirmation
+    st.warning("⚠️ **This action will modify the main Excel file. Please confirm to proceed.**")
+    
+    col1, col2 = st.columns([1, 4])
+    with col1:
+        if st.button("✅ Confirm & Sync", type="primary", key="data_sync_confirm"):
+            with st.spinner("Syncing data..."):
+                success = sync_data(df, df_new, config, source_columns)
+                if success:
+                    st.success(f"✅ Successfully synced {len(df_new)} new records!")
+                    _clear_sync_state()
+                    st.balloons()
+                    st.rerun()
+    with col2:
+        if st.button("❌ Cancel", key="data_sync_cancel"):
+            _clear_sync_state()
+            st.info("Sync cancelled")
+            st.rerun()
+
+
+def _clear_sync_state():
+    """Drop the pending new records from session state."""
+    del st.session_state['df_new']
+    del st.session_state['new_ids']
+    del st.session_state['source_columns']
 
 
 def sync_data(df_main, df_new, config, source_columns):

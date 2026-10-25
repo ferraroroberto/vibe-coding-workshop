@@ -37,4 +37,4 @@ vibe-coding-workshop/
 
 - **`exercises/**` is excluded from the structure ratchet.** Exercise solutions are teaching material, written long on purpose; splitting them would hide the point of the exercise.
 - **No `shape`.** No preset fits workshop content, so the root-layout check is skipped rather than bent to match.
-- **Baselined offenders** are two slideshow HTML files over 1,000 lines (built by `scripts/build_slideshow.py`) and eight long functions in `metadata/`, `scripts/test_libraries.py` and `streamlit_demo/pages/`. They are held at today's size and may not grow; splitting them is separate work.
+- **Baselined offenders** are the two slideshow HTML files over 1,000 lines. They are build output of `scripts/build_slideshow.py`, read as one file by the live bundle and the PDF exports, so they are held at today's size and may not grow rather than split.

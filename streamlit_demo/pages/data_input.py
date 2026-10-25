@@ -15,6 +15,97 @@ interact with session state) is the foundation of every app.
 import streamlit as st
 
 
+def _render_basic() -> None:
+    st.subheader("Text & Number Inputs")
+
+    col1, col2 = st.columns(2)
+    with col1:
+        name = st.text_input("Your name", placeholder="e.g. Alice", key="di_name")
+        bio = st.text_area("Short bio", height=100, placeholder="Tell us about yourself...", key="di_bio")
+    with col2:
+        age = st.number_input("Age", min_value=0, max_value=150, value=30, step=1, key="di_age")
+        rating = st.slider("Satisfaction (1-10)", 1, 10, 7, key="di_rating")
+
+    st.markdown("##### Current values")
+    st.json({"name": name, "bio": bio, "age": age, "rating": rating})
+
+
+def _render_selection() -> None:
+    st.subheader("Selection Widgets")
+
+    col1, col2 = st.columns(2)
+    with col1:
+        department = st.selectbox(
+            "Department",
+            ["Engineering", "Marketing", "Sales", "HR", "Finance"],
+            key="di_department",
+        )
+        skills = st.multiselect(
+            "Skills",
+            ["Python", "SQL", "JavaScript", "Go", "Rust", "Excel"],
+            default=["Python"],
+            key="di_skills",
+        )
+    with col2:
+        level = st.radio("Seniority", ["Junior", "Mid", "Senior", "Lead"], key="di_level")
+        agree = st.checkbox("I agree to the terms", key="di_agree")
+
+    st.markdown("##### Current values")
+    st.json(
+        {
+            "department": department,
+            "skills": skills,
+            "level": level,
+            "agree": agree,
+        }
+    )
+
+
+def _render_datetime() -> None:
+    st.subheader("Date & Time Pickers")
+
+    col1, col2 = st.columns(2)
+    with col1:
+        start_date = st.date_input("Start date", key="di_start_date")
+    with col2:
+        start_time = st.time_input("Start time", key="di_start_time")
+
+    st.markdown("##### Current values")
+    st.json({"start_date": str(start_date), "start_time": str(start_time)})
+
+
+def _render_form() -> None:
+    st.subheader("Grouped Form Submission")
+    st.markdown(
+        "Widgets inside a `st.form` do **not** trigger a rerun until "
+        "the submit button is pressed.  This is useful for batch submissions."
+    )
+
+    with st.form("demo_form"):
+        form_name = st.text_input("Full name", key="di_form_name")
+        form_email = st.text_input("Email", key="di_form_email")
+        form_dept = st.selectbox(
+            "Department",
+            ["Engineering", "Marketing", "Sales", "HR", "Finance"],
+            key="form_dept",
+        )
+        form_salary = st.number_input(
+            "Expected salary", min_value=0, value=50000, step=1000, key="di_form_salary"
+        )
+        submitted = st.form_submit_button("Submit", key="data_input_form_submit")
+
+    if submitted:
+        st.success("Form submitted successfully!")
+        st.json(
+            {
+                "full_name": form_name,
+                "email": form_email,
+                "department": form_dept,
+                "expected_salary": form_salary,
+            }
+        )
+
+
 def render() -> None:
     st.header("Data Input Demo")
     st.markdown(
@@ -31,94 +122,19 @@ def render() -> None:
 
     # ==================== Basic Inputs ====================
     with tab_basic:
-        st.subheader("Text & Number Inputs")
-
-        col1, col2 = st.columns(2)
-        with col1:
-            name = st.text_input("Your name", placeholder="e.g. Alice", key="di_name")
-            bio = st.text_area("Short bio", height=100, placeholder="Tell us about yourself...", key="di_bio")
-        with col2:
-            age = st.number_input("Age", min_value=0, max_value=150, value=30, step=1, key="di_age")
-            rating = st.slider("Satisfaction (1-10)", 1, 10, 7, key="di_rating")
-
-        st.markdown("##### Current values")
-        st.json({"name": name, "bio": bio, "age": age, "rating": rating})
+        _render_basic()
 
     # ==================== Selection Widgets ====================
     with tab_selection:
-        st.subheader("Selection Widgets")
-
-        col1, col2 = st.columns(2)
-        with col1:
-            department = st.selectbox(
-                "Department",
-                ["Engineering", "Marketing", "Sales", "HR", "Finance"],
-                key="di_department",
-            )
-            skills = st.multiselect(
-                "Skills",
-                ["Python", "SQL", "JavaScript", "Go", "Rust", "Excel"],
-                default=["Python"],
-                key="di_skills",
-            )
-        with col2:
-            level = st.radio("Seniority", ["Junior", "Mid", "Senior", "Lead"], key="di_level")
-            agree = st.checkbox("I agree to the terms", key="di_agree")
-
-        st.markdown("##### Current values")
-        st.json(
-            {
-                "department": department,
-                "skills": skills,
-                "level": level,
-                "agree": agree,
-            }
-        )
+        _render_selection()
 
     # ==================== Date & Time ====================
     with tab_datetime:
-        st.subheader("Date & Time Pickers")
-
-        col1, col2 = st.columns(2)
-        with col1:
-            start_date = st.date_input("Start date", key="di_start_date")
-        with col2:
-            start_time = st.time_input("Start time", key="di_start_time")
-
-        st.markdown("##### Current values")
-        st.json({"start_date": str(start_date), "start_time": str(start_time)})
+        _render_datetime()
 
     # ==================== Form Submit ====================
     with tab_form:
-        st.subheader("Grouped Form Submission")
-        st.markdown(
-            "Widgets inside a `st.form` do **not** trigger a rerun until "
-            "the submit button is pressed.  This is useful for batch submissions."
-        )
-
-        with st.form("demo_form"):
-            form_name = st.text_input("Full name", key="di_form_name")
-            form_email = st.text_input("Email", key="di_form_email")
-            form_dept = st.selectbox(
-                "Department",
-                ["Engineering", "Marketing", "Sales", "HR", "Finance"],
-                key="form_dept",
-            )
-            form_salary = st.number_input(
-                "Expected salary", min_value=0, value=50000, step=1000, key="di_form_salary"
-            )
-            submitted = st.form_submit_button("Submit", key="data_input_form_submit")
-
-        if submitted:
-            st.success("Form submitted successfully!")
-            st.json(
-                {
-                    "full_name": form_name,
-                    "email": form_email,
-                    "department": form_dept,
-                    "expected_salary": form_salary,
-                }
-            )
+        _render_form()
 
 
 if __name__ == "__main__":
