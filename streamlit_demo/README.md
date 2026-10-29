@@ -177,9 +177,13 @@ python scripts/generate_mock_data.py
 
 ## Adding a New Demo
 
-1. Create `pages/my_new_demo.py` with a `render()` function.
+1. Create `pages/my_new_demo.py` with a `render()` function, and call it at module level behind a `__main__` guard so Streamlit's page-as-script execution actually runs it:
+   ```python
+   if __name__ == "__main__":
+       render()
+   ```
 2. (Optional) Append a metadata entry to `PAGES` in `menu.py` for a home-page card — `menu.py` imports no page modules and `PAGES` drives only the home-page cards, not routing. The sidebar auto-discovers the new file regardless.
-3. Done — the sidebar picks it up automatically.
+3. Done — the sidebar picks it up automatically, and the `__main__` guard makes it actually render.
 
 ---
 
