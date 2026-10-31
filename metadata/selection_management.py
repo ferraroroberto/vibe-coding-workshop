@@ -4,6 +4,7 @@ import logging
 
 from excel_io import build_column_id_to_index, update_columns_for_ids
 from filters import apply_filters
+from selection_status import candidate_status, status_counts
 
 logger = logging.getLogger(__name__)
 
@@ -40,18 +41,16 @@ def run(df, filters, config):
     # Summary metrics
     st.markdown("### 📊 Selection Summary")
     col1, col2, col3, col4 = st.columns(4)
-    
+    counts = status_counts(candidates_df)
+
     with col1:
-        st.metric("Total Candidates", len(candidates_df))
+        st.metric("Total Candidates", counts['total'])
     with col2:
-        selected_count = (candidates_df['ind_session'] == 1).sum()
-        st.metric("Selected", selected_count)
+        st.metric("Selected", counts['selected'])
     with col3:
-        waitlist_count = (candidates_df['ind_waitlist'] == 1).sum()
-        st.metric("Waitlist", waitlist_count)
+        st.metric("Waitlist", counts['waitlist'])
     with col4:
-        pending_count = len(candidates_df) - selected_count - waitlist_count
-        st.metric("Pending", pending_count)
+        st.metric("Pending", counts['pending'])
     
     st.markdown("---")
     
@@ -101,15 +100,8 @@ def render_candidate_list(df, candidates_df, config):
     )
     
     # Apply status filter
-    def get_status_value(row):
-        if row.get('ind_session', 0) == 1:
-            return 'Selected'
-        elif row.get('ind_waitlist', 0) == 1:
-            return 'Waitlist'
-        return 'Pending'
-    
     candidates_df = candidates_df.copy()
-    candidates_df['_status'] = candidates_df.apply(get_status_value, axis=1)
+    candidates_df['_status'] = candidates_df.apply(candidate_status, axis=1)
     filtered_candidates = candidates_df[candidates_df['_status'].isin(status_filter)]
     
     if filtered_candidates.empty:
@@ -125,14 +117,14 @@ def render_candidate_list(df, candidates_df, config):
             group_display = str(group_name) if pd.notna(group_name) else 'Unknown'
             with st.expander(f"📁 {group_display} ({len(group_df)} candidates)", expanded=False):
                 # Group summary
+                group_counts = status_counts(group_df)
                 col1, col2, col3 = st.columns(3)
                 with col1:
-                    st.metric("Selected", (group_df['ind_session'] == 1).sum())
+                    st.metric("Selected", group_counts['selected'])
                 with col2:
-                    st.metric("Waitlist", (group_df['ind_waitlist'] == 1).sum())
+                    st.metric("Waitlist", group_counts['waitlist'])
                 with col3:
-                    pending = len(group_df) - (group_df['ind_session'] == 1).sum() - (group_df['ind_waitlist'] == 1).sum()
-                    st.metric("Pending", pending)
+                    st.metric("Pending", group_counts['pending'])
                 
                 df = render_candidate_table(df, group_df, config, group_key=str(group_name))
     
@@ -243,10 +235,9 @@ def render_quick_actions(df, candidates_df, config):
     
     with col1:
         st.markdown("### Current Status")
-        total = len(candidates_df)
-        selected = (candidates_df['ind_session'] == 1).sum()
-        waitlist = (candidates_df['ind_waitlist'] == 1).sum()
-        pending = total - selected - waitlist
+        counts = status_counts(candidates_df)
+        total, selected, waitlist, pending = (
+            counts['total'], counts['selected'], counts['waitlist'], counts['pending'])
         
         st.write(f"- **Total candidates**: {total}")
         st.write(f"- **Selected**: {selected} ({selected/total*100:.1f}%)")
@@ -334,14 +325,7 @@ def export_selection_report(candidates_df):
     report_df = candidates_df.copy()
     
     # Add status column
-    def get_status(row):
-        if row.get('ind_session', 0) == 1:
-            return "Selected"
-        elif row.get('ind_waitlist', 0) == 1:
-            return "Waitlist"
-        return "Pending"
-    
-    report_df['selection_status'] = report_df.apply(get_status, axis=1)
+    report_df['selection_status'] = report_df.apply(candidate_status, axis=1)
     
     # Select columns for report
     report_cols = ['name', 'email', 'company', 'place', 'des_dan', 'des_dg', 'des_dt',
@@ -350,14 +334,10 @@ def export_selection_report(candidates_df):
     report_df = report_df[available_cols]
     
     # Create summary
+    counts = status_counts(candidates_df)
     summary_data = {
         'Metric': ['Total Candidates', 'Selected', 'Waitlist', 'Pending'],
-        'Count': [
-            len(candidates_df),
-            (candidates_df['ind_session'] == 1).sum(),
-            (candidates_df['ind_waitlist'] == 1).sum(),
-            len(candidates_df) - (candidates_df['ind_session'] == 1).sum() - (candidates_df['ind_waitlist'] == 1).sum()
-        ]
+        'Count': [counts['total'], counts['selected'], counts['waitlist'], counts['pending']]
     }
     summary_df = pd.DataFrame(summary_data)
     

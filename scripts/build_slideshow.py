@@ -156,7 +156,6 @@ def build_spanish_shell(html_en: str, ui: dict) -> str:
     html_es = apply_ui_strings(html_en, ui)
     html_es = html_es.replace('lang="en"', 'lang="es"', 1)
     html_es = html_es.replace("<title>Workshop Exercises Slideshow</title>", "<title>Taller de Ejercicios - Presentación</title>", 1)
-    html_es = html_es.replace('href="slideshow.css"', 'href="slideshow_es.css"', 1)
     html_es = html_es.replace('src="slideshow_data_en.js"', 'src="slideshow_data_es.js"', 1)
     return html_es
 

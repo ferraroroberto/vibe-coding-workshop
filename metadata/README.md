@@ -102,6 +102,7 @@ If you want to run or modify the app:
 - `phase_two_sync.py` — Phase-two synchronization utilities
 - `data_import.py` — Data enrichment with employee and work center information
 - `selection_management.py` — Selection management tab
+- `selection_status.py` — Shared Selected / Waitlist / Pending classification and counts used by the selection and phase-two tabs
 - `participation_analysis.py` — Participation analysis with treemap visualizations
 
 ## Notes
