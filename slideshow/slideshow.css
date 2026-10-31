@@ -350,7 +350,7 @@ body {
     min-width: 280px;
     height: auto;
     padding: 0.5rem 1rem;
-    background: rgba(0, 0, 0, 0.6); /* More transparent */
+    background: rgba(0, 0, 0, 0.6);
     border: 2px solid rgba(255, 255, 255, 0.3);
     border-radius: 15px;
     display: flex;
@@ -365,7 +365,7 @@ body {
 
 .timer-display {
     font-family: 'Courier New', monospace;
-    font-size: 4rem; /* Bigger numbers */
+    font-size: 4rem;
     color: #64b5f6;
     font-weight: 700;
     margin-bottom: 0.2rem;
@@ -431,7 +431,95 @@ body {
     }
 }
 
-/* Modal */
+/* Scrollbar styling */
+.slide-content .content::-webkit-scrollbar,
+.slide-menu .content::-webkit-scrollbar {
+    width: 8px;
+}
+
+.slide-content .content::-webkit-scrollbar-track,
+.slide-menu .content::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+}
+
+.slide-content .content::-webkit-scrollbar-thumb,
+.slide-menu .content::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 10px;
+}
+
+.slide-content .content::-webkit-scrollbar-thumb:hover,
+.slide-menu .content::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.5);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .nav-button {
+        width: 40px;
+        height: 40px;
+        font-size: 1.2rem;
+    }
+
+    .nav-button.prev {
+        left: 10px;
+    }
+
+    .nav-button.next {
+        right: 10px;
+    }
+
+    .slide-content .content,
+    .slide-menu .content {
+        padding: 1.5rem;
+    }
+
+    .menu-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .exercise-actions {
+        top: 0.5rem;
+        right: 0.5rem;
+    }
+
+    .exercise-action-button {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.75rem;
+    }
+
+    .menu-grid {
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
+    }
+
+    .menu-item {
+        padding: 0.6rem 0.8rem;
+    }
+
+    .menu-action-button {
+        padding: 0.6rem 1.2rem;
+        font-size: 0.85rem;
+    }
+
+    .timer-container {
+        right: 5rem;
+        top: 0.5rem;
+        width: 60px;
+        height: 60px;
+    }
+
+    .timer-display {
+        font-size: 1rem;
+    }
+
+    .timer-btn {
+        width: 22px;
+        height: 22px;
+    }
+}
+
 .modal {
     display: none;
     position: fixed;

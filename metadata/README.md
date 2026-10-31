@@ -100,8 +100,10 @@ If you want to run or modify the app:
 - `explore.py` — Data exploration with charts and filters
 - `data_sync.py` — Data synchronization utilities
 - `phase_two_sync.py` — Phase-two synchronization utilities
+- `test_phase_two_sync.py` — Unit test for the duplicate-name Phase 2 sync; run `python -m unittest test_phase_two_sync` from `metadata/`
 - `data_import.py` — Data enrichment with employee and work center information
 - `selection_management.py` — Selection management tab
+- `selection_status.py` — Shared Selected / Waitlist / Pending classification and counts used by the selection and phase-two tabs
 - `participation_analysis.py` — Participation analysis with treemap visualizations
 
 ## Notes

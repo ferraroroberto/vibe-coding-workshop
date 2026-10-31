@@ -5,6 +5,7 @@ import logging
 from excel_io import update_columns_for_ids
 from filters import apply_filters
 from fuzzy_search import fuzzy_filter_by_name
+from selection_status import PENDING, SELECTED, WAITLIST, candidate_status, status_counts
 
 logger = logging.getLogger(__name__)
 
@@ -250,8 +251,9 @@ def render_team_balance(df, selected_row, config):
         # Count people in same group
         same_group = confirmed_df[confirmed_df[col_name] == current_value]
         total_in_group = len(same_group)
-        selected_in_group = (same_group['ind_session'] == 1).sum()
-        waitlist_in_group = (same_group['ind_waitlist'] == 1).sum()
+        group_counts = status_counts(same_group)
+        selected_in_group = group_counts['selected']
+        waitlist_in_group = group_counts['waitlist']
         
         col = [col1, col2, col3][i % 3]
         with col:
@@ -317,32 +319,26 @@ def render_selection_decision_table(df, selected_row, config):
             table_df[col] = pd.to_numeric(table_df[col], errors='coerce').fillna(0).astype('Int64')
     
     # Add status column
-    def get_status(row):
-        if row.get('ind_session', 0) == 1:
-            return "✅ Selected"
-        elif row.get('ind_waitlist', 0) == 1:
-            return "⏳ Waitlist"
-        else:
-            return "❓ Pending"
-    
-    table_df['Status'] = table_df.apply(get_status, axis=1)
+    status_labels = {SELECTED: "✅ Selected", WAITLIST: "⏳ Waitlist", PENDING: "❓ Pending"}
+    table_df['Status'] = table_df.apply(candidate_status, axis=1).map(status_labels)
     
     # Reorder columns
     final_cols = ['name', 'Status'] + [c for c in available_cols if c not in ['name', 'ind_session', 'ind_waitlist']]
     table_df = table_df[final_cols]
     
     # Sort by status then name
-    status_order = {'✅ Selected': 0, '⏳ Waitlist': 1, '❓ Pending': 2}
+    status_order = {status_labels[SELECTED]: 0, status_labels[WAITLIST]: 1, status_labels[PENDING]: 2}
     table_df['_sort'] = table_df['Status'].map(status_order)
     table_df = table_df.sort_values(['_sort', 'name']).drop('_sort', axis=1)
     
     st.dataframe(table_df, hide_index=True, width='stretch')
     
     # Summary
+    confirmed_counts = status_counts(confirmed_df)
     col1, col2, col3 = st.columns(3)
     with col1:
-        st.metric("Selected", (confirmed_df['ind_session'] == 1).sum())
+        st.metric("Selected", confirmed_counts['selected'])
     with col2:
-        st.metric("Waitlist", (confirmed_df['ind_waitlist'] == 1).sum())
+        st.metric("Waitlist", confirmed_counts['waitlist'])
     with col3:
-        st.metric("Pending", len(confirmed_df) - (confirmed_df['ind_session'] == 1).sum() - (confirmed_df['ind_waitlist'] == 1).sum())
+        st.metric("Pending", confirmed_counts['pending'])
