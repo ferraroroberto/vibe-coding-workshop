@@ -43,100 +43,29 @@ if (-not (Test-Path $py)) {
     exit 1
 }
 
-Write-Host "==> structure ratchet" -ForegroundColor Cyan
-& $py "scripts/structure_ratchet.py"
-$code = $LASTEXITCODE
-if ($code -ne 0) {
-    if ($code -eq 3) {
-        Write-Host "[FAIL] structure ratchet: NOT CONFIRMED (exit 3) - counts as a failure" -ForegroundColor Red
-    } else {
-        Write-Host "[FAIL] structure ratchet failed (exit $code)" -ForegroundColor Red
-    }
-    exit $code
-}
+$stages = @(
+    @{ Name = "structure ratchet";   Script = "scripts/structure_ratchet.py" },
+    @{ Name = "instruction ratchet"; Script = "scripts/instruction_ratchet.py" },
+    @{ Name = "doc refs ratchet";    Script = "scripts/doc_refs_ratchet.py" },
+    @{ Name = "dead code ratchet";   Script = "scripts/dead_code_ratchet.py" },
+    @{ Name = "static ratchet";      Script = "scripts/static_ratchet.py" },
+    @{ Name = "docs ratchet";        Script = "scripts/docs_ratchet.py" },
+    @{ Name = "comment ratchet";     Script = "scripts/comment_ratchet.py" },
+    @{ Name = "conventions ratchet"; Script = "scripts/conventions_ratchet.py" }
+)
 
-Write-Host "==> instruction ratchet" -ForegroundColor Cyan
-& $py "scripts/instruction_ratchet.py"
-$code = $LASTEXITCODE
-if ($code -ne 0) {
-    if ($code -eq 3) {
-        Write-Host "[FAIL] instruction ratchet: NOT CONFIRMED (exit 3) - counts as a failure" -ForegroundColor Red
-    } else {
-        Write-Host "[FAIL] instruction ratchet failed (exit $code)" -ForegroundColor Red
+foreach ($stage in $stages) {
+    Write-Host "==> $($stage.Name)" -ForegroundColor Cyan
+    & $py $stage.Script
+    $code = $LASTEXITCODE
+    if ($code -ne 0) {
+        if ($code -eq 3) {
+            Write-Host "[FAIL] $($stage.Name): NOT CONFIRMED (exit 3) - counts as a failure" -ForegroundColor Red
+        } else {
+            Write-Host "[FAIL] $($stage.Name) failed (exit $code)" -ForegroundColor Red
+        }
+        exit $code
     }
-    exit $code
-}
-
-Write-Host "==> doc refs ratchet" -ForegroundColor Cyan
-& $py "scripts/doc_refs_ratchet.py"
-$code = $LASTEXITCODE
-if ($code -ne 0) {
-    if ($code -eq 3) {
-        Write-Host "[FAIL] doc refs ratchet: NOT CONFIRMED (exit 3) - counts as a failure" -ForegroundColor Red
-    } else {
-        Write-Host "[FAIL] doc refs ratchet failed (exit $code)" -ForegroundColor Red
-    }
-    exit $code
-}
-
-Write-Host "==> dead code ratchet" -ForegroundColor Cyan
-& $py "scripts/dead_code_ratchet.py"
-$code = $LASTEXITCODE
-if ($code -ne 0) {
-    if ($code -eq 3) {
-        Write-Host "[FAIL] dead code ratchet: NOT CONFIRMED (exit 3) - counts as a failure" -ForegroundColor Red
-    } else {
-        Write-Host "[FAIL] dead code ratchet failed (exit $code)" -ForegroundColor Red
-    }
-    exit $code
-}
-
-Write-Host "==> static ratchet" -ForegroundColor Cyan
-& $py "scripts/static_ratchet.py"
-$code = $LASTEXITCODE
-if ($code -ne 0) {
-    if ($code -eq 3) {
-        Write-Host "[FAIL] static ratchet: NOT CONFIRMED (exit 3) - counts as a failure" -ForegroundColor Red
-    } else {
-        Write-Host "[FAIL] static ratchet failed (exit $code)" -ForegroundColor Red
-    }
-    exit $code
-}
-
-Write-Host "==> docs ratchet" -ForegroundColor Cyan
-& $py "scripts/docs_ratchet.py"
-$code = $LASTEXITCODE
-if ($code -ne 0) {
-    if ($code -eq 3) {
-        Write-Host "[FAIL] docs ratchet: NOT CONFIRMED (exit 3) - counts as a failure" -ForegroundColor Red
-    } else {
-        Write-Host "[FAIL] docs ratchet failed (exit $code)" -ForegroundColor Red
-    }
-    exit $code
-}
-
-Write-Host "==> comment ratchet" -ForegroundColor Cyan
-& $py "scripts/comment_ratchet.py"
-$code = $LASTEXITCODE
-if ($code -ne 0) {
-    if ($code -eq 3) {
-        Write-Host "[FAIL] comment ratchet: NOT CONFIRMED (exit 3) - counts as a failure" -ForegroundColor Red
-    } else {
-        Write-Host "[FAIL] comment ratchet failed (exit $code)" -ForegroundColor Red
-    }
-    exit $code
-}
-
-Write-Host "==> conventions ratchet" -ForegroundColor Cyan
-& $py "scripts/conventions_ratchet.py"
-$code = $LASTEXITCODE
-if ($code -ne 0) {
-    if ($code -eq 3) {
-        Write-Host "[FAIL] conventions ratchet: NOT CONFIRMED (exit 3) - counts as a failure" -ForegroundColor Red
-    } else {
-        Write-Host "[FAIL] conventions ratchet failed (exit $code)" -ForegroundColor Red
-    }
-    exit $code
 }
 
 Write-Host "[OK] verify-before-ship passed" -ForegroundColor Green
