@@ -335,8 +335,8 @@ def sync_phase2_data(df_master, matched_records, df_phase2, config):
             master_id = match['master_id']
             phase2_idx = match['phase2_idx']
 
-            # Get Phase 2 row
-            phase2_row = df_phase2.iloc[phase2_idx]
+            # phase2_idx is a row label (kept through the dedupe sort), not a position
+            phase2_row = df_phase2.loc[phase2_idx]
 
             # Find the row in full_df
             full_df_mask = full_df[id_column_name] == master_id
