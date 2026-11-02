@@ -24,7 +24,7 @@ See `README.md` for setup, layout, and usage.
 
 ## Gate ratchets
 
-`scripts/verify-before-ship.ps1` runs eight ratchets. Each `scripts/<name>_ratchet.py` is vendored byte-for-byte from the scaffold (`.fleet.toml` `[vendored]`, `[<name>_ratchet]`): re-vendor with `/propagate-vendored <name>_ratchet`, never edit. Each fails when a measure rises above its shrink-only `.<name>-ratchet-baseline.json` (empty today except doc refs, one README path); exit 3 (could not measure) is a failure, never a pass. Shrink a baseline with `--update-baseline`; `--update-baseline --allow-additions` is the only way to add an entry and shows in review.
+`scripts/verify-before-ship.ps1` runs nine ratchets. Each `scripts/<name>_ratchet.py` is vendored byte-for-byte from the scaffold (`.fleet.toml` `[vendored]`, `[<name>_ratchet]`): re-vendor with `/propagate-vendored <name>_ratchet`, never edit. Each fails when a measure rises above its shrink-only `.<name>-ratchet-baseline.json` (empty today except doc refs, one README path, and runtime write, the exercises' and demo's data writes); exit 3 (could not measure) is a failure, never a pass. Shrink a baseline with `--update-baseline`; `--update-baseline --allow-additions` is the only way to add an entry and shows in review.
 
 - **Structure:** a new file over 1,000 lines, a new function over 100 lines or a directory past 40 modules, and any baselined offender that grows past its size. `exercises/**` is excluded (solutions are teaching material, written long on purpose) and no `shape` is declared. Where code goes: [`docs/layout.md`](docs/layout.md).
 - **Instruction:** lints `CLAUDE.md` and `AGENTS.md` against the weekly prompt audit's deterministic rules; fails when a rule-hit count rises or a file passes its size cap.
@@ -34,6 +34,7 @@ See `README.md` for setup, layout, and usage.
 - **Docs:** the root `README.md` past its 40 KiB budget, or `README.md` and `docs/**/*.md` gaining a history marker (an issue reference, a dated heading or a changelog heading). State the present-tense why in words; history lives in the issue and `git log`.
 - **Comment:** a file gaining an issue reference (`#NNN`) inside a Python, JS, CSS or PowerShell comment. A comment states the present-tense why.
 - **Conventions:** a tracked Python file gaining a `no-window` hit (a subprocess spawn without `creationflags`) or a `no-drive-path` hit (a string literal starting with a drive letter). The other rules are off on purpose: `logging-not-print` scans `app/` and `src/`, which this repo does not have, and `secret-compare` and `git-wrapper` need a helper this repo does not have. A call that must break a rule carries a reasoned `# <rule>-exempt: <why>` marker.
+- **Runtime write:** a tracked Python file gaining a write target (open for writing, `Path.write_*`, `mkdir`, a copy destination) that resolves under a code folder (`scripts/`, `exercises/`, `metadata/`, `streamlit_demo/`), or a new one it cannot resolve. The exercises' setup and solution scripts and the demo's mock-data generator write beside their code today; those writes are baselined for the cleanup burn-down. There is no test stage, so the `--snapshot`/`--probe` bracket does not run.
 
 ## UX surface
 - design spec applies: no        # no web app: a workshop slide deck (tips/), Streamlit demos and exercises, not a FastAPI + static-PWA UI
