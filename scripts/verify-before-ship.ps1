@@ -4,7 +4,7 @@
     Pre-ship verification gate for vibe-coding-workshop.
 
 .DESCRIPTION
-    The repo has no test suite, so the gate is eight ratchets. The structure ratchet,
+    The repo has no test suite, so the gate is nine ratchets. The structure ratchet,
     scripts/structure_ratchet.py, fails when a new file passes 1,000 lines, a new
     function 100 lines or a flat directory 40 modules, and when a baselined
     offender grows past its size in .structure-ratchet-baseline.json. The
@@ -24,7 +24,11 @@
     beyond .comment-ratchet-baseline.json. The conventions ratchet,
     scripts/conventions_ratchet.py, fails when a Python file gains a spawn without
     creationflags (no-window) or a hardcoded drive path (no-drive-path) beyond
-    .conventions-ratchet-baseline.json. Each is opt-in via its .fleet.toml table. Exit 3 means
+    .conventions-ratchet-baseline.json. The runtime write ratchet,
+    scripts/runtime_write_ratchet.py, fails when a Python file gains a write target
+    that resolves under a code folder beyond .runtime-write-ratchet-baseline.json; a
+    new target it cannot resolve is exit 3. With no test stage there is nothing for its
+    --snapshot/--probe bracket to surround, so only the static half runs. Each is opt-in via its .fleet.toml table. Exit 3 means
     "not confirmed" (git unusable, an unparseable file) and fails the gate, never
     passes it.
 
@@ -51,7 +55,8 @@ $stages = @(
     @{ Name = "static ratchet";      Script = "scripts/static_ratchet.py" },
     @{ Name = "docs ratchet";        Script = "scripts/docs_ratchet.py" },
     @{ Name = "comment ratchet";     Script = "scripts/comment_ratchet.py" },
-    @{ Name = "conventions ratchet"; Script = "scripts/conventions_ratchet.py" }
+    @{ Name = "conventions ratchet"; Script = "scripts/conventions_ratchet.py" },
+    @{ Name = "runtime write ratchet"; Script = "scripts/runtime_write_ratchet.py" }
 )
 
 foreach ($stage in $stages) {

@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "entries": [
+    {"key": "exercises/etl_bonus_big_data/exercise_setup_data.py", "counts": {"unresolved": 1}},
+    {"key": "exercises/etl_detective/exercise_setup_data.py", "counts": {"unresolved": 1}},
+    {"key": "exercises/etl_merger/exercise_setup_data.py", "counts": {"unresolved": 1}},
+    {"key": "scripts/_slideshow_pdf.py", "counts": {"unresolved": 1}},
+    {"key": "scripts/build_slideshow.py", "counts": {"unresolved": 1}},
+    {"key": "scripts/copy_data_to_live.py", "counts": {"unresolved": 4}},
+    {"key": "scripts/move_solutions.py", "counts": {"unresolved": 3}},
+    {"key": "scripts/sync_slideshow_to_starters.py", "counts": {"unresolved": 3}}
+  ]
+}
