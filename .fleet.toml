@@ -128,4 +128,7 @@ rules    = ["no-window", "no-drive-path"]
 # (--snapshot before, --probe after) and fails on any untracked or ignored file the
 # run left under a code folder. Mechanism: project-scaffolding docs/runtime-write-ratchet.md.
 [runtime_write_ratchet]
-enabled = true
+enabled      = true
+baseline     = ".runtime-write-ratchet-baseline.json"
+# The workshop's Python lives in its exercise, metadata and demo folders, beside scripts/.
+code_folders = ["scripts", "exercises", "metadata", "streamlit_demo"]
