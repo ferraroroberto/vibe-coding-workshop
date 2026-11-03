@@ -87,6 +87,8 @@ See the slideshow for titles and goals; details live in each exercise folder und
 
 1. **Presenting**: Open `slideshow/slideshow.html` and use the menu (or arrow keys) to move between exercises, bonus section, break, and survey.
 2. **Doing exercises**: Go to the matching folder under `exercises/`, read the starter (or slideshow description), then code and run; compare with the solution if provided.
+3. **Generating exercise data**: `exercises/*/data/` is not tracked. In each exercise folder run `exercise_setup_data.py` first to create its input files, then work from the starter or run `exercise_solution.py`. Run all of them before `scripts/copy_data_to_live.py`, which only copies the `data/` folders that exist into the `live/` bundle (`live.zip`).
+4. **Internet access**: the HTML outputs of `viz_d3_bar_chart`, `viz_d3_force_network` and `viz_interactive_dashboard` load D3 / Plotly from a CDN, and the map tiles in `viz_geo_heatmap` come from OpenStreetMap, so those exercises need internet access on the participant machine (a blocked network shows a blank page or map).
 
 ## Contributing
 
@@ -97,7 +99,7 @@ See the slideshow for titles and goals; details live in each exercise folder und
 ## Requirements
 
 - Python 3.11+
-- See `requirements.txt` for packages (e.g. pandas, numpy, matplotlib, seaborn, openpyxl, python-docx, python-pptx, fpdf, and others used by specific exercises).
+- See `requirements.txt` for packages (e.g. pandas, numpy, matplotlib, seaborn, openpyxl, python-docx, python-pptx, fpdf, and others used by specific exercises). Versions are pinned to the set the exercises were last tested with (Python 3.14); re-test the exercises before bumping any of them.
 
 ## License
 

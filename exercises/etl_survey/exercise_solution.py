@@ -46,8 +46,9 @@ def clean_survey_data():
 
     # 3. Date Parsing (Join_Date)
     print("Parsing Join_Date...")
+    # format='mixed' parses each value on its own (pandas 3 would otherwise infer one format from the first row);
     # errors='coerce' turns unparseable dates into NaT (Not a Time)
-    df['Join_Date_Clean'] = pd.to_datetime(df['Join_Date'], errors='coerce')
+    df['Join_Date_Clean'] = pd.to_datetime(df['Join_Date'], format='mixed', errors='coerce')
 
 
     # 4. Text Analysis (Sentiment/Flagging)

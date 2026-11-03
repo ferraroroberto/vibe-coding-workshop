@@ -22,7 +22,7 @@ Tables and bar charts can show *what* is selling, but maps show *where*. Geograp
 
 ### 2. Base Map Creation
 **Concept:** Folium creates a base map tile (like Google Maps) that you add layers to.
-*   **Action:** Initialize a `folium.Map()` centered on a reasonable location (e.g., lat=20, lon=0 for a world view) with a zoom level of 2. Choose a tile style (`CartoDB dark_matter` for a striking dark theme).
+*   **Action:** Initialize a `folium.Map()` centered on a reasonable location (e.g., lat=20, lon=0 for a world view) with a zoom level of 2. Choose a tile style (`OpenStreetMap` for the classic look, no API key needed).
 
 ### 3. Heatmap Layer
 **Concept:** A heatmap shows data density/intensity as a color gradient overlaid on the map.
@@ -38,7 +38,7 @@ Tables and bar charts can show *what* is selling, but maps show *where*. Geograp
 
 ## Tips for Coding and Vibe-Coding
 
-1.  **Tile Styles transform the mood:** Try `"CartoDB dark_matter"` for a dramatic dark look, `"Stamen Toner"` for a clean black-and-white, or `"OpenStreetMap"` for the classic look.
+1.  **Tile Styles transform the mood:** `"OpenStreetMap"` is the classic look and needs no API key; the CartoDB styles (e.g. `"CartoDB dark_matter"`) now require one.
 2.  **Normalize your heatmap weights:** If one city has 100x more revenue, the heatmap will only show that one city. Consider using `log()` or `min-max scaling` to balance the intensity.
 3.  **HTML in popups:** Folium popups accept raw HTML strings. Use `<b>`, `<br>`, and even `<table>` tags to format beautiful popup cards.
 4.  **Circle size scaling:** Don't use raw revenue as the radius — it'll be too large. Divide by a constant or use a square root scale: `radius = (revenue / max_revenue) * 30`.
@@ -49,7 +49,7 @@ Tables and bar charts can show *what* is selling, but maps show *where*. Geograp
 
 > "I have a pandas DataFrame with columns: City, Country, Latitude, Longitude, Revenue, Order_Count, Top_Product.
 > Using the Folium library, create an interactive map saved as HTML that includes:
-> 1. A base map using CartoDB dark_matter tiles centered at lat=20, lon=0 with zoom=2.
+> 1. A base map using OpenStreetMap tiles centered at lat=20, lon=0 with zoom=2.
 > 2. A HeatMap layer using latitude, longitude, and revenue as weight.
 > 3. Circle markers for each city sized proportionally to revenue, with popup HTML showing city details.
 > 4. A LayerControl to toggle between heatmap and markers.

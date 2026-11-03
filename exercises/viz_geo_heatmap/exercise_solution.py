@@ -13,7 +13,7 @@ OUTPUT_HTML = os.path.join(DATA_DIR, "solutions", "sales_heatmap.html")
 # Map settings
 MAP_CENTER = [20, 0]  # Roughly centered for a world view
 MAP_ZOOM = 2
-MAP_TILES = "CartoDB dark_matter"  # Dramatic dark theme
+MAP_TILES = "OpenStreetMap"  # Keyless classic tiles (CartoDB tiles now need an API key)
 
 
 
@@ -64,7 +64,6 @@ def main():
         location=MAP_CENTER,
         zoom_start=MAP_ZOOM,
         tiles=MAP_TILES,
-        attr="CartoDB",
     )
 
     # -------------------------------------------------------

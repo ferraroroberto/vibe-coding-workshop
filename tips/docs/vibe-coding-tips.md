@@ -20,9 +20,9 @@ Not all models are created equal. Using the wrong model for the wrong task costs
 
 | Complexity | Model | Multiplier | Use Case |
 |---|---|---|---|
-| Complex | Gemini 3.1 / Claude Sonnet 4.6 | 1× | Architecture, large refactors, long context |
+| Complex | Gemini 4 / Claude Sonnet 5.5 | 1× | Architecture, large refactors, long context |
 | Medium | Grok Fast | 0.25× | Moderate features, debugging sessions |
-| Small | GPT-4.1 | Low | Quick edits, renaming, small fixes |
+| Small | Claude Haiku 5.5 | Low | Quick edits, renaming, small fixes |
 
 ### Best Practices
 
@@ -33,8 +33,8 @@ Not all models are created equal. Using the wrong model for the wrong task costs
 ### Example Prompt
 
 ```
-Use Claude Sonnet to design the ETL pipeline architecture.
-Once approved, switch to GPT-4.1 to implement individual functions.
+Use Claude Sonnet 5.5 to design the ETL pipeline architecture.
+Once approved, switch to Claude Haiku 5.5 to implement individual functions.
 ```
 
 ---

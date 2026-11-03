@@ -75,7 +75,6 @@
         let bonusMenuImageSlideIndex = 0;
         let bonusMenuContentSlideIndex = 0;
         let breakTimeSlideIndex = 0;
-        let teamAgreementSlideIndex = 0;
         let instructionsSlideIndex = 0;
         let takeawaysSlideIndex = 0;
         let surveySlideIndex = 0;
@@ -181,18 +180,9 @@
             slideIndex++;
 
             // 2. Team Agreement slide (no title, just image)
-            teamAgreementSlideIndex = slideIndex;
             const teamSlide = document.createElement('div');
             teamSlide.className = 'slide slide-title';
             teamSlide.style.backgroundImage = `url('${specialSlides[1].image}')`;
-            teamSlide.innerHTML = `
-                <a href="tmp/clip.mp4" target="_blank" class="fullscreen-btn">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
-                    </svg>
-                    clip
-                </a>
-            `;
             slideshow.appendChild(teamSlide);
             slideIndex++;
 
@@ -562,8 +552,6 @@
                     goToMenu();
                 } else if (currentSlide >= bonusExerciseStartIndex && currentSlide <= bonusExerciseEndIndex) { // bonus slides: back to bonus menu
                     goToBonusMenu();
-                } else if (currentSlide === teamAgreementSlideIndex) { // Team Agreement - open video
-                    window.open('tmp/clip.mp4', '_blank');
                 } else if (currentSlide === surveySlideIndex) { // toggle QR
                     const qrModal = document.getElementById('qr-modal');
                     if (qrModal.style.display === 'block') {
