@@ -23,7 +23,7 @@ User input is unpredictable. "Male", "male", "  Male ", and "M" are considered f
 ### 2. Date Parsing
 **Concept:** `pd.to_datetime` resilience.
 Dates like "2023-01-01" and "01/01/2023" break simple sorting.
-*   **Action:** Use `pd.to_datetime(col, errors='coerce')`. The `coerce` argument turns unparseable garbage into `NaT` (Not a Time) instead of crashing your script.
+*   **Action:** Use `pd.to_datetime(col, format='mixed', errors='coerce')`. The `mixed` format parses each value on its own (without it, pandas 3 guesses one format from the first row and fails on the rest); the `coerce` argument turns unparseable garbage into `NaT` (Not a Time) instead of crashing your script.
 
 ### 3. Text Flagging
 **Concept:** Boolean indexing with strings.
