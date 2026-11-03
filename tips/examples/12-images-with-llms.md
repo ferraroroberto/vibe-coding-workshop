@@ -112,4 +112,4 @@ Create the models in src/models/sales.py.
 - Crop to relevant area only — full desktop screenshots dilute attention.
 - For code screenshots: ensure text is sharp and readable.
 - Combine multiple screenshots into one annotated image when showing before/after.
-- Works especially well with: Gemini 1.5 Pro, Claude Sonnet, GPT-4o.
+- Works especially well with: Gemini 4, Claude Sonnet 5.5, GPT-6.
