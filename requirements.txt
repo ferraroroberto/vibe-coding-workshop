@@ -1,30 +1,30 @@
 # Requirements used in the setup data only
 
-faker # used in exercises/etl_survey
+faker==40.44.0 # used in exercises/etl_survey
 
 # Requirements used in the exercises solution
 
-duckdb # used in exercises/etl_bonus_big_data
-folium # used in exercises/viz_geo_heatmap
-fpdf2 # used in exercises/auto_pdf_report
-matplotlib # used in exercises/viz_managers_chart, exercises/auto_pdf_report, exercises/viz_seaborn_scatter, exercises/viz_seaborn_statistical
-numpy # used in exercises/viz_seaborn_scatter, exercises/viz_seaborn_statistical
-openpyxl # used in exercises/auto_excel_polish, exercises/etl_merger, exercises/viz_report_generator, exercises/etl_api_pipeline
-pandas # used in most exercises
-plotly # used in exercises/viz_interactive_dashboard
-pyarrow # used in exercises/etl_bonus_big_data
-seaborn # used in exercises/viz_managers_chart, exercises/viz_seaborn_scatter, exercises/viz_seaborn_statistical
-xlsxwriter # used in exercises/auto_excel_polish
+duckdb==2.0.0 # used in exercises/etl_bonus_big_data
+folium==0.20.0 # used in exercises/viz_geo_heatmap
+fpdf2==2.9.0 # used in exercises/auto_pdf_report
+matplotlib==3.11.2 # used in exercises/viz_managers_chart, exercises/auto_pdf_report, exercises/viz_seaborn_scatter, exercises/viz_seaborn_statistical
+numpy==2.5.4 # used in exercises/viz_seaborn_scatter, exercises/viz_seaborn_statistical
+openpyxl==3.1.5 # used in exercises/auto_excel_polish, exercises/etl_merger, exercises/viz_report_generator, exercises/etl_api_pipeline
+pandas==3.1.0 # used in most exercises
+plotly==7.1.0 # used in exercises/viz_interactive_dashboard
+pyarrow==26.0.1 # used in exercises/etl_bonus_big_data
+seaborn==0.13.2 # used in exercises/viz_managers_chart, exercises/viz_seaborn_scatter, exercises/viz_seaborn_statistical
+xlsxwriter==3.3.1 # used in exercises/auto_excel_polish
 
 # Requirements used in the Streamlit demo
-streamlit
+streamlit==1.66.1
 
 # Requirements used in the metadata app
-fuzzywuzzy # used in metadata/fuzzy_search.py, metadata/phase_two_sync.py for fuzzy name matching
-python-Levenshtein # speeds up fuzzywuzzy; avoids the slow pure-python SequenceMatcher warning
+fuzzywuzzy==0.18.0 # used in metadata/fuzzy_search.py, metadata/phase_two_sync.py for fuzzy name matching
+python-Levenshtein==0.27.5 # speeds up fuzzywuzzy; avoids the slow pure-python SequenceMatcher warning
 
 # Requirements used in the slideshow export
-playwright
+playwright==1.64.1
 
 # Requirements used by the ship gate (scripts/static_ratchet.py runs ruff from this venv)
-ruff
+ruff==0.17.3
