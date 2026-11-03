@@ -28,7 +28,9 @@
     scripts/runtime_write_ratchet.py, fails when a Python file gains a write target
     that resolves under a code folder beyond .runtime-write-ratchet-baseline.json; a
     new target it cannot resolve is exit 3. With no test stage there is nothing for its
-    --snapshot/--probe bracket to surround, so only the static half runs. Each is opt-in via its .fleet.toml table. Exit 3 means
+    --snapshot/--probe bracket to surround, so only the static half runs. The last stage,
+    scripts/validate_exercises.py, runs every exercise's setup script then its solution and
+    fails the gate if any of them exits non-zero. Each ratchet is opt-in via its .fleet.toml table. Exit 3 means
     "not confirmed" (git unusable, an unparseable file) and fails the gate, never
     passes it.
 
@@ -56,7 +58,8 @@ $stages = @(
     @{ Name = "docs ratchet";        Script = "scripts/docs_ratchet.py" },
     @{ Name = "comment ratchet";     Script = "scripts/comment_ratchet.py" },
     @{ Name = "conventions ratchet"; Script = "scripts/conventions_ratchet.py" },
-    @{ Name = "runtime write ratchet"; Script = "scripts/runtime_write_ratchet.py" }
+    @{ Name = "runtime write ratchet"; Script = "scripts/runtime_write_ratchet.py" },
+    @{ Name = "exercise validation"; Script = "scripts/validate_exercises.py" }
 )
 
 foreach ($stage in $stages) {

@@ -26,6 +26,8 @@ See `README.md` for setup, layout, and usage.
 
 `scripts/verify-before-ship.ps1` runs nine ratchets. Each `scripts/<name>_ratchet.py` is vendored byte-for-byte from the scaffold (`.fleet.toml` `[vendored]`, `[<name>_ratchet]`): re-vendor with `/propagate-vendored <name>_ratchet`, never edit. Each fails when a measure rises above its shrink-only `.<name>-ratchet-baseline.json` (empty today except doc refs, one README path, and runtime write, the exercises' and demo's data writes); exit 3 (could not measure) is a failure, never a pass. Shrink a baseline with `--update-baseline`; `--update-baseline --allow-additions` is the only way to add an entry and shows in review.
 
+After the ratchets the gate runs `scripts/validate_exercises.py`, which runs every exercise's `exercise_setup_data.py` then `exercise_solution.py` and fails on any non-zero exit. It writes the generated `exercises/*/data/` (untracked) and needs the packages in `requirements.txt`; the CDN-backed outputs are produced but not opened, so their network need is not tested.
+
 - **Structure:** a new file over 1,000 lines, a new function over 100 lines or a directory past 40 modules, and any baselined offender that grows past its size. `exercises/**` is excluded (solutions are teaching material, written long on purpose) and no `shape` is declared. Where code goes: [`docs/layout.md`](docs/layout.md).
 - **Instruction:** lints `CLAUDE.md` and `AGENTS.md` against the weekly prompt audit's deterministic rules; fails when a rule-hit count rises or a file passes its size cap.
 - **Doc refs:** `README.md`, `CLAUDE.md` or `docs/` naming a repo path, module, relative link or loopback port that does not exist.
