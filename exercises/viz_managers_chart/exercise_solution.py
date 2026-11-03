@@ -42,7 +42,9 @@ def main():
         data=category_sales,
         x='Category',
         y='Revenue',
-        palette='viridis' # A nice professional color palette
+        hue='Category',  # one color per bar
+        palette='viridis',  # A nice professional color palette
+        legend=False
     )
 
     # 5. Formatting
