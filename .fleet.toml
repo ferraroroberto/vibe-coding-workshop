@@ -6,6 +6,20 @@ layer       = "working-web"
 icon        = "🎓"
 description = "Python workshop + exercises."
 
+# Root layout: the decks are hand-written HTML, CSS and JS opened straight from the file
+# system with no build step or server, which is the static-site shape. The workshop content
+# folders are its own roots; each one's reason is in docs/layout.md.
+shape       = "static-site"
+extra_roots = [
+    "exercises",       # one folder per exercise: starter, solution, data setup
+    "metadata",        # the standalone Streamlit survey dashboard
+    "preparation",     # how the decks and the live bundle are built
+    "slideshow",       # the workshop exercise deck
+    "slideshow_ai",    # the standalone keynote deck and its demos
+    "streamlit_demo",  # the Streamlit reference app
+    "tips",            # the Vibe Coding Tips deck
+]
+
 # [vendored] -- components copied byte-for-byte from project-scaffolding, with the
 # scaffold commit each came from. Re-vendor through /propagate-vendored, never by hand.
 [vendored]
@@ -27,8 +41,8 @@ runtime_write_resolve = { src = "scripts/runtime_write_resolve.py", sha = "55051
 # new file passes 1,000 lines, a new function 100 lines or a flat directory 40 modules,
 # and when a baselined offender grows past its size in .structure-ratchet-baseline.json.
 # Existing offenders are baselined at today's size, never excluded. Exit 3 (git unusable,
-# an unparseable file) fails the gate. No `shape` is declared: the workshop content
-# (slides, exercises, demos) fits no preset, so the root layout check reports not applicable.
+# an unparseable file) fails the gate. The root layout is checked against the top-level
+# `shape` and `extra_roots`; the extra roots are recorded in the baseline and may only shrink.
 # Procedure: project-scaffolding docs/structure-ratchet.md.
 [structure_ratchet]
 enabled  = true
