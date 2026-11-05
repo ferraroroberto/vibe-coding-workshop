@@ -1,5 +1,11 @@
 {
   "version": 1,
   "band": {"files": 0, "functions": 3},
+  "root_extras": ["exercises", "metadata", "preparation", "slideshow", "slideshow_ai", "streamlit_demo", "tips"],
+  "shape_contract": {
+    "root_files": [],
+    "redundant": [],
+    "folder_types": {}
+  },
   "entries": []
 }

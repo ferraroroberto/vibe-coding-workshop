@@ -1,6 +1,6 @@
 # Layout
 
-This is workshop content, not an application: slides, exercises and demos. There is no `app/`, `src/` or `tests/`, so no root-layout `shape` is declared and the structure ratchet's layout check reports "not applicable". The other four checks (file size, function length, flat directories, layer contract) run against `.structure-ratchet-baseline.json`.
+This is workshop content, not an application: slides, exercises and demos. The decks are hand-written HTML, CSS and JS opened straight from the file system with no build step, so `.fleet.toml` declares the `static-site` shape. Every workshop content folder is a declared `extra_roots` entry, recorded in `.structure-ratchet-baseline.json` with the other structure checks.
 
 ```
 vibe-coding-workshop/
@@ -36,4 +36,4 @@ vibe-coding-workshop/
 ## Declared exceptions
 
 - **`exercises/**` is excluded from the structure ratchet.** Exercise solutions are teaching material, written long on purpose; splitting them would hide the point of the exercise.
-- **No `shape`.** No preset fits workshop content, so the root-layout check is skipped rather than bent to match.
+- **Seven extra roots on the `static-site` shape.** `exercises/`, `metadata/`, `preparation/`, `slideshow/`, `slideshow_ai/`, `streamlit_demo/` and `tips/` are the workshop itself, each a self-contained unit a facilitator opens or runs by its folder path (the decks from the file system, the two Streamlit apps by their folder, the exercises by name from the deck), so they stay at the root rather than move under a shape folder.
