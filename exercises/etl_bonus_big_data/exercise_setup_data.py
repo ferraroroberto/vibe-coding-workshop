@@ -1,7 +1,7 @@
 import csv
+import datetime
 import os
 import random
-import datetime
 
 script_dir = os.path.dirname(__file__)
 DATA_DIR = os.path.join(script_dir, "data")

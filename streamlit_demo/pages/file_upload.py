@@ -14,7 +14,6 @@ import json
 
 import pandas as pd
 import streamlit as st
-
 from cached_data import load_employees
 
 

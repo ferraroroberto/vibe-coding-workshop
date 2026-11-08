@@ -1,8 +1,7 @@
 """Shared fuzzy name-search helper for the metadata dashboard."""
 
 import pandas as pd
-from fuzzywuzzy import fuzz
-from fuzzywuzzy import process
+from fuzzywuzzy import fuzz, process
 
 
 def fuzzy_filter_by_name(df: pd.DataFrame, search_term: str, threshold: int = 70) -> pd.DataFrame:

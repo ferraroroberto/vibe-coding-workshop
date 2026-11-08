@@ -1,9 +1,9 @@
 import io
-import streamlit as st
-import pandas as pd
-import plotly.express as px
 from collections import Counter
 
+import pandas as pd
+import plotly.express as px
+import streamlit as st
 from charts import build_breakdown_pie, collapse_to_other, grey_ramp
 from filters import apply_filters
 

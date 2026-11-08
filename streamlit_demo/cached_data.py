@@ -13,7 +13,6 @@ Pages should import their data from **this** module, not from
 
 import pandas as pd
 import streamlit as st
-
 from data import loader
 
 

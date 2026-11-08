@@ -7,7 +7,6 @@ import unittest
 from unittest import mock
 
 import pandas as pd
-
 import phase_two_sync
 
 

@@ -14,8 +14,9 @@ The two tabs write into different targets (a fresh ``pd.Series`` vs. an existing
 callbacks while the decision logic lives here.
 """
 
-import pandas as pd
 from typing import Callable, Optional
+
+import pandas as pd
 
 
 def _is_blank(value) -> bool:

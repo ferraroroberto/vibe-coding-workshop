@@ -1,5 +1,6 @@
 import os
 
+
 def setup_environment():
     """
     Sets up the environment for the 'Hello World' exercise.

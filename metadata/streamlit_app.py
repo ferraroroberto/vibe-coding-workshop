@@ -1,16 +1,16 @@
-import streamlit as st
 import json
 import os
-import data_entry
-import explore
-import data_sync
-import data_import
-import participation_analysis
-import phase_two_sync
-import phase_two_entry
-import selection_management
 
-from excel_io import load_mapped_dataframe, ensure_phase2_columns
+import data_entry
+import data_import
+import data_sync
+import explore
+import participation_analysis
+import phase_two_entry
+import phase_two_sync
+import selection_management
+import streamlit as st
+from excel_io import ensure_phase2_columns, load_mapped_dataframe
 
 # Page Config
 st.set_page_config(page_title="Survey Data Dashboard", layout="wide")

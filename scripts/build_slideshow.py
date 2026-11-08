@@ -166,6 +166,7 @@ def main():
     main_data, bonus_data = load_exercise_data(config)
 
     for lang, path in (("en", DATA_EN_PATH), ("es", DATA_ES_PATH)):
+        # runtime-write-exempt: generator output: the slideshow data bundle is this script's deliverable
         path.write_text(build_data_script(main_data, bonus_data, lang), encoding="utf-8", newline="\n")
         log.info("Wrote %s", path)
 

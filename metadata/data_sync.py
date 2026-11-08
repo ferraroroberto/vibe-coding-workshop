@@ -1,7 +1,7 @@
-import streamlit as st
-import pandas as pd
 import logging
 
+import pandas as pd
+import streamlit as st
 from excel_io import atomic_write_sheet, build_column_index_to_id, load_full_sheet
 from sync_rules import apply_binary_checks, apply_replicate_rules
 

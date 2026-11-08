@@ -1,6 +1,7 @@
-import pandas as pd
-import random
 import os
+import random
+
+import pandas as pd
 
 # --- DOCUMENTATION ---
 """

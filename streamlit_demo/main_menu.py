@@ -10,7 +10,6 @@ The individual demos are exposed as Streamlit multipage entries via the
 """
 
 import streamlit as st
-
 from menu import render_home
 
 # ---------------------------------------------------------------------------

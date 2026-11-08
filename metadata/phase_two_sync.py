@@ -1,10 +1,9 @@
-import streamlit as st
-import pandas as pd
 import logging
-from fuzzywuzzy import fuzz
-from fuzzywuzzy import process
 
+import pandas as pd
+import streamlit as st
 from excel_io import atomic_write_sheet, find_id_column_name, load_full_sheet
+from fuzzywuzzy import fuzz, process
 from sync_rules import apply_binary_checks, apply_replicate_rules
 
 logger = logging.getLogger(__name__)

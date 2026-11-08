@@ -1,11 +1,13 @@
-import pandas as pd
 import matplotlib
+import pandas as pd
+
 matplotlib.use("Agg")  # Non-interactive backend (no display needed)
+import os
+from datetime import datetime
+
 import matplotlib.pyplot as plt
 import matplotlib.ticker as mticker
 from fpdf import FPDF
-from datetime import datetime
-import os
 
 # --- CONFIGURATION ---
 script_dir = os.path.dirname(os.path.abspath(__file__))
