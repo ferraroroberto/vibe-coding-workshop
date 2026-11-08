@@ -26,6 +26,7 @@ GENDERS = ["Male", "Female"]
 
 def create_dataset():
     """Generate an employee performance dataset with correlated variables."""
+    # runtime-write-exempt: the exercise's gitignored data/ folder is the input participants load, so setup writes it beside the exercise
     os.makedirs(DATA_DIR, exist_ok=True)
     np.random.seed(42)
     random.seed(42)

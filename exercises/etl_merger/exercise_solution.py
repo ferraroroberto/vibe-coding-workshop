@@ -12,6 +12,7 @@ OUTPUT_FILE = "solutions/combined_sales.csv"
 
 
 # Ensure solutions directory exists
+# runtime-write-exempt: the solution's output lands beside its exercise, where the walkthrough shows it
 os.makedirs(os.path.join(BASE_DIR, 'solutions'), exist_ok=True)
 
 def main():

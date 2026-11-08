@@ -137,6 +137,7 @@ def generate_pie_chart(category_revenue):
 # -------------------------------------------------------
 
 # Ensure solutions directory exists
+# runtime-write-exempt: the solution's output lands beside its exercise, where the walkthrough shows it
 os.makedirs(os.path.join(DATA_DIR, 'solutions'), exist_ok=True)
 
 def main():

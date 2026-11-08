@@ -90,6 +90,7 @@ def create_dataset():
     df = pd.DataFrame(data)
     
     # Create directory if not exists
+    # runtime-write-exempt: the exercise's gitignored data/ folder is the input participants load, so setup writes it beside the exercise
     os.makedirs(DATA_DIR, exist_ok=True)
     
     file_path = os.path.join(DATA_DIR, FILE_NAME)

@@ -54,6 +54,7 @@ REGION_CATEGORY_WEIGHTS = {
 
 def create_dataset():
     """Generate a comprehensive sales dataset."""
+    # runtime-write-exempt: the exercise's gitignored data/ folder is the input participants load, so setup writes it beside the exercise
     os.makedirs(DATA_DIR, exist_ok=True)
     print(f"Generating {NUM_ROWS} rows of sales data...\n")
 

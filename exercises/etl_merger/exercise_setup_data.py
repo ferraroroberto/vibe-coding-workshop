@@ -14,6 +14,7 @@ RECORDS_PER_FILE = 50
 def ensure_directory(path):
     if not os.path.exists(path):
         try:
+            # runtime-write-exempt: the exercise's gitignored data/ folder is the input participants load, so setup writes it beside the exercise
             os.makedirs(path)
             print(f"Created directory: {path}")
         except Exception as e:
@@ -48,6 +49,7 @@ def main():
     # Setup directory
     script_dir = os.path.dirname(os.path.abspath(__file__))
     data_dir = os.path.join(script_dir, 'data')
+    # runtime-write-exempt: the exercise's gitignored data/ folder is the input participants load, so setup writes it beside the exercise
     os.makedirs(data_dir, exist_ok=True)
     actual_dir = data_dir
     

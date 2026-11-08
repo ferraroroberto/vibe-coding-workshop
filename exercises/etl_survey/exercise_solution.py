@@ -8,6 +8,7 @@ INPUT_FILE = os.path.join(script_dir, "data", "hr_survey_raw.csv")
 OUTPUT_FILE = os.path.join(script_dir, "data", "solutions", "hr_survey_clean.csv")
 
 # Ensure solutions directory exists
+# runtime-write-exempt: the solution's output lands beside its exercise, where the walkthrough shows it
 os.makedirs(os.path.join(script_dir, "data", "solutions"), exist_ok=True)
 
 def clean_survey_data():

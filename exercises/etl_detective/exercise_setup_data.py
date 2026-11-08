@@ -14,6 +14,7 @@ PRODUCTS = ["Widget A", "Widget B", "Gadget X", "Gadget Y", "SuperTool"]
 
 def ensure_directory(path):
     if not os.path.exists(path):
+        # runtime-write-exempt: the exercise's gitignored data/ folder is the input participants load, so setup writes it beside the exercise
         os.makedirs(path)
         print(f"Created directory: {path}")
 

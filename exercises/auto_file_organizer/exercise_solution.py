@@ -55,12 +55,14 @@ def organize_files():
         target_folder_path = os.path.join(DATA_DIR, "solutions", target_folder_name)
         
         # Create folder if it doesn't exist
+        # runtime-write-exempt: the solution's output lands beside its exercise, where the walkthrough shows it
         os.makedirs(target_folder_path, exist_ok=True)
 
         # 6. Move the file
         destination_path = os.path.join(target_folder_path, item)
         
         try:
+            # runtime-write-exempt: the solution's output lands beside its exercise, where the walkthrough shows it
             shutil.move(source_path, destination_path)
             print(f"Moved: {item} -> {target_folder_name}/")
             files_moved += 1

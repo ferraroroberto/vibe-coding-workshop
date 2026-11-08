@@ -13,6 +13,7 @@ TOP_N = 10  # Show top N products per frame
 
 
 # Ensure solutions directory exists
+# runtime-write-exempt: the solution's output lands beside its exercise, where the walkthrough shows it
 os.makedirs(os.path.join(DATA_DIR, 'solutions'), exist_ok=True)
 
 def main():
@@ -418,6 +419,7 @@ def main():
 </body>
 </html>"""
 
+    # runtime-write-exempt: the solution's output lands beside its exercise, where the walkthrough shows it
     with open(OUTPUT_HTML, "w", encoding="utf-8") as f:
         f.write(html_content)
 

@@ -11,6 +11,7 @@ LOGS_DIR = os.path.join(DATA_DIR, "server_logs")
 PARQUET_FILE = os.path.join(DATA_DIR, "solutions", "logs_optimized.parquet")
 
 # Ensure solutions directory exists
+# runtime-write-exempt: the solution's output lands beside its exercise, where the walkthrough shows it
 os.makedirs(os.path.join(DATA_DIR, 'solutions'), exist_ok=True)
 
 # The Glob pattern to match ALL csv files in the logs directory

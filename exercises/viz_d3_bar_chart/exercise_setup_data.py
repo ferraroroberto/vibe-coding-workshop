@@ -42,6 +42,7 @@ PRODUCTS = {
 
 def create_dataset():
     """Generate monthly product sales with varying growth curves."""
+    # runtime-write-exempt: the exercise's gitignored data/ folder is the input participants load, so setup writes it beside the exercise
     os.makedirs(DATA_DIR, exist_ok=True)
     print("Generating monthly product sales data...\n")
 
