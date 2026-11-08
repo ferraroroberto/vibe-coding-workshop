@@ -1,11 +1,17 @@
-import streamlit as st
-import pandas as pd
 import logging
 
+import pandas as pd
+import streamlit as st
 from excel_io import update_columns_for_ids
 from filters import apply_filters
 from fuzzy_search import fuzzy_filter_by_name
-from selection_status import PENDING, SELECTED, WAITLIST, candidate_status, status_counts
+from selection_status import (
+    PENDING,
+    SELECTED,
+    WAITLIST,
+    candidate_status,
+    status_counts,
+)
 
 logger = logging.getLogger(__name__)
 

@@ -1,10 +1,8 @@
-import streamlit as st
 import pandas as pd
-
+import streamlit as st
 from excel_io import save_dataframe_to_excel
 from filters import apply_filters
 from fuzzy_search import fuzzy_filter_by_name
-
 
 # Field configuration
 INDICATOR_FIELDS = ['ind_select', 'ind_review', 'ind_1to1', 'ind_share', 'ind_self']

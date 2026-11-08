@@ -12,8 +12,8 @@ arguments; the scaffolding lives here once instead of in two near-copies.
 import logging
 import os
 
-from playwright.sync_api import sync_playwright
 from PIL import Image
+from playwright.sync_api import sync_playwright
 
 log = logging.getLogger(__name__)
 

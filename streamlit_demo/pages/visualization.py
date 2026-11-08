@@ -11,9 +11,8 @@ Demonstrates Streamlit's built-in data display and charting capabilities:
 common use case for internal Streamlit apps.
 """
 
-import streamlit as st
 import pandas as pd
-
+import streamlit as st
 from cached_data import load_employees, load_sales
 
 

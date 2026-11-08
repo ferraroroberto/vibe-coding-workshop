@@ -1,7 +1,8 @@
-import pandas as pd
 import os
 import random
 from datetime import datetime, timedelta
+
+import pandas as pd
 
 # --- CONFIGURATION ---
 SCRIPT_DIR = os.path.dirname(__file__)

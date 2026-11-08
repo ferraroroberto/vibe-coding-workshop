@@ -1,7 +1,8 @@
-import pandas as pd
-import random
-from faker import Faker
 import os
+import random
+
+import pandas as pd
+from faker import Faker
 
 # --- DOCUMENTATION ---
 """

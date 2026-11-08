@@ -1,7 +1,8 @@
 # --- CONFIGURATION ---
 import os
-import duckdb
 import time
+
+import duckdb
 
 # Use the current file's folder as the root
 script_dir = os.path.dirname(__file__)

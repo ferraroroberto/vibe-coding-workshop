@@ -15,9 +15,8 @@ Key patterns demonstrated:
 records that users need to manage.
 """
 
-import streamlit as st
 import pandas as pd
-
+import streamlit as st
 from cached_data import load_employees
 
 # Session-state key that holds the working copy of the dataset
