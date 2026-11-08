@@ -8,6 +8,7 @@ DATA_DIR = os.path.join(script_dir, "data")
 LOGS_DIR = os.path.join(DATA_DIR, "server_logs")
 
 if not os.path.exists(LOGS_DIR):
+    # runtime-write-exempt: the exercise's gitignored data/ folder is the input participants load, so setup writes it beside the exercise
     os.makedirs(LOGS_DIR)
 
 print(f"Generating data in {LOGS_DIR}...")
@@ -31,6 +32,7 @@ MESSAGES = [
 ]
 
 def generate_log_file(filename):
+    # runtime-write-exempt: the exercise's gitignored data/ folder is the input participants load, so setup writes it beside the exercise
     with open(filename, 'w', newline='', encoding='utf-8') as f:
         writer = csv.writer(f)
         writer.writerow(["timestamp", "server_id", "level", "message", "response_ms", "user_id"])

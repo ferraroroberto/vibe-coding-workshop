@@ -89,6 +89,7 @@ def get_city_weight(city_name):
 
 def create_dataset():
     """Generate the global sales dataset."""
+    # runtime-write-exempt: the exercise's gitignored data/ folder is the input participants load, so setup writes it beside the exercise
     os.makedirs(DATA_DIR, exist_ok=True)
     print(f"Generating {NUM_ROWS} rows of global sales data...\n")
 

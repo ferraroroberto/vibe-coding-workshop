@@ -27,6 +27,7 @@ DATA_DIR = SCRIPT_DIR.parent / "data" / "mock_data"
 
 def ensure_dir() -> None:
     """Create the output directory if it does not exist."""
+    # runtime-write-exempt: the demo's loader reads this gitignored data/mock_data folder, so the generator writes it there
     DATA_DIR.mkdir(parents=True, exist_ok=True)
 
 
@@ -69,6 +70,7 @@ def generate_employees(n: int = 50) -> list[dict]:
 
 def write_employees_csv(rows: list[dict]) -> Path:
     path = DATA_DIR / "employees.csv"
+    # runtime-write-exempt: the demo's loader reads this gitignored data/mock_data folder, so the generator writes it there
     with open(path, "w", newline="", encoding="utf-8") as f:
         writer = csv.DictWriter(f, fieldnames=rows[0].keys())
         writer.writeheader()
@@ -78,6 +80,7 @@ def write_employees_csv(rows: list[dict]) -> Path:
 
 def write_employees_json(rows: list[dict]) -> Path:
     path = DATA_DIR / "employees.json"
+    # runtime-write-exempt: the demo's loader reads this gitignored data/mock_data folder, so the generator writes it there
     with open(path, "w", encoding="utf-8") as f:
         json.dump(rows, f, indent=2)
     return path
@@ -112,6 +115,7 @@ def generate_sales(n: int = 200) -> list[dict]:
 
 def write_sales_csv(rows: list[dict]) -> Path:
     path = DATA_DIR / "sales.csv"
+    # runtime-write-exempt: the demo's loader reads this gitignored data/mock_data folder, so the generator writes it there
     with open(path, "w", newline="", encoding="utf-8") as f:
         writer = csv.DictWriter(f, fieldnames=rows[0].keys())
         writer.writeheader()

@@ -12,6 +12,7 @@ def setup_data():
     """Generates a dummy sales dataset for the exercise."""
     
     if not os.path.exists(DATA_DIR):
+        # runtime-write-exempt: the exercise's gitignored data/ folder is the input participants load, so setup writes it beside the exercise
         os.makedirs(DATA_DIR)
         print(f"Created directory: {DATA_DIR}")
 

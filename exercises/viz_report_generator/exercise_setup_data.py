@@ -11,6 +11,7 @@ FILE_NAME = "clean_sales_data.csv"
 # --- DATA GENERATION ---
 def create_data():
     if not os.path.exists(DATA_DIR):
+        # runtime-write-exempt: the exercise's gitignored data/ folder is the input participants load, so setup writes it beside the exercise
         os.makedirs(DATA_DIR)
         
     print(f"Generating data in {DATA_DIR}...")

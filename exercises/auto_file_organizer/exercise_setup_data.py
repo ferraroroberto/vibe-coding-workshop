@@ -13,6 +13,7 @@ def create_environment():
     
     # 1. Ensure the data directory exists
     if not os.path.exists(DATA_DIR):
+        # runtime-write-exempt: the exercise's gitignored data/ folder is the input participants load, so setup writes it beside the exercise
         os.makedirs(DATA_DIR)
         print(f"Created directory: {DATA_DIR}")
     else:
@@ -49,6 +50,7 @@ def create_environment():
                 df.to_excel(file_path, index=False)
             except ImportError:
                  # Fallback if openpyxl/pandas generic issue
+                 # runtime-write-exempt: the exercise's gitignored data/ folder is the input participants load, so setup writes it beside the exercise
                  with open(file_path, 'w') as f:
                     f.write("Dummy Excel Content")
         
@@ -59,6 +61,7 @@ def create_environment():
             
         else:
             # Create a text-based dummy file for other extensions
+            # runtime-write-exempt: the exercise's gitignored data/ folder is the input participants load, so setup writes it beside the exercise
             with open(file_path, 'w') as f:
                 f.write(f"This is a dummy file for testing: {filename}")
         

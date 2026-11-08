@@ -58,6 +58,7 @@ CLIENT_PRODUCT_AFFINITY = {
 
 def create_dataset():
     """Generate transactional data with client-product-department relationships."""
+    # runtime-write-exempt: the exercise's gitignored data/ folder is the input participants load, so setup writes it beside the exercise
     os.makedirs(DATA_DIR, exist_ok=True)
     print(f"Generating {NUM_ROWS} client transactions...\n")
 

@@ -13,6 +13,7 @@ def create_dummy_data():
     print("Generating data...")
     
     # Ensure data directory exists
+    # runtime-write-exempt: the exercise's gitignored data/ folder is the input participants load, so setup writes it beside the exercise
     os.makedirs(DATA_DIR, exist_ok=True)
     
     # Setup parameters

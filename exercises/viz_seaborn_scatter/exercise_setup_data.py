@@ -53,6 +53,7 @@ CATEGORIES = {
 
 def create_dataset():
     """Generate a transaction-level dataset for scatter visualization."""
+    # runtime-write-exempt: the exercise's gitignored data/ folder is the input participants load, so setup writes it beside the exercise
     os.makedirs(DATA_DIR, exist_ok=True)
     print(f"Generating {NUM_ROWS} transactions for scatter plots...\n")
 

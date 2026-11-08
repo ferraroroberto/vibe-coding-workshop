@@ -134,6 +134,7 @@ def paginate_and_save(records, prefix, per_page):
             "results": page_data
         }
 
+        # runtime-write-exempt: the exercise's gitignored data/ folder is the input participants load, so setup writes it beside the exercise
         with open(filepath, "w") as f:
             json.dump(response, f, indent=2)
 
@@ -142,6 +143,7 @@ def paginate_and_save(records, prefix, per_page):
 
 def create_dataset():
     """Main function to generate all data files."""
+    # runtime-write-exempt: the exercise's gitignored data/ folder is the input participants load, so setup writes it beside the exercise
     os.makedirs(DATA_DIR, exist_ok=True)
     print(f"Generating API simulation data in {DATA_DIR}...\n")
 
