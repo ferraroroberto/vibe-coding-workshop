@@ -69,6 +69,9 @@ baseline = ".instruction-ratchet-baseline.json"
 # that does not exist, beyond the shrink-only .doc-refs-ratchet-baseline.json. Existing
 # stale references are baselined, never excluded. Exit 3 fails the gate as NOT CONFIRMED.
 # Procedure: project-scaffolding docs/doc-refs-ratchet.md.
+ci_expectations = true
+agents_pointer = true
+repeated_text_words = 12
 [doc_refs_ratchet]
 enabled  = true
 baseline = ".doc-refs-ratchet-baseline.json"
@@ -132,6 +135,8 @@ baseline = ".comment-ratchet-baseline.json"
 # does not have, and the exercises print by design), secret-compare and git-wrapper (the
 # repo has neither helper).
 # Procedure: project-scaffolding docs/conventions-ratchet.md.
+docstrings = true
+history_phrases = true
 [conventions_ratchet]
 enabled  = true
 baseline = ".conventions-ratchet-baseline.json"
