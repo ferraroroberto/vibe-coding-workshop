@@ -68,6 +68,7 @@ def render_slideshow_pdf(
 
         screenshot_paths = []
         temp_dir = os.path.join(os.path.dirname(abs_html_path), "tmp_pdf_slides")
+        # runtime-write-exempt: scratch slide PNGs beside the exported HTML; deleted once the PDF is built
         os.makedirs(temp_dir, exist_ok=True)
 
         for i in range(total_slides):

@@ -33,11 +33,6 @@
     {"key": "exercises/viz_seaborn_scatter/exercise_solution.py", "counts": {"code-folder": 1}},
     {"key": "exercises/viz_seaborn_statistical/exercise_setup_data.py", "counts": {"code-folder": 1}},
     {"key": "exercises/viz_seaborn_statistical/exercise_solution.py", "counts": {"code-folder": 1}},
-    {"key": "scripts/_slideshow_pdf.py", "counts": {"unresolved": 1}},
-    {"key": "scripts/build_slideshow.py", "counts": {"unresolved": 1}},
-    {"key": "scripts/copy_data_to_live.py", "counts": {"unresolved": 4}},
-    {"key": "scripts/move_solutions.py", "counts": {"unresolved": 3}},
-    {"key": "scripts/sync_slideshow_to_starters.py", "counts": {"unresolved": 3}},
     {"key": "streamlit_demo/scripts/generate_mock_data.py", "counts": {"code-folder": 4}}
   ]
 }

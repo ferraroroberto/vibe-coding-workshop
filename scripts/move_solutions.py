@@ -81,18 +81,21 @@ def process_exercise(exercise_dir: str) -> None:
                     lines.insert(last_import + 1, setup_code)
                     content = '\n'.join(lines)
 
+        # runtime-write-exempt: one-off tool that rewrites the exercise solutions in the tree
         with open(solution_script, 'w', encoding='utf-8') as f:
             f.write(content)
 
         # Move files
         data_dir = os.path.join(exercise_dir, 'data')
         solutions_dir = os.path.join(data_dir, 'solutions')
+        # runtime-write-exempt: one-off tool that relocates exercise data files in the tree
         os.makedirs(solutions_dir, exist_ok=True)
 
         for filename in files_to_move:
             src = os.path.join(data_dir, filename)
             dst = os.path.join(solutions_dir, filename)
             if os.path.exists(src):
+                # runtime-write-exempt: one-off tool that relocates exercise data files in the tree
                 shutil.move(src, dst)
                 log.info("Moved %s to %s", src, dst)
 

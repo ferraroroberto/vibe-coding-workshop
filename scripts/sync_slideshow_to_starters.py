@@ -68,6 +68,7 @@ def main():
         if not es_content:
             es_content = en_content  # Fallback
         starter_path = EXERCISES_DIR / folder / "exercise_starter.md"
+        # runtime-write-exempt: generator output: the exercise_starter.md files are this script's deliverable
         starter_path.parent.mkdir(parents=True, exist_ok=True)
         content = f"""## English
 
@@ -79,6 +80,7 @@ def main():
 
 {es_content}
 """
+        # runtime-write-exempt: generator output: the exercise_starter.md files are this script's deliverable
         starter_path.write_text(content, encoding="utf-8")
         log.info("Updated %s", starter_path)
 
@@ -102,6 +104,7 @@ def main():
 
 {es_content}
 """
+        # runtime-write-exempt: generator output: the exercise_starter.md files are this script's deliverable
         starter_path.write_text(content, encoding="utf-8")
         log.info("Updated %s", starter_path)
 

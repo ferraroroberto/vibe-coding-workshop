@@ -68,6 +68,7 @@ def build_live_bundle(
     if live_dir.exists():
         log.info("Removing existing live folder: %s", live_dir)
         shutil.rmtree(live_dir)
+    # runtime-write-exempt: generator output: the live/ facilitator bundle is this script's deliverable
     live_dir.mkdir(parents=True, exist_ok=True)
 
     copied = 0
@@ -87,11 +88,14 @@ def build_live_bundle(
         display_name = DISPLAY_NAMES.get(exercise, exercise)
         numbered_name = f"{i:02d}_{display_name}"
         live_exercise_dir = live_dir / numbered_name
+        # runtime-write-exempt: generator output: the live/ facilitator bundle is this script's deliverable
         live_exercise_dir.mkdir(parents=True, exist_ok=True)
 
         if has_data:
+            # runtime-write-exempt: generator output: the live/ facilitator bundle is this script's deliverable
             shutil.copytree(data_dir, live_exercise_dir / "data")
         if has_starter:
+            # runtime-write-exempt: generator output: the live/ facilitator bundle is this script's deliverable
             shutil.copy2(starter_file, live_exercise_dir / "exercise_starter.md")
         log.info("Built %s", numbered_name)
         copied += 1
