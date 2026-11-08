@@ -11,6 +11,8 @@ arguments; the scaffolding lives here once instead of in two near-copies.
 
 import logging
 import os
+import shutil
+import tempfile
 
 from PIL import Image
 from playwright.sync_api import sync_playwright
@@ -67,9 +69,7 @@ def render_slideshow_pdf(
         log.info("Found %d slides.", total_slides)
 
         screenshot_paths = []
-        temp_dir = os.path.join(os.path.dirname(abs_html_path), "tmp_pdf_slides")
-        # runtime-write-exempt: scratch slide PNGs beside the exported HTML; deleted once the PDF is built
-        os.makedirs(temp_dir, exist_ok=True)
+        temp_dir = tempfile.mkdtemp(prefix="slides_pdf_")
 
         for i in range(total_slides):
             page.evaluate(activation_js, i)
@@ -95,13 +95,5 @@ def render_slideshow_pdf(
             )
             log.info("Successfully created PDF: %s", output_pdf)
 
-            log.info("Cleaning up temporary images...")
-            for p in screenshot_paths:
-                try:
-                    os.remove(p)
-                except Exception:
-                    pass
-            try:
-                os.rmdir(temp_dir)
-            except Exception:
-                pass
+        log.info("Cleaning up temporary images...")
+        shutil.rmtree(temp_dir, ignore_errors=True)
