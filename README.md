@@ -94,7 +94,7 @@ See the slideshow for titles and goals; details live in each exercise folder und
 
 - **New exercise**: Follow `preparation/metaprompt.md`; add a folder under `exercises/` with starter (bilingual: `## English` and `## Español` sections), solution, setup, and data; add the exercise to `slideshow/slideshow_config.json` (main or bonus list) and run `python3 scripts/build_slideshow.py` to regenerate `slideshow/slideshow_data_en.js`, `slideshow/slideshow_data_es.js` and `slideshow/slideshow_es.html`; add an image to `slideshow/assets/` if needed.
 - **New bonus image**: Use the table and instructions in `preparation/how_images_were_created.md` Part 2, generate images (e.g. with Gemini), save as the listed `bonus_*.jpg` names in `slideshow/assets/`.
-- **Ship gate**: before committing, run `.\scripts\verify-before-ship.ps1`. It needs `.venv\Scripts\python.exe` (see Quick Start) plus Node (`npx`) and `ruff` for the static ratchet. The gate's last stage runs every exercise's setup and solution (`scripts/validate_exercises.py`), so a solution that stops working fails it; run that script alone for a quicker check.
+- **Ship gate**: before committing, run `.\scripts\verify-before-ship.ps1`. It needs `.venv\Scripts\python.exe` (see Quick Start) plus Node (`npx`) and `ruff` for the static ratchet. The gate's last stage runs every exercise's setup and solution (`scripts/validate_exercises.py`), so a solution that stops working fails it; run that script alone for a quicker check. The gate's last stdout line is `GATE-RESULT: PASS` or `GATE-RESULT: FAIL` (`scripts/test_gate_result.py` checks it), so assert on that line rather than the exit code when the output has to go through a pipe.
 
 ## Requirements
 
