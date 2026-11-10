@@ -4,7 +4,7 @@ import pandas as pd
 import streamlit as st
 from excel_io import build_column_id_to_index, update_columns_for_ids
 from filters import apply_filters
-from selection_status import candidate_status, status_counts
+from selection_status import CandidateStatus, status_column, status_counts, status_table
 
 logger = logging.getLogger(__name__)
 
@@ -51,6 +51,11 @@ def run(df, filters, config):
         st.metric("Waitlist", counts['waitlist'])
     with col4:
         st.metric("Pending", counts['pending'])
+
+    if counts['conflict'] or counts['unknown']:
+        st.warning(f"⚠️ {counts['conflict']} candidate(s) have both Selected and Waitlist set and "
+                   f"{counts['unknown']} have an unreadable flag. Fix them in Phase 2 Entry; "
+                   "they are in none of the counts above.")
     
     st.markdown("---")
     
@@ -94,14 +99,14 @@ def render_candidate_list(df, candidates_df, config):
     # Status filter
     status_filter = st.multiselect(
         "Filter by Status",
-        options=['Selected', 'Waitlist', 'Pending'],
-        default=['Selected', 'Waitlist', 'Pending'],
+        options=[status.value for status in CandidateStatus],
+        default=[status.value for status in CandidateStatus],
         key="sm_status_filter"
     )
     
     # Apply status filter
     candidates_df = candidates_df.copy()
-    candidates_df['_status'] = candidates_df.apply(candidate_status, axis=1)
+    candidates_df['_status'] = status_column(candidates_df)
     filtered_candidates = candidates_df[candidates_df['_status'].isin(status_filter)]
     
     if filtered_candidates.empty:
@@ -148,7 +153,7 @@ def render_candidate_table(df, candidates_df, config, group_key=""):
     st.markdown("**Quick actions for this group:**")
     col1, col2, col3, col4 = st.columns(4)
     
-    pending_ids = candidates_df[candidates_df['_status'] == 'Pending']['id'].tolist()
+    pending_ids = candidates_df[candidates_df['_status'] == CandidateStatus.PENDING]['id'].tolist()
     
     with col1:
         if st.button(f"Select All Pending ({len(pending_ids)})", key=f"select_all_{group_key}", disabled=len(pending_ids) == 0):
@@ -165,7 +170,7 @@ def render_candidate_table(df, candidates_df, config, group_key=""):
             st.rerun()
     
     with col3:
-        selected_ids = candidates_df[candidates_df['_status'] == 'Selected']['id'].tolist()
+        selected_ids = candidates_df[candidates_df['_status'] == CandidateStatus.SELECTED]['id'].tolist()
         if st.button(f"Clear Selected ({len(selected_ids)})", key=f"clear_selected_{group_key}", disabled=len(selected_ids) == 0):
             df = bulk_update_status(df, selected_ids, 'ind_session', 0, config)
             st.session_state['df'] = df
@@ -173,7 +178,7 @@ def render_candidate_table(df, candidates_df, config, group_key=""):
             st.rerun()
     
     with col4:
-        waitlist_ids = candidates_df[candidates_df['_status'] == 'Waitlist']['id'].tolist()
+        waitlist_ids = candidates_df[candidates_df['_status'] == CandidateStatus.WAITLIST]['id'].tolist()
         if st.button(f"Clear Waitlist ({len(waitlist_ids)})", key=f"clear_waitlist_{group_key}", disabled=len(waitlist_ids) == 0):
             df = bulk_update_status(df, waitlist_ids, 'ind_waitlist', 0, config)
             st.session_state['df'] = df
@@ -202,18 +207,15 @@ def render_team_balance_overview(candidates_df, config):
         st.markdown(f"### {display_name}")
         
         # Group by this hierarchy level
-        grouped = candidates_df.groupby(col_name).agg({
-            'id': 'count',
-            'ind_session': lambda x: (x == 1).sum(),
-            'ind_waitlist': lambda x: (x == 1).sum()
-        }).reset_index()
-        
-        grouped.columns = [display_name, 'Total', 'Selected', 'Waitlist']
-        grouped['Pending'] = grouped['Total'] - grouped['Selected'] - grouped['Waitlist']
+        grouped = status_table(candidates_df, col_name).rename(columns={
+            col_name: display_name, 'total': 'Total', 'selected': 'Selected',
+            'waitlist': 'Waitlist', 'pending': 'Pending', 'conflict': 'Conflict',
+            'unknown': 'Unknown'})
         grouped['Selection Rate'] = (grouped['Selected'] / grouped['Total'] * 100).round(1)
 
-        # Order columns: [display_name, 'Total', 'Selected', 'Selection Rate', 'Waitlist', 'Pending']
+        # Conflict and Unknown get a column only when a group has one
         cols = [display_name, 'Total', 'Selected', 'Selection Rate', 'Waitlist', 'Pending']
+        cols += [c for c in ('Conflict', 'Unknown') if grouped[c].any()]
         grouped = grouped[cols]
 
         # Sort by total descending
@@ -282,7 +284,7 @@ def render_quick_actions(df, candidates_df, config):
             st.rerun()
     
     with col2:
-        pending_ids = candidates_df[(candidates_df['ind_session'] != 1) & (candidates_df['ind_waitlist'] != 1)]['id'].tolist()
+        pending_ids = candidates_df[status_column(candidates_df) == CandidateStatus.PENDING]['id'].tolist()
         if st.button(f"✅ Select All Pending ({len(pending_ids)})", type="primary", key="select_all_pending", disabled=len(pending_ids) == 0):
             df = bulk_update_status(df, pending_ids, 'ind_session', 1, config)
             st.session_state['df'] = df
@@ -325,7 +327,7 @@ def export_selection_report(candidates_df):
     report_df = candidates_df.copy()
     
     # Add status column
-    report_df['selection_status'] = report_df.apply(candidate_status, axis=1)
+    report_df['selection_status'] = status_column(report_df)
     
     # Select columns for report
     report_cols = ['name', 'email', 'company', 'place', 'des_dan', 'des_dg', 'des_dt',

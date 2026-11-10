@@ -6,10 +6,9 @@ from excel_io import update_columns_for_ids
 from filters import apply_filters
 from fuzzy_search import fuzzy_filter_by_name
 from selection_status import (
-    PENDING,
-    SELECTED,
-    WAITLIST,
+    CandidateStatus,
     candidate_status,
+    exclusive_flags,
     status_counts,
 )
 
@@ -147,6 +146,7 @@ def render_phase2_edit_form(df, selected_row, config):
             with ind_cols[i]:
                 checked = bool(selected_row[field] == 1 or selected_row[field] == '1')
                 st.checkbox(field, value=checked, key=f"p2edit_{selected_id}_{field}")
+    st.caption("ind_session and ind_waitlist are exclusive: ticking one clears the other on save.")
 
     # separator field
     st.markdown("---")
@@ -215,6 +215,15 @@ def save_phase2_changes(df, selected_row, selected_id, config):
             if field in PHASE1_INDICATOR_FIELDS + PHASE2_INDICATOR_FIELDS:
                 new_value = int(1 if new_value else 0)
             df.at[idx, field] = new_value
+
+    # A candidate is Selected or Waitlist, never both: the flag ticked last wins.
+    if 'ind_session' in df.columns and 'ind_waitlist' in df.columns:
+        df.at[idx, 'ind_session'], df.at[idx, 'ind_waitlist'] = exclusive_flags(
+            df.at[idx, 'ind_session'], df.at[idx, 'ind_waitlist'],
+            selected_row.get('ind_session'), selected_row.get('ind_waitlist'))
+        # Drop the two checkboxes' state so the next run redraws them from the saved flags.
+        for field in ('ind_session', 'ind_waitlist'):
+            st.session_state.pop(f"p2edit_{selected_id}_{field}", None)
 
     # Save the edited cells back to Excel (column-map filtering is applied by
     # the helper; only fields present in df are offered).
@@ -325,7 +334,13 @@ def render_selection_decision_table(df, selected_row, config):
             table_df[col] = pd.to_numeric(table_df[col], errors='coerce').fillna(0).astype('Int64')
     
     # Add status column
-    status_labels = {SELECTED: "✅ Selected", WAITLIST: "⏳ Waitlist", PENDING: "❓ Pending"}
+    status_labels = {
+        CandidateStatus.SELECTED: "✅ Selected",
+        CandidateStatus.WAITLIST: "⏳ Waitlist",
+        CandidateStatus.PENDING: "❓ Pending",
+        CandidateStatus.CONFLICT: "⚠️ Conflict",
+        CandidateStatus.UNKNOWN: "❔ Unknown",
+    }
     table_df['Status'] = table_df.apply(candidate_status, axis=1).map(status_labels)
     
     # Reorder columns
@@ -333,7 +348,7 @@ def render_selection_decision_table(df, selected_row, config):
     table_df = table_df[final_cols]
     
     # Sort by status then name
-    status_order = {status_labels[SELECTED]: 0, status_labels[WAITLIST]: 1, status_labels[PENDING]: 2}
+    status_order = {label: order for order, label in enumerate(status_labels.values())}
     table_df['_sort'] = table_df['Status'].map(status_order)
     table_df = table_df.sort_values(['_sort', 'name']).drop('_sort', axis=1)
     

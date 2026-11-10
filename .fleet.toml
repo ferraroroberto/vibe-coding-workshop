@@ -155,3 +155,12 @@ enabled      = true
 baseline     = ".runtime-write-ratchet-baseline.json"
 # The workshop's Python lives in its exercise, metadata and demo folders, beside scripts/.
 code_folders = ["scripts", "exercises", "metadata", "streamlit_demo"]
+
+# [[state_machines]] -- the conventions ratchet's state rules skip a declared owner module
+# and keep reporting any other module that re-derives or re-spells its states.
+# Procedure: project-scaffolding docs/implicit-state-machines.md.
+[[state_machines]]
+name   = "candidate_status"
+module = "metadata/selection_status.py"
+type   = "CandidateStatus"
+derive = "candidate_status"
