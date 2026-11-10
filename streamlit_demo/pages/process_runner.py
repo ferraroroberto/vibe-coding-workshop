@@ -46,7 +46,7 @@ def _simulate_task(steps: int, fail_chance: float) -> None:
         # Update UI
         progress_bar.progress(i / steps)
         log_container.code("\n".join(logs), language="log")
-        status.update(label=f"Running task... ({i}/{steps})", state="running")
+        status.update(label=f"Running task... ({i}/{steps})")
 
     # Final status
     status.update(label="Task completed successfully", state="complete", expanded=False)
