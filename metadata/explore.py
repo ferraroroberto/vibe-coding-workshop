@@ -6,6 +6,7 @@ import plotly.express as px
 import streamlit as st
 from charts import build_breakdown_pie, collapse_to_other, grey_ramp
 from filters import apply_filters
+from selection_status import status_counts, status_table
 
 # Company/place use a 1% "Other" cutoff; the hierarchy breakdowns use 3% and
 # lower-case their labels.
@@ -204,9 +205,14 @@ def render_phase2_metrics(filtered_df):
     # Calculate metrics
     total = len(filtered_df_clean)
     confirmed = (filtered_df_clean['ind_confirm'] == 1).sum()
-    selected = (filtered_df_clean['ind_session'] == 1).sum()
-    waitlist = (filtered_df_clean['ind_waitlist'] == 1).sum()
-    pending = confirmed - selected - waitlist
+    all_counts = status_counts(filtered_df_clean)
+    confirmed_counts = status_counts(filtered_df_clean[filtered_df_clean['ind_confirm'] == 1])
+    selected = all_counts['selected']
+    waitlist = all_counts['waitlist']
+    pending = confirmed_counts['pending']
+    if confirmed_counts['conflict']:
+        st.warning(f"⚠️ {confirmed_counts['conflict']} confirmed candidate(s) have both Selected "
+                   "and Waitlist set. Fix them in Phase 2 Entry; they are in neither count.")
 
     # Display metrics
     col1, col2, col3, col4, col5 = st.columns(5)
@@ -260,9 +266,10 @@ def render_phase2_metrics(filtered_df):
 
 def _render_hierarchy_breakdown(filtered_df):
     """Confirmed / selected / waitlist counts per hierarchy level (top 10 each)."""
-    # Ensure ind_confirm is numeric with no NULLs
+    # Ensure the indicators are numeric with no NULLs
     filtered_df_hier = filtered_df.copy()
-    _to_int_indicator(filtered_df_hier, 'ind_confirm')
+    for column in INDICATOR_COLS:
+        _to_int_indicator(filtered_df_hier, column)
     confirmed_df = filtered_df_hier[filtered_df_hier['ind_confirm'] == 1].copy()
 
     hierarchy_cols = [
@@ -277,14 +284,11 @@ def _render_hierarchy_breakdown(filtered_df):
 
         st.markdown(f"**{display_name}**")
 
-        grouped = confirmed_df.groupby(col_name).agg({
-            'id': 'count',
-            'ind_session': lambda x: (x == 1).sum(),
-            'ind_waitlist': lambda x: (x == 1).sum()
-        }).reset_index()
-
-        grouped.columns = [display_name, 'Confirmed', 'Selected', 'Waitlist']
-        grouped['Pending'] = grouped['Confirmed'] - grouped['Selected'] - grouped['Waitlist']
+        grouped = status_table(confirmed_df, col_name).rename(columns={
+            col_name: display_name, 'total': 'Confirmed', 'selected': 'Selected',
+            'waitlist': 'Waitlist', 'pending': 'Pending', 'conflict': 'Conflict',
+            'unknown': 'Unknown'})
+        grouped = grouped.drop(columns=[c for c in ('Conflict', 'Unknown') if not grouped[c].any()])
         grouped['Selection %'] = (grouped['Selected'] / grouped['Confirmed'] * 100).round(1)
 
         # Sort by confirmed count

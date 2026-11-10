@@ -21,7 +21,7 @@ vibe-coding-workshop/
 │   ├── data/         # data loader for the demos
 │   └── scripts/      # mock-data generator
 ├── metadata/         # standalone Streamlit survey dashboard with its own README
-├── docs/             # this file and architecture.mmd
+├── docs/             # this file, architecture.mmd and candidate-selection-state.md
 └── .github/agents/   # a commit-and-push agent prompt
 ```
 
