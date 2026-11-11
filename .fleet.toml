@@ -63,6 +63,10 @@ exclude  = ["exercises/**"]
 [instruction_ratchet]
 enabled  = true
 baseline = ".instruction-ratchet-baseline.json"
+ci_expectations = true
+agents_pointer = true
+claude_md_max_lines = 120
+repeated_text_words = 12
 
 # [doc_refs_ratchet] -- the scaffold's baseline-and-ratchet stage for stale doc references.
 # scripts/verify-before-ship.ps1 runs scripts/doc_refs_ratchet.py, which fails when
@@ -70,9 +74,6 @@ baseline = ".instruction-ratchet-baseline.json"
 # that does not exist, beyond the shrink-only .doc-refs-ratchet-baseline.json. Existing
 # stale references are baselined, never excluded. Exit 3 fails the gate as NOT CONFIRMED.
 # Procedure: project-scaffolding docs/doc-refs-ratchet.md.
-ci_expectations = true
-agents_pointer = true
-repeated_text_words = 12
 [doc_refs_ratchet]
 enabled  = true
 baseline = ".doc-refs-ratchet-baseline.json"
