@@ -23,7 +23,8 @@
     when a file gains issue references (#NNN) in its Python, JS, CSS or PowerShell comments
     beyond .comment-ratchet-baseline.json. The conventions ratchet,
     scripts/conventions_ratchet.py, fails when a Python file gains a spawn without
-    creationflags (no-window) or a hardcoded drive path (no-drive-path) beyond
+    creationflags (no-window), a hardcoded drive path (no-drive-path) or a blocking
+    spawn without timeout= (subprocess-timeout) beyond
     .conventions-ratchet-baseline.json. The runtime write ratchet,
     scripts/runtime_write_ratchet.py, fails when a Python file gains a write target
     that resolves under a code folder beyond .runtime-write-ratchet-baseline.json; a
