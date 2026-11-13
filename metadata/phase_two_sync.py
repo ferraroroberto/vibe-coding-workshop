@@ -262,9 +262,11 @@ def match_phase2_to_phase1(df_master, df_phase2, name_column):
         matched_records: DataFrame with matched records (master_id, master_name, phase2_name, phase2_idx, match_score)
         unmatched_records: DataFrame with unmatched Phase 2 records
     """
-    master_names = df_master['name'].dropna().tolist()
-    master_ids = df_master['id'].tolist()
-    name_to_id = dict(zip(master_names, master_ids))
+    # Filter once so names and ids come from the same rows; dropping blanks from one
+    # column only would shift every later name onto the previous record's id.
+    named = df_master.dropna(subset=['name'])
+    master_names = named['name'].tolist()
+    name_to_id = dict(zip(master_names, named['id'].tolist()))
     
     matched = []
     unmatched = []
