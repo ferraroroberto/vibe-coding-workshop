@@ -33,12 +33,15 @@ A hands-on workshop for learning data manipulation, automation, and visualizatio
 
 4. (Optional) Test the environment:
    ```bash
-   python scripts/test_libraries.py
+   .venv\Scripts\python.exe scripts\test_libraries.py   # Windows
+   # ./.venv/bin/python scripts/test_libraries.py       # macOS/Linux
    ```
 
 5. (Optional) Run the Streamlit demo:
    ```bash
-   cd streamlit_demo && streamlit run main_menu.py
+   cd streamlit_demo
+   ..\.venv\Scripts\python.exe -m streamlit run main_menu.py   # Windows
+   # ../.venv/bin/python -m streamlit run main_menu.py         # macOS/Linux
    ```
    Or on Windows, double-click `streamlit_demo/run_app.bat`.
 
