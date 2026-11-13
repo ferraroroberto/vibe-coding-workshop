@@ -5,6 +5,7 @@ import streamlit as st
 from excel_io import update_columns_for_ids
 from filters import apply_filters
 from fuzzy_search import fuzzy_filter_by_name
+from hierarchy import hierarchy_levels
 from selection_status import (
     CandidateStatus,
     candidate_status,
@@ -238,14 +239,7 @@ def render_team_balance(df, selected_row, config):
     st.subheader("⚖️ Team Balance")
     st.markdown("Count of people from the same organizational unit with `ind_confirm = 1`")
     
-    # Get hierarchy levels
-    hierarchy_levels = [
-        ('des_centro_ges', 'Work Center'),
-        ('des_dan', 'N+1 (DAN)'),
-        ('des_dg', 'N+2 (DG)'),
-        ('des_dt', 'N+3 (DT)'),
-        ('des_red', 'Network')
-    ]
+    levels = hierarchy_levels('des_centro_ges', 'des_dan', 'des_dg', 'des_dt', 'des_red')
     
     # Filter to ind_confirm = 1 (ensure no NULLs)
     df_clean = df.copy()
@@ -255,7 +249,7 @@ def render_team_balance(df, selected_row, config):
     
     col1, col2, col3 = st.columns(3)
     
-    for i, (col_name, display_name) in enumerate(hierarchy_levels):
+    for i, (col_name, display_name) in enumerate(levels):
         if col_name not in df.columns:
             continue
         
@@ -285,12 +279,7 @@ def render_selection_decision_table(df, selected_row, config):
     st.subheader("📊 Selection Decision Table")
     
     # Hierarchy selector
-    hierarchy_options = {
-        'des_centro_ges': 'Work Center',
-        'des_dan': 'N+1 (DAN)',
-        'des_dg': 'N+2 (DG)',
-        'des_dt': 'N+3 (DT)'
-    }
+    hierarchy_options = dict(hierarchy_levels('des_centro_ges', 'des_dan', 'des_dg', 'des_dt'))
     
     available_options = {k: v for k, v in hierarchy_options.items() if k in df.columns}
     

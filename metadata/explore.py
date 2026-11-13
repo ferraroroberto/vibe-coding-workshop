@@ -6,6 +6,7 @@ import plotly.express as px
 import streamlit as st
 from charts import build_breakdown_pie, collapse_to_other, grey_ramp
 from filters import apply_filters
+from hierarchy import hierarchy_levels
 from selection_status import status_counts, status_table
 
 # Company/place use a 1% "Other" cutoff; the hierarchy breakdowns use 3% and
@@ -13,10 +14,10 @@ from selection_status import status_counts, status_table
 PIE_SPECS = [
     {'column': 'company', 'threshold': 0.01, 'title': 'Breakdown by Company', 'lowercase': False},
     {'column': 'place', 'threshold': 0.01, 'title': 'Breakdown by Place', 'lowercase': False},
-    {'column': 'des_dt', 'threshold': 0.03, 'title': 'Breakdown by N+3(dt)', 'lowercase': True},
-    {'column': 'des_dg', 'threshold': 0.03, 'title': 'Breakdown by N+2(dg)', 'lowercase': True},
-    {'column': 'des_dan', 'threshold': 0.03, 'title': 'Breakdown by N+1(dan)', 'lowercase': True},
-    {'column': 'des_centro_ges', 'threshold': 0.03, 'title': 'Breakdown by center', 'lowercase': True},
+    *[
+        {'column': column, 'threshold': 0.03, 'title': f'Breakdown by {label}', 'lowercase': True}
+        for column, label in hierarchy_levels('des_dt', 'des_dg', 'des_dan', 'des_centro_ges')
+    ],
 ]
 
 SKILL_FIELDS = ['nvl_excel', 'nvl_python', 'nvl_sas', 'nvl_sql', 'nvl_vba']
@@ -272,13 +273,7 @@ def _render_hierarchy_breakdown(filtered_df):
         _to_int_indicator(filtered_df_hier, column)
     confirmed_df = filtered_df_hier[filtered_df_hier['ind_confirm'] == 1].copy()
 
-    hierarchy_cols = [
-        ('des_dt', 'N+3 (DT)'),
-        ('des_dg', 'N+2 (DG)'),
-        ('des_dan', 'N+1 (DAN)')
-    ]
-
-    for col_name, display_name in hierarchy_cols:
+    for col_name, display_name in hierarchy_levels('des_dt', 'des_dg', 'des_dan'):
         if col_name not in confirmed_df.columns:
             continue
 

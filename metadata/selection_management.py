@@ -4,6 +4,7 @@ import pandas as pd
 import streamlit as st
 from excel_io import build_column_id_to_index, update_columns_for_ids
 from filters import apply_filters
+from hierarchy import hierarchy_levels
 from selection_status import CandidateStatus, status_column, status_counts, status_table
 
 logger = logging.getLogger(__name__)
@@ -81,10 +82,7 @@ def render_candidate_list(df, candidates_df, config):
     # Group by selector
     group_options = {
         'none': 'No grouping',
-        'des_dan': 'N+1 (DAN)',
-        'des_dg': 'N+2 (DG)',
-        'des_dt': 'N+3 (DT)',
-        'des_centro_ges': 'Work Center'
+        **dict(hierarchy_levels('des_dan', 'des_dg', 'des_dt', 'des_centro_ges')),
     }
     
     available_options = {k: v for k, v in group_options.items() if k == 'none' or k in candidates_df.columns}
@@ -193,14 +191,7 @@ def render_team_balance_overview(candidates_df, config):
     st.subheader("⚖️ Team Balance Overview")
     st.markdown("Selection distribution across organizational hierarchy")
     
-    hierarchy_levels = [
-        ('des_dt', 'N+3 (DT)'),
-        ('des_dg', 'N+2 (DG)'),
-        ('des_dan', 'N+1 (DAN)'),
-        ('des_centro_ges', 'Work Center')
-    ]
-    
-    for col_name, display_name in hierarchy_levels:
+    for col_name, display_name in hierarchy_levels('des_dt', 'des_dg', 'des_dan', 'des_centro_ges'):
         if col_name not in candidates_df.columns:
             continue
         
