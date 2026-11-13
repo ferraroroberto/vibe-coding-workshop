@@ -61,7 +61,7 @@ A hands-on workshop for learning data manipulation, automation, and visualizatio
 | `exercises/` | Exercise folders: starter/solution/setup/data per exercise |
 | `scripts/copy_data_to_live.py` | Facilitator tool: rebuilds the numbered `live/` bundle (starter + data per exercise, in slideshow order) that becomes the participant `live.zip` — see `preparation/live_preparation.md` |
 | `preparation/` | Docs for building and extending the slideshow and images |
-| `scripts/test_libraries.py` | Verifies installed libraries (including Streamlit) |
+| `scripts/test_libraries.py` | Verifies installed libraries (including Streamlit); exits non-zero if any fails |
 | `streamlit_demo/` | Streamlit reference app: main_menu.py, pages/, data/, scripts/ |
 | `scripts/pip_ini_finder.py` | Finds pip configuration files |
 | `requirements.txt` | Python dependencies |
