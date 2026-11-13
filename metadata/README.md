@@ -68,12 +68,14 @@ A fresh clone still runs with no `config.json` at all (it falls back to `config.
 1. **Clone the repo.** `metadata/streamlit_app.py` and `metadata/config.sample.json` are included; `config.json` (your per-machine copy) and the private workbook/CSVs are not — see "Private data inputs" above.
 2. **Install dependencies** from the repo root:
    ```powershell
-   pip install -r requirements.txt
+   .venv\Scripts\python.exe -m pip install -r requirements.txt   # Windows
+   # ./.venv/bin/python -m pip install -r requirements.txt       # macOS/Linux
    ```
 3. **Copy `config.sample.json` to `config.json` and point it at your private data files** as described above.
 4. **Run the app with Streamlit** from the `metadata/` folder:
    ```powershell
-   streamlit run streamlit_app.py
+   ..\.venv\Scripts\python.exe -m streamlit run streamlit_app.py   # Windows
+   # ../.venv/bin/python -m streamlit run streamlit_app.py         # macOS/Linux
    ```
    - The app will open in your default web browser.
 

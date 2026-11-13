@@ -17,8 +17,10 @@ The following Python packages are required (included in `requirements.txt`):
 Before running the script for the first time, you must install the Playwright browser binaries:
 
 ```bash
-pip install -r requirements.txt
-playwright install chromium
+.venv\Scripts\python.exe -m pip install -r requirements.txt   # Windows
+.venv\Scripts\python.exe -m playwright install chromium
+# ./.venv/bin/python -m pip install -r requirements.txt       # macOS/Linux
+# ./.venv/bin/python -m playwright install chromium
 ```
 
 ## The Export Script
@@ -39,7 +41,8 @@ The conversion logic is contained in `scripts/export_slideshow_to_pdf.py`.
 To generate the PDF, simply run the script from the project root:
 
 ```bash
-python scripts/export_slideshow_to_pdf.py
+.venv\Scripts\python.exe scripts\export_slideshow_to_pdf.py   # Windows
+# ./.venv/bin/python scripts/export_slideshow_to_pdf.py       # macOS/Linux
 ```
 
 By default, it looks for `slideshow/slideshow.html` relative to the project root and outputs `slideshow/slideshow.pdf` in the same location.
@@ -47,5 +50,6 @@ By default, it looks for `slideshow/slideshow.html` relative to the project root
 You can also specify a custom path:
 
 ```bash
-python scripts/export_slideshow_to_pdf.py slideshow/slideshow.html
+.venv\Scripts\python.exe scripts\export_slideshow_to_pdf.py slideshow\slideshow.html   # Windows
+# ./.venv/bin/python scripts/export_slideshow_to_pdf.py slideshow/slideshow.html       # macOS/Linux
 ```
