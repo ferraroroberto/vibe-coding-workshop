@@ -21,7 +21,7 @@ from pathlib import Path
 
 # Project root (parent of scripts directory)
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
-EXERCISES_DIR = PROJECT_ROOT / "exercises"
+EXERCISES_DIR = PROJECT_ROOT / "content" / "exercises"
 
 SETUP_SCRIPT = "exercise_setup_data.py"
 SOLUTION_SCRIPT = "exercise_solution.py"

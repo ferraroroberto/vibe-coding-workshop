@@ -6,9 +6,9 @@ This guide explains how to create a dynamic, responsive HTML slideshow that disp
 
 ## What Was Created
 
-An HTML page (`slideshow/slideshow.html`, with its sibling `slideshow.css` and `slideshow_data_en.js`, all opened straight from the file system) that:
+An HTML page (`content/slideshow/slideshow.html`, with its sibling `slideshow.css` and `slideshow_data_en.js`, all opened straight from the file system) that:
 - Displays exercises in sequence from `exercises_selection.md`
-- Uses images from the `slideshow/assets/` directory (one per exercise)
+- Uses images from the `content/slideshow/assets/` directory (one per exercise)
 - Shows title slides with full background images
 - Shows content slides with semi-transparent backgrounds and clear text
 - Includes navigation controls (buttons, keyboard, touch/swipe)
@@ -19,7 +19,7 @@ An HTML page (`slideshow/slideshow.html`, with its sibling `slideshow.css` and `
 Before creating the slideshow, ensure you have:
 
 1. **Exercise Sequence**: A document (like `exercises_selection.md`) that lists exercises in order
-2. **Exercise Folders**: Each exercise in its own folder under `exercises/`
+2. **Exercise Folders**: Each exercise in its own folder under `content/exercises/`
 3. **Exercise Content**: Each folder contains `exercise_starter.md` with the exercise text
 4. **Assets Directory**: Contains images matching exercise names (e.g., `intro_python.jpg`, `etl_merger.jpg`)
 
@@ -29,8 +29,8 @@ Before creating the slideshow, ensure you have:
 
 Review `exercises_selection.md` to determine the order of exercises. The sequence should match:
 - The order in the document
-- The image filenames in `slideshow/assets/`
-- The folder names in `exercises/`
+- The image filenames in `content/slideshow/assets/`
+- The folder names in `content/exercises/`
 
 **Example sequence:**
 1. Intro: Hello World → `intro_python.jpg`

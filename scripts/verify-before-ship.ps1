@@ -29,7 +29,7 @@
     scripts/runtime_write_ratchet.py, fails when a Python file gains a write target
     that resolves under a code folder beyond .runtime-write-ratchet-baseline.json; a
     new target it cannot resolve is exit 3. The metadata test stage runs every
-    metadata/test_*.py module by discovery (the dashboard's candidate_status state
+    content/metadata/test_*.py module by discovery (the dashboard's candidate_status state
     machine and its Phase 2 sync), so a new test module is gated with no list to edit.
     It runs with bytecode writing off, between that ratchet's --snapshot and --probe,
     which fail the gate on any file the run leaves under a code folder. The last stage,
@@ -116,15 +116,16 @@ foreach ($stage in $stages) {
     Invoke-Stage $stage.Name { & $py $script }
 }
 
-# The metadata modules import their siblings by bare name, so discovery runs from metadata/.
+# The metadata modules import their siblings by bare name, so discovery runs from content/metadata/.
 # $LASTEXITCODE is read before Pop-Location so the unittest exit code is what Invoke-Stage sees.
 $snapshot = Join-Path ([System.IO.Path]::GetTempPath()) ("runtime-write-" + [guid]::NewGuid().ToString("N") + ".json")
 Invoke-Stage "runtime write snapshot" { & $py scripts/runtime_write_ratchet.py --snapshot $snapshot }
 $env:PYTHONDONTWRITEBYTECODE = "1"
+$pyAbs = (Resolve-Path $py).Path
 Invoke-Stage "metadata unit tests" {
-    Push-Location metadata
+    Push-Location content/metadata
     try {
-        & (Join-Path ".." $py) -m unittest discover -p "test_*.py"
+        & $pyAbs -m unittest discover -p "test_*.py"
     } finally {
         Pop-Location
     }

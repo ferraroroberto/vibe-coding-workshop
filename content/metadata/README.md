@@ -59,23 +59,23 @@ copy config.sample.json config.json
 
 Then set the path fields in `config.json` one of two ways:
 
-1. **Place the files beside the app and keep the relative filenames.** Copy your private workbook/CSVs into the `metadata/` folder (next to `streamlit_app.py`); the sample's default filenames then already resolve, so no edit is needed.
+1. **Place the files beside the app and keep the relative filenames.** Copy your private workbook/CSVs into the `content/metadata/` folder (next to `streamlit_app.py`); the sample's default filenames then already resolve, so no edit is needed.
 2. **Keep the files wherever they already live.** Edit the path fields in `config.json` to the files' real absolute location on your machine.
 
 A fresh clone still runs with no `config.json` at all (it falls back to `config.sample.json`) — it just needs the private data files placed beside the app to load anything real.
 
 ## Installation & Usage
-1. **Clone the repo.** `metadata/streamlit_app.py` and `metadata/config.sample.json` are included; `config.json` (your per-machine copy) and the private workbook/CSVs are not — see "Private data inputs" above.
+1. **Clone the repo.** `content/metadata/streamlit_app.py` and `content/metadata/config.sample.json` are included; `config.json` (your per-machine copy) and the private workbook/CSVs are not — see "Private data inputs" above.
 2. **Install dependencies** from the repo root:
    ```powershell
    .venv\Scripts\python.exe -m pip install -r requirements.txt   # Windows
    # ./.venv/bin/python -m pip install -r requirements.txt       # macOS/Linux
    ```
 3. **Copy `config.sample.json` to `config.json` and point it at your private data files** as described above.
-4. **Run the app with Streamlit** from the `metadata/` folder:
+4. **Run the app with Streamlit** from the `content/metadata/` folder:
    ```powershell
-   ..\.venv\Scripts\python.exe -m streamlit run streamlit_app.py   # Windows
-   # ../.venv/bin/python -m streamlit run streamlit_app.py         # macOS/Linux
+   ..\..\.venv\Scripts\python.exe -m streamlit run streamlit_app.py   # Windows
+   # ../../.venv/bin/python -m streamlit run streamlit_app.py      # macOS/Linux
    ```
    - The app will open in your default web browser.
 
@@ -102,7 +102,7 @@ If you want to run or modify the app:
 - `explore.py` — Data exploration with charts and filters
 - `data_sync.py` — Data synchronization utilities
 - `phase_two_sync.py` — Phase-two synchronization utilities
-- `test_phase_two_sync.py` — Unit test for the duplicate-name Phase 2 sync; run `python -m unittest test_phase_two_sync` from `metadata/`
+- `test_phase_two_sync.py` — Unit test for the duplicate-name Phase 2 sync; run `python -m unittest test_phase_two_sync` from `content/metadata/`
 - `data_import.py` — Data enrichment with employee and work center information
 - `selection_management.py` — Selection management tab
 - `hierarchy.py` — The one ordered definition of the organisational hierarchy (column and display label) that every tab draws its levels from; `test_hierarchy.py` fails if a label is spelled anywhere else

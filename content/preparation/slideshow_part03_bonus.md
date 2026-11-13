@@ -85,7 +85,7 @@ Each bonus exercise has: `number`, `title`, `image` (path under `assets/`), and 
   - `bonus_viz_seaborn_scatter.jpg`  
   - `bonus_viz_seaborn_statistical.jpg`  
 
-Until custom images exist, these can be **placeholder copies** of an existing asset (e.g. `etl_merger.jpg`). To replace them with real illustrations, use the prompt in **`preparation/prompt_bonus_images_gemini.md`** (e.g. with Gemini / Nano Banana Pro), then save the generated images with the exact filenames above into `assets/`. No slideshow code changes are required after substitution.
+Until custom images exist, these can be **placeholder copies** of an existing asset (e.g. `etl_merger.jpg`). To replace them with real illustrations, use the prompt in **`content/preparation/prompt_bonus_images_gemini.md`** (e.g. with Gemini / Nano Banana Pro), then save the generated images with the exact filenames above into `assets/`. No slideshow code changes are required after substitution.
 
 ---
 
@@ -104,9 +104,9 @@ Until custom images exist, these can be **placeholder copies** of an existing as
 
 ## Files to reference
 
-- **Slideshow**: `slideshow/slideshow.html` (generation logic, `mainExercises` / `bonusExercises`, `goToBonusMenu`, `goToBonusExercise`, break buttons).
-- **Image creation**: `preparation/how_images_were_created.md` (style and process).
-- **Prompt for new bonus images**: `preparation/how_images_were_created.md` Part 2 (table and instructions for Gemini / Nano Banana Pro).
+- **Slideshow**: `content/slideshow/slideshow.html` (generation logic, `mainExercises` / `bonusExercises`, `goToBonusMenu`, `goToBonusExercise`, break buttons).
+- **Image creation**: `content/preparation/how_images_were_created.md` (style and process).
+- **Prompt for new bonus images**: `content/preparation/how_images_were_created.md` Part 2 (table and instructions for Gemini / Nano Banana Pro).
 - **Earlier parts**: `slideshow_part01_exercises.md`, `slideshow_part02_sequence.md`.
 
 ---

@@ -1,7 +1,7 @@
 {
   "version": 1,
   "band": {"files": 0, "functions": 3},
-  "root_extras": ["exercises", "metadata", "preparation", "slideshow", "slideshow_ai", "streamlit_demo", "tips"],
+  "root_extras": [],
   "shape_contract": {
     "root_files": [],
     "redundant": [],

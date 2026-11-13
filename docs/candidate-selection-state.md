@@ -1,6 +1,6 @@
 # Candidate selection status
 
-A Phase 2 candidate's decision is held in two 0/1 columns, `ind_session` and `ind_waitlist`. Left as two flags, every panel that reads them re-derives the status on its own, and a row with both set is Selected in one panel and counted twice in another. The status is therefore declared as one closed type, `CandidateStatus`, with one derive function, `candidate_status`, in `metadata/selection_status.py`. The machine is registered as `candidate_status` in `.fleet.toml` (`[[state_machines]]`).
+A Phase 2 candidate's decision is held in two 0/1 columns, `ind_session` and `ind_waitlist`. Left as two flags, every panel that reads them re-derives the status on its own, and a row with both set is Selected in one panel and counted twice in another. The status is therefore declared as one closed type, `CandidateStatus`, with one derive function, `candidate_status`, in `content/metadata/selection_status.py`. The machine is registered as `candidate_status` in `.fleet.toml` (`[[state_machines]]`).
 
 ## States
 
@@ -30,4 +30,4 @@ A new reader calls these and never compares `ind_session` or `ind_waitlist` to d
 
 ## Test
 
-`metadata/test_selection_status.py` has one row per flag combination (0, 1, blank, out of range), the count invariants, and the tests that carry the `state-machine-proof: candidate_status` marker: a saved row is never Conflict and a Conflict row is never read as Selected or Waitlist. Run it from `metadata/` with `python -m unittest test_selection_status`.
+`content/metadata/test_selection_status.py` has one row per flag combination (0, 1, blank, out of range), the count invariants, and the tests that carry the `state-machine-proof: candidate_status` marker: a saved row is never Conflict and a Conflict row is never read as Selected or Waitlist. Run it from `content/metadata/` with `python -m unittest test_selection_status`.

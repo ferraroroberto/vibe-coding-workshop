@@ -340,7 +340,7 @@ Watch the first minute of this intro to Python:
 
 ### Before the Workshop
 
-- [ ] Generate each exercise's data first: run every `exercises/<name>/exercise_setup_data.py` (the `data/` folders are not tracked, so a fresh clone has none)
+- [ ] Generate each exercise's data first: run every `content/exercises/<name>/exercise_setup_data.py` (the `data/` folders are not tracked, so a fresh clone has none)
 - [ ] Build the `live/` bundle: `python scripts/copy_data_to_live.py` (rebuilds the numbered starter/data folders, then zip it as `live.zip` for the shared folder)
 - [ ] Test all exercises in the `live/` folder
 - [ ] Verify all data files are present

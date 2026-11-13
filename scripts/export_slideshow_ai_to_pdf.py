@@ -48,7 +48,7 @@ if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
 
     slideshow_dir = os.path.abspath(
-        os.path.join(os.path.dirname(__file__), "..", "slideshow_ai")
+        os.path.join(os.path.dirname(__file__), "..", "content", "slideshow_ai")
     )
 
     if len(sys.argv) > 1:

@@ -4,7 +4,7 @@ Facilitator tooling. Reads the exercise order straight from the Spanish
 slideshow, then copies each exercise's `data/` folder and `exercise_starter.md`
 into a fresh, numbered `live/` tree (`00_Intro_Hello_World`, `01_...`). That
 tree is what gets zipped into the `live.zip` participants download (see
-`preparation/live_preparation.md`).
+`content/preparation/live_preparation.md`).
 
 Destructive: rebuilding wipes and recreates the `live/` folder. Nothing runs on
 import — call `main()` (or run the file) to do the work.
@@ -20,9 +20,9 @@ from pathlib import Path
 log = logging.getLogger(__name__)
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
-EXERCISES_DIR = PROJECT_ROOT / "exercises"
+EXERCISES_DIR = PROJECT_ROOT / "content" / "exercises"
 LIVE_DIR = PROJECT_ROOT / "live"
-SLIDESHOW_FILE = PROJECT_ROOT / "slideshow" / "slideshow_data_es.js"
+SLIDESHOW_FILE = PROJECT_ROOT / "content" / "slideshow" / "slideshow_data_es.js"
 
 # Display names for specific folder names (keys are FOLDER names).
 DISPLAY_NAMES = {
