@@ -166,3 +166,45 @@ name   = "candidate_status"
 module = "metadata/selection_status.py"
 type   = "CandidateStatus"
 derive = "candidate_status"
+
+# [[design.accepted]] -- design.web.md describes a content site (header, phone menu, footer,
+# framed cards, no gradients or shadows). These two decks are full-screen slides driven by the
+# arrow keys, so each contract below is declined with its reason. Each entry matches only the
+# exact finding it accepts; a new problem in the same check raises it again.
+[[design.accepted]]
+check  = "web-header-current"
+detail = 'no aria-current="page" on the current nav item'
+reason = "a slide deck has no site navigation and no pages; the nav is previous/next buttons"
+
+[[design.accepted]]
+check  = "web-phone-menu"
+detail = "no menu button with aria-expanded (design.web.md section 6, Phone menu)"
+reason = "a slide deck has no menu panel; each slide fits the viewport and the nav is previous/next"
+
+[[design.accepted]]
+check  = "web-footer"
+detail = "no <footer> landmark (design.web.md sections 6 and 8)"
+reason = "a full-screen slide has no page footer; contact and legal links do not apply to a workshop deck"
+
+[[design.accepted]]
+check  = "web-sections-container"
+detail = "no `container-type: inline-size` on the content container (design.web.md section 5)"
+reason = "no image role resolves against the content width; a slide is sized in viewport units"
+
+[[design.accepted]]
+check  = "web-no-shadow"
+target = "slideshow/slideshow.css"
+detail = "a box-shadow is declared; design.web.md section 4 uses none"
+reason = "the glow on the timer and slide panels is the deck's look over a photo background"
+
+[[design.accepted]]
+check  = "web-no-gradient"
+target = "tips/styles.css"
+detail = "a gradient is declared; design.web.md section 4 uses none"
+reason = "the neon gradient on the progress bar and titles is the tips deck's retro look"
+
+[[design.accepted]]
+check  = "web-card"
+target = "tips/styles.css"
+detail = "no stretched card link (a ::after with inset: 0) (design.web.md section 6, Card)"
+reason = "the cards are static text tiles with no link to stretch"

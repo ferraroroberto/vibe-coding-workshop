@@ -21,6 +21,47 @@
   --font-mono:  'Share Tech Mono', monospace;
   --font-head:  'Orbitron', sans-serif;
   --font-body:  'Inter', sans-serif;
+
+  /* Fleet web-page token vocabulary (design.web.md section 2), aliased onto the
+     deck's own palette so a colour or face lives once. The deck has no header,
+     footer, card media or section rule; those tokens are declared for the
+     shared vocabulary and nothing here reads them. */
+  --paper:        var(--bg);
+  --ink:          var(--text);
+  --ink-2:        var(--muted);
+  --line:         var(--border);
+  --line-strong:  var(--muted);
+  --accent:       var(--neon-cyan);
+  --footer-band:  var(--surface);
+  --font:         var(--font-body);
+  --fs-title:     clamp(3rem, 8vw, 6rem);
+  --fs-h2:        clamp(1.5rem, 3.5vw, 2.4rem);
+  --fs-h3:        1rem;
+  --fs-lead:      1.1rem;
+  --fs-body:      1rem;
+  --fs-card:      0.88rem;
+  --fs-small:     0.82rem;
+  --fs-label:     0.75rem;
+  --s1: 4px;
+  --s2: 8px;
+  --s3: 12px;
+  --s4: 16px;
+  --s5: 24px;
+  --s6: 32px;
+  --s7: 48px;
+  --s8: 64px;
+  --s9: 96px;
+  --gutter:       var(--s5);
+  --gap:          var(--s4);
+  --section:      var(--s6);
+  --frame:        1px solid var(--line);
+  --control:      48px;
+  --header:       4px;
+  --content:      1100px;
+  --measure:      40rem;
+  --img-feature:  520px;
+  --img-tile:     100%;
+  --img-thumb:    96px;
 }
 
 /* === RESET & BASE =========================================== */
@@ -553,4 +594,18 @@ body::after {
   .tip-row      { grid-template-columns: 1fr 1fr; font-size: 0.78rem; }
   .steps        { flex-direction: column; }
   .step-arrow   { transform: rotate(90deg); align-self: center; }
+}
+
+/* === ACCESSIBILITY ========================================== */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
