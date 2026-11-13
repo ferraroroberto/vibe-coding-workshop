@@ -1,26 +1,26 @@
 # Requirements used in the setup data only
 
-faker==40.44.0 # used in exercises/etl_survey
+faker==40.44.0 # used in content/exercises/etl_survey
 
 # Requirements used in the exercises solution
 
-duckdb==2.0.0 # used in exercises/etl_bonus_big_data
-folium==0.20.0 # used in exercises/viz_geo_heatmap
-fpdf2==2.9.0 # used in exercises/auto_pdf_report
-matplotlib==3.11.2 # used in exercises/viz_managers_chart, exercises/auto_pdf_report, exercises/viz_seaborn_scatter, exercises/viz_seaborn_statistical
-numpy==2.5.4 # used in exercises/viz_seaborn_scatter, exercises/viz_seaborn_statistical
-openpyxl==3.1.5 # used in exercises/auto_excel_polish, exercises/etl_merger, exercises/viz_report_generator, exercises/etl_api_pipeline
+duckdb==2.0.0 # used in content/exercises/etl_bonus_big_data
+folium==0.20.0 # used in content/exercises/viz_geo_heatmap
+fpdf2==2.9.0 # used in content/exercises/auto_pdf_report
+matplotlib==3.11.2 # used in content/exercises/viz_managers_chart, content/exercises/auto_pdf_report, content/exercises/viz_seaborn_scatter, content/exercises/viz_seaborn_statistical
+numpy==2.5.4 # used in content/exercises/viz_seaborn_scatter, content/exercises/viz_seaborn_statistical
+openpyxl==3.1.5 # used in content/exercises/auto_excel_polish, content/exercises/etl_merger, content/exercises/viz_report_generator, content/exercises/etl_api_pipeline
 pandas==3.1.0 # used in most exercises
-plotly==7.1.0 # used in exercises/viz_interactive_dashboard
-pyarrow==26.0.1 # used in exercises/etl_bonus_big_data
-seaborn==0.13.2 # used in exercises/viz_managers_chart, exercises/viz_seaborn_scatter, exercises/viz_seaborn_statistical
-xlsxwriter==3.3.1 # used in exercises/auto_excel_polish
+plotly==7.1.0 # used in content/exercises/viz_interactive_dashboard
+pyarrow==26.0.1 # used in content/exercises/etl_bonus_big_data
+seaborn==0.13.2 # used in content/exercises/viz_managers_chart, content/exercises/viz_seaborn_scatter, content/exercises/viz_seaborn_statistical
+xlsxwriter==3.3.1 # used in content/exercises/auto_excel_polish
 
 # Requirements used in the Streamlit demo
 streamlit==1.66.1
 
 # Requirements used in the metadata app
-fuzzywuzzy==0.18.0 # used in metadata/fuzzy_search.py, metadata/phase_two_sync.py for fuzzy name matching
+fuzzywuzzy==0.18.0 # used in content/metadata/fuzzy_search.py, content/metadata/phase_two_sync.py for fuzzy name matching
 python-Levenshtein==0.27.5 # speeds up fuzzywuzzy; avoids the slow pure-python SequenceMatcher warning
 
 # Requirements used in the slideshow export

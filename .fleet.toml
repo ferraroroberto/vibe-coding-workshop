@@ -7,18 +7,10 @@ icon        = "🎓"
 description = "Python workshop + exercises."
 
 # Root layout: the decks are hand-written HTML, CSS and JS opened straight from the file
-# system with no build step or server, which is the static-site shape. The workshop content
-# folders are its own roots; each one's reason is in docs/layout.md.
+# system with no build step or server, which is the static-site shape. The workshop itself
+# (exercises, both decks, the keynote, the tips deck, the two Streamlit apps and the
+# preparation notes) is site source, so it lives in content/, the shape's untyped folder.
 shape       = "static-site"
-extra_roots = [
-    "exercises",       # one folder per exercise: starter, solution, data setup
-    "metadata",        # the standalone Streamlit survey dashboard
-    "preparation",     # how the decks and the live bundle are built
-    "slideshow",       # the workshop exercise deck
-    "slideshow_ai",    # the standalone keynote deck and its demos
-    "streamlit_demo",  # the Streamlit reference app
-    "tips",            # the Vibe Coding Tips deck
-]
 
 # [vendored] -- components copied byte-for-byte from project-scaffolding, with the
 # scaffold commit each came from. Re-vendor through /propagate-vendored, never by hand.
@@ -52,7 +44,7 @@ instruction_repeats = { src = "scripts/instruction_repeats.py", sha = "c5535ac32
 enabled  = true
 baseline = ".structure-ratchet-baseline.json"
 # Exercise solutions are teaching material, written long on purpose.
-exclude  = ["exercises/**"]
+exclude  = ["content/exercises/**"]
 
 # [instruction_ratchet] -- the scaffold's baseline-and-ratchet stage for agent instruction files.
 # scripts/verify-before-ship.ps1 runs scripts/instruction_ratchet.py over CLAUDE.md and
@@ -90,7 +82,7 @@ baseline = ".dead-code-ratchet-baseline.json"
 # An exercise solution keeps this helper uncalled on purpose. It is allowed rather than
 # baselined: a tracked baseline names the function in a .json file, which the ratchet reads
 # as a reference, so the entry would mask itself.
-allow    = ["exercises/viz_d3_bar_chart/exercise_solution.py:collect_products"]
+allow    = ["content/exercises/viz_d3_bar_chart/exercise_solution.py:collect_products"]
 
 # [static_ratchet] -- the scaffold's baseline-and-ratchet stage for duplicated and unused code.
 # scripts/verify-before-ship.ps1 runs scripts/static_ratchet.py, which fails on a new
@@ -155,15 +147,15 @@ rules    = ["no-window", "no-drive-path", "subprocess-timeout", "state-literal",
 [runtime_write_ratchet]
 enabled      = true
 baseline     = ".runtime-write-ratchet-baseline.json"
-# The workshop's Python lives in its exercise, metadata and demo folders, beside scripts/.
-code_folders = ["scripts", "exercises", "metadata", "streamlit_demo"]
+# The workshop's Python lives in content/ (exercises, dashboard, demo), beside scripts/.
+code_folders = ["scripts", "content"]
 
 # [[state_machines]] -- the conventions ratchet's state rules skip a declared owner module
 # and keep reporting any other module that re-derives or re-spells its states.
 # Procedure: project-scaffolding docs/implicit-state-machines.md.
 [[state_machines]]
 name   = "candidate_status"
-module = "metadata/selection_status.py"
+module = "content/metadata/selection_status.py"
 type   = "CandidateStatus"
 derive = "candidate_status"
 
@@ -193,18 +185,18 @@ reason = "no image role resolves against the content width; a slide is sized in 
 
 [[design.accepted]]
 check  = "web-no-shadow"
-target = "slideshow/slideshow.css"
+target = "content/slideshow/slideshow.css"
 detail = "a box-shadow is declared; design.web.md section 4 uses none"
 reason = "the glow on the timer and slide panels is the deck's look over a photo background"
 
 [[design.accepted]]
 check  = "web-no-gradient"
-target = "tips/styles.css"
+target = "content/tips/styles.css"
 detail = "a gradient is declared; design.web.md section 4 uses none"
 reason = "the neon gradient on the progress bar and titles is the tips deck's retro look"
 
 [[design.accepted]]
 check  = "web-card"
-target = "tips/styles.css"
+target = "content/tips/styles.css"
 detail = "no stretched card link (a ::after with inset: 0) (design.web.md section 6, Card)"
 reason = "the cards are static text tiles with no link to stretch"

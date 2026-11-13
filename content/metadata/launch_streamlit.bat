@@ -16,6 +16,7 @@ REM -- Locate virtual environment -----------------------------
 set "VENV_DIR="
 if exist ".venv\Scripts\activate.bat" set "VENV_DIR=%cd%\.venv"
 if not defined VENV_DIR if exist "..\.venv\Scripts\activate.bat" set "VENV_DIR=%cd%\..\.venv"
+if not defined VENV_DIR if exist "..\..\.venv\Scripts\activate.bat" set "VENV_DIR=%cd%\..\..\.venv"
 
 REM -- Check that .venv exists --------------------------------
 if not defined VENV_DIR (
@@ -23,7 +24,7 @@ if not defined VENV_DIR (
     echo  [ERROR] Virtual environment not found.
     echo  Please create it first:
     echo.
-    echo      cd /d "%cd%\.."
+    echo      cd /d "%cd%\..\.."
     echo      python -m venv .venv
     echo      .venv\Scripts\activate
     echo      pip install -r requirements.txt

@@ -8,7 +8,7 @@ A self-contained reference application that demonstrates every major Streamlit c
 
 ### 1. Use the repo virtual environment
 
-The virtual environment (`.venv`) lives in the **parent repo** (monorepo root). From the repo root:
+The virtual environment (`.venv`) lives at the **repo root**. From the repo root:
 
 ```bash
 # Windows
@@ -18,11 +18,11 @@ The virtual environment (`.venv`) lives in the **parent repo** (monorepo root). 
 source .venv/bin/activate
 ```
 
-Then `cd streamlit_demo` for the steps below.
+Then `cd content/streamlit_demo` for the steps below.
 
 ### 2. Install dependencies
 
-From `streamlit_demo/`:
+From `content/streamlit_demo/`:
 
 ```bash
 pip install -r requirements.txt
@@ -30,22 +30,22 @@ pip install -r requirements.txt
 
 ### 3. Run the app
 
-From `streamlit_demo/`:
+From `content/streamlit_demo/`:
 
 ```bash
 streamlit run main_menu.py
 ```
 
-Or on **Windows**, double-click **`run_app.bat`** from `streamlit_demo/` (it uses the parent `.venv` and launches the app).
+Or on **Windows**, double-click **`run_app.bat`** from `content/streamlit_demo/` (it uses the repo root `.venv` and launches the app).
 
 ---
 
 ## Project Structure
 
-The app lives under `streamlit_demo/`. The repo’s `.venv` is in the **parent directory** (monorepo root), not inside `streamlit_demo/`.
+The app lives under `content/streamlit_demo/`. The repo’s `.venv` is at the **repo root**, not inside `content/streamlit_demo/`.
 
 ```
-streamlit_demo/
+content/streamlit_demo/
 ├── .streamlit/
 │   └── config.toml           # Streamlit UI/config (theme, sidebar, etc.)
 ├── main_menu.py              # Main entry point – page config & sidebar routing

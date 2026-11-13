@@ -36,7 +36,7 @@ def export_slideshow(html_path: str, output_pdf: str) -> None:
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
-    default_target = os.path.join(os.path.dirname(__file__), "..", "slideshow", "slideshow.html")
+    default_target = os.path.join(os.path.dirname(__file__), "..", "content", "slideshow", "slideshow.html")
 
     target_file = default_target
     if len(sys.argv) > 1:

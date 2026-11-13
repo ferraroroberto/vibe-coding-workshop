@@ -7,7 +7,7 @@ tmp
 *.pyc
 
 # data directories
-/**exercises/**/data/
+/content/exercises/**/data/
 **/mock_data/
 
 # live directory
@@ -18,20 +18,20 @@ live/
 
 # slideshow_ai: presenter's own "hyped industry news" example screenshots
 # (kept private; slide 4 renders whatever exists locally at run time)
-slideshow_ai/assets/news/
+content/slideshow_ai/assets/news/
 
 # slideshow_ai: third-party Mollick "otter" benchmark images (not redistributed)
 # slide 2 references assets/otters/otters.png and degrades to a hint if absent
-slideshow_ai/assets/otters/
+content/slideshow_ai/assets/otters/
 
 # slideshow decks: exported PDFs are build artifacts, regenerated from the HTML
 slideshow*.pdf
 
 # slideshow_ai: presenter-local Kahoot working files (filled template + selected-question exports)
-slideshow_ai/kahoot/final/
+content/slideshow_ai/kahoot/final/
 
 # metadata dashboard: per-machine config with real data-file paths.
 # Tracked template is config.sample.json; copy it to config.json and edit locally.
-metadata/config.json
+content/metadata/config.json
 # Launcher scratch (ephemeral images/logs written by the tray launcher)
 .launcher-tmp/

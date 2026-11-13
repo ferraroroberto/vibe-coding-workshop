@@ -113,7 +113,7 @@ def _xlsxwriter(mod):
 def _streamlit(mod):
     assert callable(getattr(mod, "set_page_config", None))
     assert callable(getattr(mod, "write", None))
-    log.info("  Run: streamlit run main_menu.py (from streamlit_demo/) to launch the demo app.")
+    log.info("  Run: streamlit run main_menu.py (from content/streamlit_demo/) to launch the demo app.")
 
 
 # (display name, importable module, smoke call taking the imported module)

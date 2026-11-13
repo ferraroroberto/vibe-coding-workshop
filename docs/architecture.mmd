@@ -7,8 +7,8 @@
 
 flowchart TB
   subgraph content["Content authoring"]
-    EXERCISES["exercises/&lt;name&gt;/\nexercise_starter.md (EN+ES) · exercise_solution.{md,py} ·\nexercise_setup_data.py · data/ (gitignored, generated)"]
-    PREP["preparation/\nmetaprompt.md · slideshow_part0{1,2,3}_*.md ·\nlive_preparation.md · how_images_were_created.md"]
+    EXERCISES["content/exercises/&lt;name&gt;/\nexercise_starter.md (EN+ES) · exercise_solution.{md,py} ·\nexercise_setup_data.py · data/ (gitignored, generated)"]
+    PREP["content/preparation/\nmetaprompt.md · slideshow_part0{1,2,3}_*.md ·\nlive_preparation.md · how_images_were_created.md"]
   end
 
   subgraph build["scripts/ — build & facilitator tooling"]
@@ -23,7 +23,7 @@ flowchart TB
   EXERCISES --> VALIDATE
   EXERCISES --> COPYLIVE
 
-  subgraph slideshow["slideshow/ — workshop presentation"]
+  subgraph slideshow["content/slideshow/ — workshop presentation"]
     CONFIG["slideshow_config.json\nmain + bonus exercise order"]
     SHTML["slideshow.html / slideshow_es.html\n(shell; ES derived from EN) +\nslideshow.css (shared)"]
     SDATA["slideshow_data_en.js / slideshow_data_es.js\n(generated exercise content)"]
@@ -41,13 +41,13 @@ flowchart TB
   COPYLIVE --> LIVE
 
   subgraph standalone["Standalone, self-contained presentations (no build step)"]
-    TIPS["tips/\nindex.html + styles.css + script.js\ndocs/vibe-coding-tips.md · examples/*.md"]
-    SLIDESHOWAI["slideshow_ai/\nslideshow_ai.html (bilingual EN/ES toggle)\nmockups/ (live automation/NLP/ML/transformer demos)\nkahoot/"]
+    TIPS["content/tips/\nindex.html + styles.css + script.js\ndocs/vibe-coding-tips.md · examples/*.md"]
+    SLIDESHOWAI["content/slideshow_ai/\nslideshow_ai.html (bilingual EN/ES toggle)\nmockups/ (live automation/NLP/ML/transformer demos)\nkahoot/"]
   end
 
   subgraph apps["Standalone Streamlit apps (independent of the slideshow)"]
-    DEMO["streamlit_demo/\nmain_menu.py -> menu.py (page registry)\npages/*.py (multipage auto-discovery:\ndata_input, file_upload, crud_demo,\nprocess_runner, state_management, visualization)\ncached_data.py · data/ · run_app.bat"]
-    METADATA["metadata/ — Survey Data Dashboard\nstreamlit_app.py (page config + tab wiring) imports:\ndata_entry, explore, data_sync, data_import,\nparticipation_analysis, phase_two_sync,\nphase_two_entry, selection_management\n(UI) -> excel_io.py, fuzzy_search.py, sync_rules.py,\ncharts.py (data/IO logic)\nconfig.json (gitignored, per-machine) falls back to\nconfig.sample.json (tracked template)"]
+    DEMO["content/streamlit_demo/\nmain_menu.py -> menu.py (page registry)\npages/*.py (multipage auto-discovery:\ndata_input, file_upload, crud_demo,\nprocess_runner, state_management, visualization)\ncached_data.py · data/ · run_app.bat"]
+    METADATA["content/metadata/ — Survey Data Dashboard\nstreamlit_app.py (page config + tab wiring) imports:\ndata_entry, explore, data_sync, data_import,\nparticipation_analysis, phase_two_sync,\nphase_two_entry, selection_management\n(UI) -> excel_io.py, fuzzy_search.py, sync_rules.py,\ncharts.py (data/IO logic)\nconfig.json (gitignored, per-machine) falls back to\nconfig.sample.json (tracked template)"]
   end
 
   REQ["requirements.txt\npandas/numpy/matplotlib/seaborn/openpyxl/\nfpdf2/duckdb/pyarrow/plotly/folium (exercises) ·\nstreamlit (demo + metadata) ·\nfuzzywuzzy/python-Levenshtein (metadata) ·\nplaywright (slideshow PDF export) · faker (etl_survey setup)"]
