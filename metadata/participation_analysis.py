@@ -6,6 +6,7 @@ import streamlit as st
 from charts import grey_ramp
 from csv_io import load_employee_and_workcenter_data
 from filters import apply_filters
+from hierarchy import HIERARCHY_LABELS
 
 logger = logging.getLogger(__name__)
 
@@ -189,13 +190,7 @@ def display_treemap(treemap_data, level):
     from grey_ramp(). Coloring is bound to the 'area' column (not the numeric
     'participation_rate') so Plotly honours the color_discrete_map.
     """
-    # Map level to display label
-    level_labels = {
-        'DT': 'N+3(dt)',
-        'DG': 'N+2(dg)',
-        'DAN': 'N+1(dan)'
-    }
-    display_label = level_labels.get(level, level)
+    display_label = HIERARCHY_LABELS.get(f'des_{level.lower()}', level)
     st.markdown(f"### 🗺️ Treemap: {display_label}")
     
     # Create custom labels
@@ -254,13 +249,7 @@ def display_top_areas(treemap_data, level):
     """
     Display top areas by participation rate and absolute participation.
     """
-    # Map level to display label
-    level_labels = {
-        'DT': 'N+3(dt)',
-        'DG': 'N+2(dg)',
-        'DAN': 'N+1(dan)'
-    }
-    display_label = level_labels.get(level, level)
+    display_label = HIERARCHY_LABELS.get(f'des_{level.lower()}', level)
     st.markdown(f"### 🏆 Top Areas by Participation {display_label}")
     
     col1, col2 = st.columns(2)
