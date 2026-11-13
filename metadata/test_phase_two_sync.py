@@ -60,5 +60,20 @@ class DuplicateNameSyncTest(unittest.TestCase):
         })
 
 
+class BlankMasterNameMatchTest(unittest.TestCase):
+    def test_blank_master_name_does_not_shift_later_ids(self):
+        df_master = pd.DataFrame({
+            'id': [10, 20, 30],
+            'name': [None, 'Bruno Diaz', 'Zoe Martin'],
+        })
+        df_phase2 = pd.DataFrame({'1': ['Zoe Martin', 'Bruno Diaz']})
+
+        matched, unmatched = phase_two_sync.match_phase2_to_phase1(df_master, df_phase2, '1')
+
+        self.assertTrue(unmatched.empty)
+        ids_by_name = dict(zip(matched['phase2_name'], matched['master_id']))
+        self.assertEqual(ids_by_name, {'Zoe Martin': 30, 'Bruno Diaz': 20})
+
+
 if __name__ == '__main__':
     unittest.main()
