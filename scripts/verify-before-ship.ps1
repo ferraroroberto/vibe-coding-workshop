@@ -4,7 +4,7 @@
     Pre-ship verification gate for vibe-coding-workshop.
 
 .DESCRIPTION
-    The gate is nine ratchets, the metadata unit tests and exercise validation. The structure ratchet,
+    The gate is ten ratchets, the metadata unit tests and exercise validation. The structure ratchet,
     scripts/structure_ratchet.py, fails when a new file passes 1,000 lines, a new
     function 100 lines or a flat directory 40 modules, and when a baselined
     offender grows past its size in .structure-ratchet-baseline.json. The
@@ -28,7 +28,11 @@
     .conventions-ratchet-baseline.json. The runtime write ratchet,
     scripts/runtime_write_ratchet.py, fails when a Python file gains a write target
     that resolves under a code folder beyond .runtime-write-ratchet-baseline.json; a
-    new target it cannot resolve is exit 3. The metadata test stage runs every
+    new target it cannot resolve is exit 3. The request budget ratchet,
+    scripts/request_budget_ratchet.py, fails when a fixed-rate browser poll that reaches a server,
+    a poll under 2 s, an undeclared fast server loop, a submit to the shared default pool or a web
+    app without the timing middleware is new beyond .request-budget-ratchet-baseline.json. The
+    metadata test stage runs every
     content/metadata/test_*.py module by discovery (the dashboard's candidate_status state
     machine and its Phase 2 sync), so a new test module is gated with no list to edit.
     It runs with bytecode writing off, between that ratchet's --snapshot and --probe,
@@ -108,6 +112,7 @@ $stages = @(
     @{ Name = "comment ratchet";     Script = "scripts/comment_ratchet.py" },
     @{ Name = "conventions ratchet"; Script = "scripts/conventions_ratchet.py" },
     @{ Name = "runtime write ratchet"; Script = "scripts/runtime_write_ratchet.py" },
+    @{ Name = "request budget ratchet"; Script = "scripts/request_budget_ratchet.py" },
     @{ Name = "gate verdict test";   Script = "scripts/test_gate_result.py" }
 )
 
